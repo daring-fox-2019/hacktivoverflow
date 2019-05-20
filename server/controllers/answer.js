@@ -59,9 +59,16 @@ class Answer {
   }
 
   static upvote(req, res) {
-    Model.findByIdAndUpdate(req.params.id, { $push: { upvotes: req.userId }, $pull: { downvotes: req.userId } }, { new: true })
+    Model.findOne({ upvotes: req.userId })
       .then(data => {
-        res.status(200).json(data)
+        if (!data) {
+          Model.findByIdAndUpdate(req.params.id, { $push: { upvotes: req.userId }, $pull: { downvotes: req.userId } }, { new: true })
+            .then(data => {
+              res.status(200).json(data)
+            })
+        } else {
+          res.status(400).json({ msg: "BAD REQUEST" })
+        }
       })
       .catch(err => {
         res.status(500).json(err)
@@ -69,9 +76,16 @@ class Answer {
   }
 
   static downvote(req, res) {
-    Model.findByIdAndUpdate(req.params.id, { $pull: { upvotes: req.userId }, $push: { downvotes: req.userId } }, { new: true })
+    Model.findOne({ downvotes: req.userId })
       .then(data => {
-        res.status(200).json(data)
+        if (!data) {
+          Model.findByIdAndUpdate(req.params.id, { $pull: { upvotes: req.userId }, $push: { downvotes: req.userId } }, { new: true })
+            .then(data => {
+              res.status(200).json(data)
+            })
+        } else {
+          res.status(400).json({ msg: "BAD REQUEST" })
+        }
       })
       .catch(err => {
         res.status(500).json(err)

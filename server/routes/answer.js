@@ -12,6 +12,5 @@ router.post('/', answer.create)
 
 router.use('/:id', authorizationAnswer)
 router.put('/:id', answer.update)
-router.delete('/:id', answer.delete)
 
 module.exports = router 
