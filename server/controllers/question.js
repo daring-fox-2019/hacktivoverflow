@@ -1,4 +1,5 @@
 const Model = require('../models/question')
+const { tag } = require('../helpers/tag')
 
 class Question {
   static findAll(req, res) {
@@ -48,6 +49,7 @@ class Question {
     Model.create(newQuestion)
       .then(data => {
         res.status(201).json(data)
+        tag(data)
       })
       .catch(err => {
         res.status(500).json(err)
@@ -89,6 +91,7 @@ class Question {
     Model.findByIdAndUpdate(req.params.id, { $set: newData }, { new: true })
       .then(data => {
         res.status(200).json(data)
+        tag(data)
       })
       .catch(err => {
         res.status(500).json(err)

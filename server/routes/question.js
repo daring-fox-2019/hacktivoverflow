@@ -6,10 +6,10 @@ router.get('/', question.findAll)
 router.get('/:id', question.findOne)
 
 router.use(authentication)
+router.post('/', question.create)
 router.patch('/:id/upvote', question.upvote)
 router.patch('/:id/downvote', question.downvote)
 router.get('/:id/user', question.findMine)
-router.post('/', question.create)
 
 router.use('/:id', authorizationQuestion)
 router.delete('/:id', question.delete)
