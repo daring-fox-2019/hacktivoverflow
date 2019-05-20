@@ -227,7 +227,8 @@ class AuthController {
         let newImage;
 
         if(req.file) {
-            newImage = req.file.cloudStoragePublicUrl
+            newImage = req.file.location
+            console.log(newImage);
             User.findOneAndUpdate({_id: req.user._id}, {image: newImage}, {new: true})
                 .then(found => {
                     res.status(200).json(found);

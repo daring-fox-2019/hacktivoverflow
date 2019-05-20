@@ -20,7 +20,7 @@ var upload = multer({
     acl: 'public-read',
     // Auto detect contet type
     contentType: multerS3.AUTO_CONTENT_TYPE, 
-    // Set key/ filename as original uplo aded name
+    // Set key/ filename as original uploaded name
     key: function (req, file, cb) {
       cb(null, 'img/'+new Date() + '-'+file.originalname)
     }
