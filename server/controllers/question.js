@@ -20,7 +20,7 @@ class Question {
   }
 
   static findMine(req, res) {
-    Model.find({ userId: { _id: req.userId } })
+    Model.find({ userId: req.userId })
       .populate('userId')
       .populate({
         path: 'answers',
@@ -88,7 +88,7 @@ class Question {
       title: req.body.title,
       description: req.body.description,
     }
-    Model.findByIdAndUpdate(req.params.id, { $set: newData }, { new: true })
+    Model.findByIdAndUpdate(req.params.id, { $set: newData }, { useFindAndModify: true, new: true })
       .then(data => {
         res.status(200).json(data)
         tag(data)
@@ -107,13 +107,13 @@ class Question {
     })
       .then(data => {
         if (!data) {
-          Model.findByIdAndUpdate(req.params.id, { $push: { upvotes: req.userId }, $pull: { downvotes: req.userId } }, { new: true })
+          Model.findByIdAndUpdate(req.params.id, { $push: { upvotes: req.userId }, $pull: { downvotes: req.userId } }, { useFindAndModify: true, new: true })
             .then(data => {
               res.status(200).json(data)
             })
         } else {
 
-          Model.findOneAndUpdate({ _id: req.params.id }, { $pull: { upvotes: req.userId } }, { new: true })
+          Model.findOneAndUpdate({ _id: req.params.id }, { $pull: { upvotes: req.userId } }, { useFindAndModify: true, new: true })
             .then(data => {
               res.status(200).json(data)
             })
@@ -133,12 +133,12 @@ class Question {
     })
       .then(data => {
         if (!data) {
-          Model.findByIdAndUpdate(req.params.id, { $pull: { upvotes: req.userId }, $push: { downvotes: req.userId } }, { new: true })
+          Model.findByIdAndUpdate(req.params.id, { $pull: { upvotes: req.userId }, $push: { downvotes: req.userId } }, { useFindAndModify: true, new: true })
             .then(data => {
               res.status(200).json(data)
             })
         } else {
-          Model.findByIdAndUpdate(req.params.id, { $pull: { downvotes: req.userId } }, { new: true })
+          Model.findByIdAndUpdate(req.params.id, { $pull: { downvotes: req.userId } }, { useFindAndModify: true, new: true })
             .then(data => {
               res.status(200).json(data)
             })

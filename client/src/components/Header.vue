@@ -13,7 +13,8 @@
         v-model="searchTitle"
         style="max-width: 500px; margin-top: -20px;"
       ></v-text-field>
-      <v-spacer></v-spacer>
+      <v-spacer/>
+        <router-link to="/myQuestion">My Question</router-link>
 
       <div class="ml-2" v-if="!this.$store.state.islogin">
         <router-link to="/signin">Signin</router-link>

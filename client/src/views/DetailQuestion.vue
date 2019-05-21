@@ -3,7 +3,16 @@
     <v-container>
       <v-layout align-center justify-space-between fluid mb-2>
         <h1>{{this.question.title}}</h1>
-        <v-btn color="blue" to="/addQuestion">Ask Question</v-btn>
+        <v-spacer/>
+        <div v-if="isOwner">
+          <v-btn color="red" style="color:white;" @click="remove">Delete Question</v-btn>
+          <v-btn
+            color="green"
+            :to="'/editQuestion/'+question._id"
+            style="color:white;"
+          >Edit Question</v-btn>
+        </div>
+        <v-btn color="blue" to="/addQuestion" style="color:white;">Ask New Question</v-btn>
       </v-layout>
       <v-divider/>
 
@@ -57,8 +66,8 @@
           </v-layout>
 
           <!-- LIST ANSWER -->
-          <v-flex align-self-start xs2>
-            <h3>{{answerLength}} Answers</h3>
+          <v-flex align-self-start xs2 mt-5>
+            <h2>{{answerLength}} {{info}}</h2>
           </v-flex>
           <v-divider/>
           <div v-for="answer in question.answers" :key="answer._id">
@@ -76,20 +85,16 @@
                 <h3>Your Answers</h3>
               </v-flex>
               <v-form>
-                <v-text-field name="title" v-model="answer.title" label="Title" type="text"></v-text-field>
                 <v-textarea
                   name="description"
                   label="Description"
                   hint="Description answer"
                   v-model="answer.description"
                 ></v-textarea>
-                <v-btn
-                  align-self-start
-                  color="blue"
-                  @click="addAnswer"
-                  style="color: white"
-                >Post Your Answer</v-btn>
               </v-form>
+              <v-flex align-self-end xs3>
+                <v-btn color="blue" @click="addAnswer" style="color: white">Post Your Answer</v-btn>
+              </v-flex>
             </v-flex>
           </v-layout>
         </v-flex>
@@ -124,7 +129,6 @@ export default {
     return {
       question: {},
       answer: {
-        title: "",
         description: "",
         questionId: this.$route.params.id
       },
@@ -132,11 +136,21 @@ export default {
       statusDown: false,
       totalVote: 0,
       user: "",
-      answerLength: ""
+      answerLength: "",
+      info: "",
+      isOwner: false,
     };
   },
   created() {
     this.loadQuestion();
+  },
+  watch: {
+    answerLength(val) {
+      if (val) {
+        if (val === 1) this.info = "Answer";
+        else this.info = "Answers";
+      }
+    }
   },
   methods: {
     loadQuestion() {
@@ -144,10 +158,15 @@ export default {
         .get(`http://localhost:3000/questions/${this.$route.params.id}`)
         .then(({ data }) => {
           this.question = data;
-          this.setVote();
           this.totalVote = data.upvotes.length - data.downvotes.length;
           this.user = data.userId.name;
           this.answerLength = data.answers.length;
+          this.setVote(data);
+  
+          if (localStorage.userId === data.userId._id) this.isOwner = true
+
+          if (this.answerLength === 1) this.info = "Answer";
+          else this.info = "Answers";
         })
         .catch(({ err }) => {
           console.log(err);
@@ -158,8 +177,9 @@ export default {
         .post(`http://localhost:3000/answers`, this.answer, {
           headers: { token: localStorage.token }
         })
-        .then(({ data }) => {
-          this.question.answers.push(data);
+        .then(() => {
+          this.answer.description = ''
+          this.loadQuestion()
         })
         .catch(err => {
           console.log(err);
@@ -175,6 +195,8 @@ export default {
           }
         )
         .then(({ data }) => {
+          console.log(data);
+
           this.question.upvotes = data.upvotes;
           this.question.downvotes = data.downvotes;
           this.totalVote = data.upvotes.length - data.downvotes.length;
@@ -203,13 +225,14 @@ export default {
           console.log(err);
         });
     },
-    setVote() {
-      let upvote = this.question.upvotes.find(element => {
+    setVote(data) {
+      let upvote = data.upvotes.find(element => {
         return element === localStorage.userId;
       });
-      let downvote = this.question.downvotes.find(element => {
+      let downvote = data.downvotes.find(element => {
         return element === localStorage.userId;
       });
+
       this.statusDown = downvote ? true : false;
       this.statusUp = upvote ? true : false;
     },
@@ -240,6 +263,18 @@ export default {
         )
         .then(() => {
           this.loadQuestion();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    remove() {
+      axios
+        .delete(`http://localhost:3000/questions/${this.$route.params.id}`, {
+          headers: { token: localStorage.token }
+        })
+        .then(() => {
+          this.$router.push(`/myQuestion`);
         })
         .catch(err => {
           console.log(err);

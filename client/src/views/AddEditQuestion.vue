@@ -4,7 +4,7 @@
       <v-flex mt-5 mx-5 justify-center>
         <v-card class="elevation-12">
           <v-toolbar dark color="dark">
-            <v-toolbar-title>Add Question</v-toolbar-title>
+            <v-toolbar-title>{{ statusAction}} Question</v-toolbar-title>
             <v-spacer></v-spacer>
           </v-toolbar>
           <v-card-text>
@@ -27,8 +27,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="success" @click="addQuestion">Send</v-btn>
-            <!-- <v-btn color="red" @click="edit">Cancel</v-btn> -->
+            <v-btn color="success" @click="addQuestion" v-if="statusAction==='Add'">Send</v-btn>
+            <div v-else>
+              <v-btn color="red" @click="back">Back</v-btn>
+              <v-btn color="success" @click="editQuestion">Send</v-btn>
+            </div>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -52,33 +55,31 @@ export default {
         description: "",
         tags: []
       },
+      statusAction: "Add",
       tag: ""
     };
   },
   watch: {},
-  created() {},
+  created() {
+    if (this.$route.params.id) {
+      this.statusAction = "Edit";
+    }
+    this.fetchData();
+  },
   methods: {
     fetchData() {
       axios
-        .get(`http://localhost:3000/products/${this.$route.params.id}`)
+        .get(`http://localhost:3000/questions/${this.$route.params.id}`)
         .then(({ data }) => {
-          this.product = data;
+          this.question.title = data.title;
+          this.question.description = data.description;
+          this.question.tags = data.tags;
         })
         .catch(err => {
           console.log(err);
         });
     },
-    updateTags() {
-      this.$nextTick(() => {
-        this.select.push(...this.search.split(","));
-        this.$nextTick(() => {
-          this.search = "";
-        });
-      });
-    },
     addQuestion() {
-      console.log(localStorage.token);
-
       axios
         .post("http://localhost:3000/questions", this.question, {
           headers: { token: localStorage.token }
@@ -91,6 +92,27 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    editQuestion() {
+      axios
+        .put(
+          `http://localhost:3000/questions/${this.$route.params.id}`,
+          this.question,
+          {
+            headers: { token: localStorage.token }
+          }
+        )
+        .then(() => {
+          this.reset();
+          this.$router.push(`/questions/${this.$route.params.id}`);
+          console.log("SUCCESS");
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    back() {
+      this.$router.push(`/questions/${this.$route.params.id}`);
     },
     reset() {
       this.question.title = "";

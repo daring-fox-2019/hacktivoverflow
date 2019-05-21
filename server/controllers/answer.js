@@ -15,7 +15,6 @@ class Answer {
 
   static create(req, res) {
     let newAnswer = new Model({
-      title: req.body.title,
       description: req.body.description,
       upvotes: [],
       downvotes: [],
@@ -46,7 +45,6 @@ class Answer {
 
   static update(req, res) {
     let newData = {
-      title: req.body.title,
       description: req.body.description,
     }
     Model.findByIdAndUpdate(req.params.id, { $set: newData }, { new: true })

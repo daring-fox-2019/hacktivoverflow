@@ -1,8 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
-import AddQuestion from './views/AddQuestion.vue';
+import AddEditQuestion from './views/AddEditQuestion.vue';
 import DetailQuestion from './views/DetailQuestion.vue';
+import MyQuestion from './views/MyQuestion.vue';
 
 Vue.use(Router);
 
@@ -17,11 +18,19 @@ export default new Router({
     }, {
       path: '/addQuestion',
       name: 'addQuestion',
-      component: AddQuestion,
+      component: AddEditQuestion,
+    }, {
+      path: '/editQuestion/:id',
+      name: 'editQuestion',
+      component: AddEditQuestion,
     }, {
       path: '/questions/:id',
       name: 'detailQuestion',
       component: DetailQuestion,
+    }, {
+      path: '/myQuestion',
+      name: 'myQuestion',
+      component: MyQuestion,
     },
   ],
 });
