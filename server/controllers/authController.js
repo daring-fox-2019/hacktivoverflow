@@ -244,6 +244,13 @@ class AuthController {
             res.status(500).json('Error updating image')
         }
     }
+
+    static addWatchTag(req, res) {
+        
+    }
+    static removeWatchTag(req, res) {
+
+    }
 }
 
 module.exports = AuthController

@@ -34,12 +34,12 @@
                     <v-layout row>
                         <v-layout row class="tagDiv">
                             <v-flex>
-                                <v-chip class="tag" small v-for="(tag,i) in question.tags" :key="i" color="primary" text-color="white"><a v-bind:href="'questions/tagged/' + tag.name">{{tag.name}}</a></v-chip>
+                                <v-chip small v-for="(tag,i) in question.tags" :key="i" color="blue lighten-4"><a class="tag" v-bind:href="'questions/tagged/' + tag.name">{{tag.name}}</a></v-chip>
                             </v-flex>
                         </v-layout>
                         <v-layout row class='authorDiv'>
                             <v-flex>
-                                posted by {{question.author.firstname}}, at {{createdAt}}
+                                posted by {{cardName}}, at {{createdAt}}
                             </v-flex>
                         </v-layout>
                     </v-layout>
@@ -57,6 +57,17 @@ export default {
     props: ['question'],
     name: 'QuestionCard',
     computed: {
+        cardName() {
+            let name = ''
+            console.log(this.question);
+            if(this.question.author && this.question.author.firstname) {
+                name = this.question.author.firstname
+            }
+            else if(this.question.author.lastname) {
+                name = this.question.author.lastname
+            }
+            return name;
+        },
         title(){
             return !this.question.title ? 'Click to see question' : this.question.title;
         },
@@ -112,17 +123,15 @@ export default {
 
 .tag {
     font-size: 10px;
+    text-decoration: none;
 }
+
 .tagDiv {
     width: 100%;
 }
 
 .questionSection {
     width: auto;
-}
-.tag a {
-    color: white;
-    text-decoration: none;
 }
 
 .questionTitle {

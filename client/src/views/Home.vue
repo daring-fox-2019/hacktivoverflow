@@ -1,15 +1,17 @@
 <template>
-   <v-layout column>
-        <v-flex xs6 sm2 md2 lg2>
-            <v-btn dark class="orange darken-4" to="/questions/ask">Ask a question</v-btn>
-        </v-flex>
-        <QuestionsList></QuestionsList>
-   </v-layout>
+<QuestionHome></QuestionHome>
 </template>
 
 <script>
-import QuestionsList from '@/components/QuestionsList.vue'
+import QuestionHome from '@/views/QuestionHome.vue'
+
 export default {
-    components: { QuestionsList }
+    components: { 
+        QuestionHome,
+    }
 }
 </script>
+<style scoped>
+
+</style>
+

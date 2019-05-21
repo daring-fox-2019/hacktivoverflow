@@ -1,45 +1,43 @@
 <template>
-    <v-container fluid>
-        <v-layout column>
-            <v-flex mb-2>
-                <a id="title" v-bind:to="'/questions/'+$route.params.id">{{latestQuestion.title}}</a>
-            </v-flex>
-            <v-flex>
-                <ItemDetail 
-                    :entity="latestQuestion" 
-                    v-on:upvote="doUpvoteQ"
-                    v-on:downvote="doDownvoteQ"
-                    v-on:edit="isEditing = true"
-                    v-on:delete="deleteQuestion"
-                    ></ItemDetail>
-            </v-flex>
-            <v-flex v-if="isEditing">
-                <h2>Edit Question</h2>
-                <QuestionForm mt-5 class="qform"
-                    :type="'edit'"
-                    :question="$store.state.question"
-                    v-on:submit="updateQuestion" 
-                    v-on:cancel="isEditing = false"
-                    >
-                </QuestionForm>
-            </v-flex>
-            <v-divider></v-divider>
-            <v-flex v-if="latestQuestion.answers && latestQuestion.answers.length > 0" my-3>
-                <h2>Answers</h2>
-            </v-flex>
-            <v-flex v-for="(answer,j) in latestQuestion.answers" :key="j">
-                <ItemDetail 
-                    :entity="answer"
-                    v-on:upvote="doUpvote"
-                    v-on:downvote="doDownvote"
-                    v-on:edit="editAnswer"
-                    v-on:delete="deleteAnswer"
-                    ></ItemDetail>
-            </v-flex>
-            <v-divider></v-divider>
-            <AnswerForm v-on:answerSubmitted="refreshQuestionPage"></AnswerForm>
-        </v-layout>
-    </v-container>
+    <v-layout column>
+        <v-flex mb-2>
+            <a id="title" v-bind:to="'/questions/'+$route.params.id">{{latestQuestion.title}}</a>
+        </v-flex>
+        <v-flex>
+            <ItemDetail 
+                :entity="latestQuestion" 
+                v-on:upvote="doUpvoteQ"
+                v-on:downvote="doDownvoteQ"
+                v-on:edit="isEditing = true"
+                v-on:delete="deleteQuestion"
+                ></ItemDetail>
+        </v-flex>
+        <v-flex v-if="isEditing">
+            <h2>Edit Question</h2>
+            <QuestionForm mt-5 class="qform"
+                :type="'edit'"
+                :question="$store.state.question"
+                v-on:submit="updateQuestion" 
+                v-on:cancel="isEditing = false"
+                >
+            </QuestionForm>
+        </v-flex>
+        <v-divider></v-divider>
+        <v-flex v-if="latestQuestion.answers && latestQuestion.answers.length > 0" my-3>
+            <h2>Answers</h2>
+        </v-flex>
+        <v-flex v-for="(answer,j) in latestQuestion.answers" :key="j">
+            <ItemDetail 
+                :entity="answer"
+                v-on:upvote="doUpvote"
+                v-on:downvote="doDownvote"
+                v-on:edit="editAnswer"
+                v-on:delete="deleteAnswer"
+                ></ItemDetail>
+        </v-flex>
+        <v-divider></v-divider>
+        <AnswerForm v-on:answerSubmitted="refreshQuestionPage"></AnswerForm>
+    </v-layout>
 </template>
 
 <script>

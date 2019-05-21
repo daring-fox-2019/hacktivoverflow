@@ -99,7 +99,6 @@ class AnswerController {
 
         Answer.create(newObj)
         .then(created => {
-            console.log(`answer created...`);
 
             //link answers to the question's answer array
             Question

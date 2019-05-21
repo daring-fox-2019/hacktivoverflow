@@ -54,7 +54,6 @@ class QuestionController {
                 found.downvote = !found.downvote ? [] : found.downvote;
                 let exist = found.upvote.find( x => x.toString() == req.user._id.toString())
 
-                console.log('user exist? === ', exist);
                 if(!exist) {
                     found.upvote.push(req.user._id)
                     let post = found.downvote.indexOf(req.user._id.toString())
@@ -85,7 +84,6 @@ class QuestionController {
                 found.downvote = !found.downvote ? [] : found.downvote;
                 let exist = found.downvote.find( x => x.toString() == req.user._id.toString())
 
-                console.log('user exist? === ', exist);
                 if(!exist) {
                     found.downvote.push(req.user._id)
                     let post = found.upvote.indexOf(req.user._id.toString())
@@ -95,7 +93,6 @@ class QuestionController {
 
                     found.save()
                     .then(updated => {
-                        console.log('downvoted...',updated);
                         res.status(200).json(updated)
                     })
                 }
@@ -120,7 +117,6 @@ class QuestionController {
 
         Question.create(newObj)
         .then(question => {
-            console.log(`question created...`);
             res.status(201).json(question)
         })
         .catch(err => {
@@ -144,7 +140,7 @@ class QuestionController {
         for(let key of Object.keys(req.body)) {
             updates[key] = req.body[key]
         }
-        console.log(updates);
+        
         Question.findOneAndUpdate({_id: req.params.id}, updates, {new: true})
             .then(q => {
                 res.status(200).json(q)

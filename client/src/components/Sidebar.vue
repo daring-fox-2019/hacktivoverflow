@@ -6,7 +6,7 @@
         :key="item.title"
         :to="item.link"
       >
-        <v-list-tile-action>
+        <v-list-tile-action class="actionIcon">
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-tile-action>
 
@@ -46,4 +46,9 @@ export default {
 </script>
 
 <style scoped>
+.actionIcon {
+  max-width: 30px;
+  width: auto;
+  min-width:30px;
+}
 </style>

@@ -24,7 +24,4 @@ export default {
     padding: 10px;
     border-bottom: 1px solid rgb(230, 230, 230);
 }
-.list {
-    max-width: 80%;
-}
 </style>
