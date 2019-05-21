@@ -5,6 +5,7 @@ import Home from './views/Home.vue';
 import Question from './views/Question.vue';
 import AskQuestion from './views/AskQuestion.vue';
 import MyProfile from './views/MyProfile.vue';
+import EditAnswer from './views/EditAnswer.vue';
 
 Vue.use(Router);
 
@@ -37,6 +38,11 @@ export default new Router({
       path: '/myProfile',
       name: 'myProfile',
       component: MyProfile,
+    },
+    {
+      path: '/editAnswer/:id',
+      name: 'editAnswer',
+      component: EditAnswer,
     },
   ],
 });

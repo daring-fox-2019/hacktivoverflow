@@ -11,6 +11,8 @@ route.use(Authentication)
 // Update
 route.patch('/:id', AnswerController.update)
 
+route.delete('/:id', AnswerController.delete)
+
 // Create
 route.post('/', AnswerController.create)
 

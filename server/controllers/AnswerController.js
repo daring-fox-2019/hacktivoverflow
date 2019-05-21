@@ -24,14 +24,30 @@ class AnswerController {
     }
 
     static update(req, res) {
+        console.log(req.body);
+        
         Answer
             .findOneAndUpdate(
                 { _id: req.params.id },
                 { description: Object.keys(req.body)[0] },
                 { new: true })
+            .populate('upvote')
+            .populate('downvote')
+            .populate('user')
+            .populate('question')
             .then(answer => {
-                console.log(answer)
                 res.status(200).json(answer)
+            })
+            .catch(err => {
+                res.status(500).json(err)
+            })
+    }
+
+    static delete(req, res) {
+        Answer
+            .findOneAndDelete({ _id: req.params.id })
+            .then(deleted => {
+                res.status(200).json(deleted)
             })
             .catch(err => {
                 res.status(500).json(err)

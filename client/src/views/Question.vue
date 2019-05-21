@@ -58,16 +58,78 @@
       <br>
       <p v-html="answer.description"></p>
       <h5>By: {{ answer.user.username}}</h5>
+
       <button
         class="btn btn-warning"
-        type="button"
-        data-toggle="modal"
-        data-target="#exampleModal"
         v-if="answer.user._id === user._id"
-        @click="getText(answer.description)"
+        @click="toEditAnswer(answer._id)"
       >Edit</button>
 
-      <div
+      <button @click="deleteAnswer(answer._id)" class="btn btn-danger" v-if="answer.user._id === user._id">Delete</button>
+
+
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapState } from 'vuex';
+
+export default {
+  data() {
+    return {
+      answer: '',
+      editedAnswer: '',
+    };
+  },
+
+  computed: {
+    ...mapState(['isLogin', 'currentQuestion', 'user', 'answers']),
+  },
+  created() {
+    this.getQuestion();
+    this.getAnswers();
+  },
+  methods: {
+    getQuestion() {
+      this.$store.dispatch('getQuestion', this.$route.params.id);
+    },
+    getAnswers() {
+      this.$store.dispatch('getAnswers', this.$route.params.id);
+    },
+    toEditPage() {
+      this.$router.push(`/askQuestion/${this.currentQuestion._id}`);
+    },
+    deleteQuestion() {
+      this.$store.dispatch('deleteQuestion', this.$route.params.id);
+    },
+    createAnswer() {
+      this.$store.dispatch('createAnswer', [
+        this.currentQuestion._id,
+        this.answer,
+      ]);
+    },
+    editAnswer(answerId) {
+      this.$store.dispatch('editAnswer', [answerId, this.editedAnswer]);
+    },
+    deleteAnswer(answerId) {
+      this.$store.dispatch('deleteAnswer', answerId);
+    },
+    getText(text) {
+      this.editedAnswer = text;
+    },
+    toEditAnswer(answerId) {
+      this.$router.push(`/editAnswer/${answerId}`);
+    },
+  },
+};
+</script>
+
+<style>
+@import "~vue-wysiwyg/dist/vueWysiwyg.css";
+</style>
+
+<!--      <div
         class="modal fade"
         id="exampleModal"
         tabindex="-1"
@@ -93,62 +155,9 @@
                 @click="editAnswer(answer._id)"
                 type="button"
                 class="btn btn-primary"
+                data-dismiss="modal"
               >Confirm Edit</button>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</template>
-
-<script>
-import { mapState } from 'vuex';
-
-export default {
-  data() {
-    return {
-      answer: '',
-      editedAnswer: '',
-    };
-  },
-
-  computed: {
-    ...mapState(['isLogin', 'currentQuestion', 'user', 'answers']),
-  },
-  created() {
-    this.getQuestion();
-    // this.getAnswers();
-  },
-  methods: {
-    getQuestion() {
-      this.$store.dispatch('getQuestion', this.$route.params.id);
-    },
-    getAnswers() {
-      // this.$store.dispatch('getAnswers', this.$route.params.id);
-    },
-    toEditPage() {
-      this.$router.push(`/askQuestion/${this.currentQuestion._id}`);
-    },
-    deleteQuestion() {
-      this.$store.dispatch('deleteQuestion', this.$route.params.id);
-    },
-    createAnswer() {
-      this.$store.dispatch('createAnswer', [
-        this.currentQuestion._id,
-        this.answer,
-      ]);
-    },
-    editAnswer(answerId) {
-      this.$store.dispatch('editAnswer', [answerId, this.editedAnswer]);
-    },
-    getText(text) {
-      this.editedAnswer = text;
-    },
-  },
-};
-</script>
-
-<style>
-@import "~vue-wysiwyg/dist/vueWysiwyg.css";
-</style>
+      </div> -->

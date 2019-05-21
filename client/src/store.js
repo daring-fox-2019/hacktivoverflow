@@ -35,11 +35,15 @@ export default new Vuex.Store({
     },
 
     editAnswer(state, answer) {
-      for(let i = 0 ; i < state.answers.length ; i++){
-        if(state.answers[i]._id === answer._id){
-          state.answers[i] = answer
+      for (let i = 0; i < state.answers.length; i++) {
+        if (state.answers[i]._id === answer._id) {
+          state.answers[i] = answer;
         }
       }
+    },
+
+    deleteAnswer(state, answer) {
+      state.answers = state.answers.filter(el => el._id !== answer._id);
     },
 
     editQuestion(state, question) {
@@ -151,6 +155,17 @@ export default new Vuex.Store({
         });
     },
 
+    // getAnswer(context, answerId){
+    //   myServer
+    //     .get(`/answer/${answerId}`)
+    //     .then(({data})=>{
+    //       context
+    //     })
+    //     .catch(err =>{
+    //       console.log(err)
+    //     })
+    // },
+
     getAnswers(context, questionId) {
       myServer
         .get(`/answer/allAnswer/${questionId}`)
@@ -195,5 +210,19 @@ export default new Vuex.Store({
         });
     },
 
+    deleteAnswer(context, answerId) {
+      console.log(answerId);
+
+      myServer
+        .delete(`/answer/${answerId}`)
+        .then(({ data }) => {
+          console.log(data);
+
+          context.commit('deleteAnswer', data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 });
