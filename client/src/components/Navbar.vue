@@ -12,7 +12,7 @@
           <a href="#" style="color: #df9a97" @click="goHome">
             <li style="font-weight: bold; font-size: 20px">Tanya! Jawab?</li>
           </a>
-          <a href="#">
+          <a href="#" @click="askQuestion">
             <li v-if="isLogin">
               <button
                 type="button"
@@ -150,6 +150,9 @@
         <!-- Far Right buttons --->
         <ul>
           <li v-if="isLogin">
+            <a href="#" @click="myProfile">
+              <i class="fas fa-user"></i>
+            </a>
             <a href="#" @click="signOut">
               <i class="fas fa-sign-out-alt"></i>
             </a>
@@ -181,39 +184,45 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 
 export default {
   data() {
     return {
       loginForm: {
-        email: "",
-        password: ""
+        email: '',
+        password: '',
       },
       registerForm: {
-        username: "",
-        email: "",
-        password: ""
-      }
+        username: '',
+        email: '',
+        password: '',
+      },
     };
   },
   methods: {
     signOut() {
-      this.$store.commit("logout");
+      this.$store.commit('logout');
     },
     submitLogin() {
-      this.$store.dispatch("submitLogin", this.loginForm);
+      this.$store.dispatch('submitLogin', this.loginForm);
     },
     submitRegister() {
-      this.$store.dispatch("submitRegister", this.registerForm);
+      this.$store.dispatch('submitRegister', this.registerForm);
     },
     goHome() {
-      this.$router.push("/");
-    }
+      this.$router.push('/');
+    },
+    myProfile() {
+      this.$router.push('/myProfile');
+    },
+    askQuestion() {
+      this.$router.push('/askQuestion');
+    },
   },
   computed: {
-    ...mapState(["isLogin", "user"])
-  }
+    ...mapState(['isLogin', 'user']),
+  },
 };
 </script>
 

@@ -9,18 +9,17 @@ export default new Vuex.Store({
     allQuestions: [],
     isLogin: false,
     user: {},
-    currentQuestion: {}
+    currentQuestion: {},
   },
   mutations: {
-    getQuestion(state, question){
-      console.log(`ini di mutation quesotn`);
+    getQuestion(state, question) {
+      console.log('ini di mutation quesotn');
       console.log(question);
-      
-      state.currentQuestion = question
+
+      state.currentQuestion = question;
     },
 
     getAllQuestions(state, questions) {
-      
       state.allQuestions = questions;
     },
 
@@ -73,19 +72,19 @@ export default new Vuex.Store({
         });
     },
 
-    getQuestion(context, id){
+    getQuestion(context, id) {
       myServer
         .get(`/question/${id}`)
-        .then(({data})=>{
-          console.log(`masuk action`);
-          
-          console.log(data)
-          context.commit('getQuestion', data)
+        .then(({ data }) => {
+          console.log('masuk action');
+
+          console.log(data);
+          context.commit('getQuestion', data);
         })
-        .catch(err =>{
-          console.log(err)
-        })
-    }
+        .catch((err) => {
+          console.log(err);
+        });
+    },
 
   },
 });

@@ -12,19 +12,19 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 
 export default {
   computed: {
-    ...mapState(["isLogin", "currentQuestion"])
+    ...mapState(['isLogin', 'currentQuestion']),
   },
   created() {
     this.getQuestion();
   },
   methods: {
     getQuestion() {
-      this.$store.dispatch("getQuestion", this.$route.params.id);
-    }
-  }
+      this.$store.dispatch('getQuestion', this.$route.params.id);
+    },
+  },
 };
 </script>
