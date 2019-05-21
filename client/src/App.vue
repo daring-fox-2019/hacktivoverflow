@@ -3,10 +3,12 @@
     <div style="font-family: 'Dosis', sans-serif;">
       <b-navbar toggleable="lg" type="light" variant="light">
         <b-navbar-brand href="#">
-          <router-link to="/" style="text-decoration:none">
+          <router-link to="/" style="text-decoration:none; color: black">
             <img
               src="https://storage.cloud.google.com/jualeun-qfs/so-logo-s.v01.jpg?_ga=2.117439299.-415458887.1554453586"
-              style="height:35px; width:35px;border-radius:17.5px"> Snap Overflow
+              style="height:35px; width:35px;border-radius:17.5px; margin-bottom:10px"> <span
+              style="font-size:25px; margin-left:10px">Snap
+              Overflow</span>
           </router-link>
         </b-navbar-brand>
 
@@ -24,7 +26,7 @@
           </b-navbar-nav>
 
           <b-navbar-nav class="">
-            <b-nav-form>
+            <b-nav-form v-if="this.$store.state.isLoggedIn">
               <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
               <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
             </b-nav-form>
@@ -34,6 +36,10 @@
           <b-navbar-nav class="ml-auto">
             <b-nav-item>
               <router-link v-if="$store.state.isLoggedIn" to="/question">Questions</router-link>
+            </b-nav-item>
+            <b-nav-item>
+              <router-link style="cursor:pointer" v-if="$store.state.isLoggedIn" to="/addquestion">Add Question
+              </router-link>
             </b-nav-item>
             <b-nav-item>
               <a style="cursor:pointer" @click="Logout" v-if="$store.state.isLoggedIn">Log Out</a>

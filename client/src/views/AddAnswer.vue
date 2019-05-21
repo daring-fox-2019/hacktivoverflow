@@ -1,20 +1,21 @@
 <template>
   <div>
-    <b-container>
+    <b-container >
       <br />
-      <b-row>
-        <div class="label">
-          <label for="answer">Answer Title</label>
-        </div>
-        <div class="input">
+      <b-row class="mb-3">
+        <b-col cols="2">
+          <label for="answer" style="margin-left:-15px;">Answer Title</label>
+        </b-col>
+        <b-col cols="9">
           <input
             v-model="answer"
             type="text"
             name="answer"
             id="answer"
+            style="width: 500px"
             placeholder="your answer here.."
           />
-        </div>
+        </b-col>
       </b-row>
       <b-row>
         <wysiwyg
@@ -23,10 +24,9 @@
           v-model="text"
         ></wysiwyg>
       </b-row>
-      <br /><br />
-      <br /><br /><br /><br />
+      <br />
       <b-row align-h="center">
-        <button type="click" @click="addanswer">Add Answer</button>
+        <button class="btn btn-secondary" type="click" @click="addanswer">Add Answer</button>
       </b-row>
     </b-container>
   </div>

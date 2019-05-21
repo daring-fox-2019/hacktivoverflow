@@ -30,6 +30,8 @@ const answerSchema = new Schema({
         ref: 'User',
         required: true
     },
+    createdAt: String,
+    updatedAt: String,
 })
 
 const Answer = mongoose.model('Answer', answerSchema)

@@ -1,8 +1,8 @@
 <template>
   <b-container>
-    
-    <h3 style="margin-top:10px; text-align:left">Question List</h3>
-    <br>
+    <router-link to="/addquestion">Add Question</router-link>
+    <h3 style="margin-top:40px; text-align:left">Question List</h3>
+    <br><br>
     <b-container v-if="questionList">
       <div v-for="(question, index) in questionList.data" :key="index"
         style="margin-bottom:30px;background-color:rgba(0,0,0,0.2); padding:50px; border-radius:40px;">
@@ -19,7 +19,7 @@
           <h6>
             Watch Tags:
             <span v-for="(tag, idtag) in question.watchTags" :key="idtag">
-              <tag :tag="tag[0]"></tag>
+              <tag :tag="tag[0]" @findbytag="findByTag"></tag>
             </span>
           </h6>
           <b-button v-if="question.owner._id != user" variant="outline-success" @click="upvote(question._id)"><i
@@ -54,7 +54,7 @@
   import tag from "@/components/tag.vue"
 
   export default {
-    name: "question",
+    name: "tagged",
     components: {
       Answer,
       tag
@@ -71,8 +71,9 @@
       },
 
       onStart() {
-        axios
-          .get("/questions/list", {
+          console.log(this.$route.query.tag)
+        axios 
+          .get("/questions/list?tag="+this.$route.query.tag, {
             headers: {
               jwtoken: localStorage.jwtoken
             }
@@ -83,6 +84,22 @@
           .catch(err => {
             console.log(err);
           });
+      },
+      findByTag(filteredQuestion) {
+        console.log(filteredQuestion,'opop')
+        this.questionList = filteredQuestion
+        // axios
+        //   .get("/questions/list?tag=" + tag,{
+        //     headers: {jwtoken: localStorage.jwtoken}
+        //   })
+        //   .then((
+        //     data
+        //   ) => {
+        //     this.questionList = data
+        //   })
+        //   .catch(err => {
+        //     console.log(err)
+        //   })
       },
       upvote(questionId) {
         axios

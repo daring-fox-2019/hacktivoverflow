@@ -9,6 +9,7 @@ router.put('/update/:id', auth.Authorize.updatePutQuestion, conQuestions.updateP
 router.delete('/delete/:id', auth.Authorize.deleteQuestion, conQuestions.deleteQuestion)
 router.patch('/upvote/:id', conQuestions.upvote)
 router.patch('/downvote/:id', conQuestions.downvote)
+router.get('/tags/', conQuestions.getAllTags)
 
 
 module.exports = router

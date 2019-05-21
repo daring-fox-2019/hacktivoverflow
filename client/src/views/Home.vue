@@ -1,71 +1,41 @@
 <template>
-    <div>
-        <b-container>
-            <h3 style="margin-top:40px; text-align:left">Top Questions</h3>
-            <br><br>
-            <table class="table table-light table-hover">
-                <tr v-for="(question,index) in topQuestionList.data" :key="index">
-                    <td style="width:5%">
-                        {{ question.upvotes.length - question.downvotes.length }}
-                        <p><small>votes</small></p>
-                    </td>
-                    <td style="width:5%">
-                        {{ question.answers.length }}
-                        <p><small>answers</small></p>
-                    </td>
-                    <td style="width:5%">
-                        {{question.views}}0
-                        <p><small>views</small></p>
-                    </td>
-                    <td>
-                        <b-row style="margin-left:20px">
-                            {{ question.question }}
-                        </b-row>
-                        <b-row style="margin-left:20px">
-                            {{ comWatchtags(question.watchTags) }}
-                        </b-row>
-                    </td>
-                </tr>
-            </table>
-        </b-container>
+    <div class="container-fluid">
+        <b-row>
+            <b-col cols="2"></b-col>
+            <b-col cols="1"
+                style="border-right: 1px solid rgb(200,200,200); margin-top:10px ; height:inherit;width: 12%; overflow:auto;">
+                <ul style="list-style:none;padding-left:0px; color:rgb(125,125,125)">
+                    <li style="margin-bottom:5px">
+                        <router-link :to="{path: 'topquestions', name:'topquestions'}"><small>Top Questions</small>
+                        </router-link>
+                    </li>
+                    <li>
+                        <router-link :to="{path: 'tags', name:'tags'}"><small>Tags</small></router-link>
+                    </li>
+                </ul>
+            </b-col>
+            <b-col cols=6>
+                <div v-if="$route.path == '/' || $route.path == '/#' || $route.path == '/#/'">
+                    <h2 
+                        style="margin-top:10px">
+                        Welcome To Snap Overflow
+                    </h2>
+                    <br>
+                    <h6> Feel free to explore this micro-scale Stack Overflow!</h6>
+                </div>
+                <router-view></router-view>
+
+            </b-col>
+
+        </b-row>
     </div>
 
 </template>
 
 <script>
-    import axios from '@/api/axios'
     export default {
         name: "home",
-        data() {
-            return {
-                topQuestionList: []
-            }
-        },
-        computed: {
 
-        },
-        methods: {
-            comWatchtags(tags) {
-                return JSON.stringify({...tags})
-            },
-            onStart() {
-                axios
-                    .get("/questions/list", {
-                        headers: {
-                            jwtoken: localStorage.jwtoken
-                        }
-                    })
-                    .then(questionList => {
-                        this.topQuestionList = questionList;
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
-            },
-        },
-        created() {
-            this.onStart()
-        }
     }
 </script>
 

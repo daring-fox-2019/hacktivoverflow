@@ -31,6 +31,9 @@ const questionSchema = new Schema({
         required: true,
     },
     watchTags: [{type: Array}],
+    createdAt: String,
+    updatedAt: String,
+    views: Number
 })
 
 const Question = mongoose.model('Question', questionSchema)

@@ -3,55 +3,28 @@
     <b-container>
       <br />
       <b-row>
-        <div class="label">
-          <label for="question">Edit Question</label>
-        </div>
-        <div class="input">
-          <input v-model="question" type="text" name="question" id="question" placeholder="your question here.." />
-        </div>
+        <b-row style="margin-left:-15px" class="label">
+          <b-col cols="2" class="mr-3">
+            <label for="question">Question</label>
+          </b-col>
+          <b-col cols="7">
+            <input style="width: 600px" class="input" v-model="question" type="text" name="question" id="question"
+              placeholder="your question here.." />
+          </b-col>
+        </b-row>
       </b-row>
       <b-row>
         <wysiwyg style="height:500px;width:100%;overflow:auto" id="editor" v-model="text"></wysiwyg>
       </b-row>
-      <br /><br />
-      <b-row>
-        <div class="label">
-          <label for="tags">Watch Tags</label>
-        </div>
-        <div>
-          <vue-tags-input v-model="tag" :tags="tags" @tags-changed="newTags => tags = newTags" />
-        </div>
-        <!-- <div class="input">
-          <input
-            v-model="watchTags[0]"
-            style="margin-bottom:10px"
-            type="text"
-            name="tags"
-            id="tag1"
-            placeholder="this question tag.."
-          />
-          <br />
-          <input
-            v-model="watchTags[1]"
-            style="margin-bottom:10px"
-            type="text"
-            name="tags"
-            id="tag2"
-            placeholder="this question tag.."
-          />
-          <br />
-          <input
-            v-model="watchTags[2]"
-            type="text"
-            name="tags"
-            id="tag3"
-            placeholder="this question tag.."
-          />
-        </div> -->
+      <br />
+      <b-row class="label" style="margin-right:25px;margin-left:-12px">
+        <label for="tags">Watch Tags </label>
+        <vue-tags-input style="width: 500px; margin-left:10px" v-model="tag" :tags="watchTags"
+          @tags-changed="newTags => tags = newTags" />
       </b-row>
-      <br /><br /><br /><br />
+      <br>
       <b-row align-h="center">
-        <button type="click" @click="updatequestion">Edit Question</button>
+        <button type="click" class="btn btn-secondary" @click="updatequestion">Edit Question</button>
       </b-row>
     </b-container>
   </div>
@@ -87,7 +60,7 @@
       }
     },
     watch: {
-      tags : function(){
+      tags: function () {
         this.watchTags = this.tags.map(el => {
           if (el.text) {
             return el.text
@@ -95,7 +68,7 @@
             return el
           }
         })
-      } 
+      }
     },
     methods: {
       updatequestion() {

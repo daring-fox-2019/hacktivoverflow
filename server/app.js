@@ -24,11 +24,11 @@ app.use(cors())
 
 app.use('/', routes)
 
-app.use(function(){
-    new CronJob('* * * * * *', function(){
-        console.log('hehehe')
-    }, null, true, 'Asia/Jakarta' )
-})
+// app.use(function(){
+//     new CronJob('* * * * * *', function(){
+//         console.log('hehehe')
+//     }, null, true, 'Asia/Jakarta' )
+// })
 
 app.use(errorHandler)
 
