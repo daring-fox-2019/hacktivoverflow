@@ -1,4 +1,4 @@
-const UserModel = require('../models/User')
+const User = require('../models/User')
 const hashing = require('../helpers/hashing')
 const tokening = require('../helpers/jwt')
 const cronJob = require('../helpers/kueSendEmail')
@@ -11,7 +11,13 @@ module.exports = {
         let email = req.body.email
         let watchTags = req.body.watchTags
         let hashedPass = hashing.generateHash(password)
-        UserModel.register(name, hashedPass, pp, email, watchTags)
+        return User.create({
+                name,
+                password: hashedPass,
+                pp,
+                email,
+                watchTags
+            })
             .then(result => {
                 cronJob.sendEmailWelcome(email)
                 res.status(201).json(result)
@@ -23,9 +29,10 @@ module.exports = {
     login(req, res, next) {
         let email = req.body.email
         let password = req.body.password
-        UserModel.findOneByEmail(email)
+        User.findOne({
+                email: email
+            })
             .then(result => {
-                console.log(result)
                 if (!result) {
                     res.status(400).json("Please check your email!")
                 } else {

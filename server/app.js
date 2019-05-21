@@ -7,6 +7,7 @@ const routes = require('./routes/')
 const mongoose = require('mongoose')
 const errorHandler = require('./middlewares/errorHandler')
 var kue = require('kue')
+let { CronJob } = require('cron')
 
 mongoose.connect('mongodb://localhost/hacktivOverflow', {
     useNewUrlParser: true
@@ -22,6 +23,12 @@ app.use(express.urlencoded({
 app.use(cors())
 
 app.use('/', routes)
+
+app.use(function(){
+    new CronJob('* * * * * *', function(){
+        console.log('hehehe')
+    }, null, true, 'Asia/Jakarta' )
+})
 
 app.use(errorHandler)
 

@@ -1,7 +1,7 @@
 const dotenv = require('dotenv')
-const {Question} = require('../models/Question')
-const {User} = require('../models/User')
-const {Answer} = require('../models/Answer')
+const Question = require('../models/Question')
+const User = require('../models/User')
+const Answer = require('../models/Answer')
 const jwt2 = require('../helpers/jwt')
 dotenv.config()
 

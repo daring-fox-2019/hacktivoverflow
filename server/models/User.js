@@ -16,43 +16,27 @@ const userSchema = new Schema({
     watchTags: [{type: String}],
     email: {
         type: String,
-        // required: true,
-        // validate: {
-        //     validator: function (val) {
-        //         return User.findOne({
-        //                 email: val
-        //             })
-        //             .then(data => {
-        //                 if (data) {
-        //                     return false
-        //                 }
-        //             })
-        //             .catch(err => {
-        //                 console.log(err.message)
-        //             })
-        //     },
-        //     message: props => `${props.value} has already registered`
-        // },
-        // match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+        required: true,
+        validate: {
+            validator: function (val) {
+                return User.findOne({
+                        email: val
+                    })
+                    .then(data => {
+                        if (data) {
+                            return false
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err.message)
+                    })
+            },
+            message: props => `${props.value} has already registered`
+        },
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     }
 })
 
 const User = mongoose.model('User', userSchema)
 
-module.exports = {
-    User: User,
-    register(name, password, pp, email, watchTags) {
-        return User.create({
-            name,
-            password,
-            pp,
-            email,
-            watchTags
-        })
-    },
-    findOneByEmail(email) {
-        return User.findOne({
-            email: email
-        })
-    }
-}
+module.exports = User
