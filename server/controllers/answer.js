@@ -59,7 +59,12 @@ class Answer {
   }
 
   static upvote(req, res) {
-    Model.findOne({ upvotes: req.userId })
+    Model.findOne({
+      $and: [
+        { upvotes: req.userId },
+        { _id: req.params.id }
+      ]
+    })
       .then(data => {
         if (!data) {
           Model.findByIdAndUpdate(req.params.id, { $push: { upvotes: req.userId }, $pull: { downvotes: req.userId } }, { new: true })
@@ -67,7 +72,10 @@ class Answer {
               res.status(200).json(data)
             })
         } else {
-          res.status(400).json({ msg: "BAD REQUEST" })
+          Model.findByIdAndUpdate(req.params.id, { $pull: { upvotes: req.userId } }, { new: true })
+            .then(data => {
+              res.status(200).json(data)
+            })
         }
       })
       .catch(err => {
@@ -76,7 +84,12 @@ class Answer {
   }
 
   static downvote(req, res) {
-    Model.findOne({ downvotes: req.userId })
+    Model.findOne({
+      $and: [
+        { downvotes: req.userId },
+        { _id: req.params.id }
+      ]
+    })
       .then(data => {
         if (!data) {
           Model.findByIdAndUpdate(req.params.id, { $pull: { upvotes: req.userId }, $push: { downvotes: req.userId } }, { new: true })
@@ -84,7 +97,10 @@ class Answer {
               res.status(200).json(data)
             })
         } else {
-          res.status(400).json({ msg: "BAD REQUEST" })
+          Model.findByIdAndUpdate(req.params.id, { $pull: { downvotes: req.userId } }, { new: true })
+            .then(data => {
+              res.status(200).json(data)
+            })
         }
       })
       .catch(err => {

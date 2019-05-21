@@ -12,22 +12,17 @@
               <v-text-field name="title" v-model="question.title" label="Title" type="text"></v-text-field>
               <v-textarea
                 name="description"
-                label="Default style"
+                label="Description"
                 hint="Description question"
                 v-model="question.description"
               ></v-textarea>
-              <v-combobox
-                multiple
-                v-model="question.tags"
-                label="Tags"
-                append-icon
-                chips
-                deletable-chips
-                class="tag-input"
-                :search-input.sync="search"
-                @keyup.tab="updateTags"
-                @paste="updateTags"
-              ></v-combobox>
+              <v-flex>
+                <vue-tags-input
+                  v-model="tag"
+                  :tags="question.tags"
+                  @tags-changed="newTags => question.tags = newTags"
+                />
+              </v-flex>
             </v-form>
           </v-card-text>
           <v-card-actions>
@@ -44,8 +39,12 @@
 <script>
 // @ is an alias to /src
 import axios from "axios";
+import VueTagsInput from "@johmun/vue-tags-input";
 
 export default {
+  components: {
+    VueTagsInput
+  },
   data() {
     return {
       question: {
@@ -53,9 +52,7 @@ export default {
         description: "",
         tags: []
       },
-      search: "", // for tags
-      searchTitle: "",
-      searchTag: ""
+      tag: ""
     };
   },
   watch: {},
@@ -83,11 +80,12 @@ export default {
       console.log(localStorage.token);
 
       axios
-        .post(`http://localhost:3000/questions`, this.question, {
+        .post("http://localhost:3000/questions", this.question, {
           headers: { token: localStorage.token }
         })
-        .then(({ data }) => {
-          this.reset()
+        .then(() => {
+          this.reset();
+          this.$store.dispatch("loadQuestion");
           console.log("SUCCESS");
         })
         .catch(err => {
@@ -124,5 +122,10 @@ export default {
   justify-content: center;
   align-content: center;
   display: flex;
+}
+
+.vue-tags-input {
+  max-width: none;
+  width: 100%;
 }
 </style>

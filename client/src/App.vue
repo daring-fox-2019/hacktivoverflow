@@ -5,7 +5,7 @@
       <Navbar/>
       <v-content id="main-contain">
         <v-container fluid fill-height id="container">
-          <v-layout justify-center>
+          <v-layout justify-center fluid>
             <v-flex>
               <router-view/>
             </v-flex>
@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
-import Navbar from "@/components/Navbar.vue";
+import Header from '@/components/Header.vue';
+import Navbar from '@/components/Navbar.vue';
 
 export default {
   data() {
@@ -32,10 +32,9 @@ export default {
   created() {
     // if (localStorage.token) {
     //   this.$store.commit("setLogin", true);
-    //   this.$store.commit("setAdmin", true);
     // }
-    // this.$store.dispatch("loadProduct");
-  }
+    this.$store.dispatch('loadQuestion');
+  },
 };
 </script>
 
@@ -62,5 +61,6 @@ export default {
 
 #main-contain{
   padding-left: 200px !important;
+  margin: 0 !important;
 }
 </style>
