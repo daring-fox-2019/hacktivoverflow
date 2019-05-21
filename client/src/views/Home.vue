@@ -3,13 +3,14 @@
     <div
       v-for="(question, index) in allQuestions"
       :key="index"
-      style="background-color: #F8F2CB;
+      style="background-color: white;
       margin-top: 20px;
       margin-bottom:20px;
       border: solid 0.1px;
       border-color: #97DCDF;
       border-radius: 10px;"
     >
+      <!-- #F8F2CB -->
       <a href="#" @click="toQuestion(question._id)" style="text-decoration: none;">
         <div class="row" style="padding: 20px; color: black;">
           <div class="col-2" style="text-align: center;">
@@ -19,7 +20,7 @@
           <div class="col-10">
             <h3>{{ question.title}}</h3>
           </div>
-          <h4>Asked by: {{ question.user.username}}</h4>
+          <p>{{ question.user.username }}</p>
         </div>
       </a>
     </div>
@@ -38,7 +39,6 @@ export default {
   },
   methods: {
     toQuestion(id) {
-      console.log('masuk question');
       this.$router.push(`/question/${id}`);
     },
   },

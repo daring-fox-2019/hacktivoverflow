@@ -33,6 +33,7 @@ class UserController {
                         })
                         res.status(200).json({
                             token: myToken,
+                            _id: user._id,
                             username: user.username,
                             email: user.email
                         })
@@ -46,6 +47,25 @@ class UserController {
             .catch(err => {
                 res.status(500).json(err)
             })
+    }
+
+    static token(req, res){
+        User
+        .findOne({_id: req.decoded._id})
+        .then(user =>{
+
+            console.log(user);
+
+            
+            res.status(200).json({
+                _id: user._id,
+                username: user.username,
+                email: user.email
+            })
+        })
+        .catch(err =>{
+            res.status(500).json(err)
+        })
     }
 
     static findOne(req, res) {

@@ -9,6 +9,11 @@
 import Navbar from '@/components/Navbar.vue';
 
 export default {
+  created() {
+    if (localStorage.token) {
+      this.$store.dispatch('stayLogin');
+    }
+  },
   components: {
     Navbar,
   },

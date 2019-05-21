@@ -1,5 +1,5 @@
 <template>
-  <div class="container" style="background-color: #F8F2CB; min-height: 100vh; padding-top: 40px;">
+  <div class="container" style="background-color: white; min-height: 100vh; padding-top: 40px;">
     <div class="container">
       <h1>{{ currentQuestion.title }}</h1>
       <br>

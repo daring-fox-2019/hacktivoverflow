@@ -2,6 +2,11 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import myServer from '@/api/myServer';
 
+if (localStorage.token) {
+  myServer.defaults.headers.common.token = localStorage.token;
+  console.log('ada token kok!');
+}
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -13,9 +18,6 @@ export default new Vuex.Store({
   },
   mutations: {
     getQuestion(state, question) {
-      console.log('ini di mutation quesotn');
-      console.log(question);
-
       state.currentQuestion = question;
     },
 
@@ -24,12 +26,20 @@ export default new Vuex.Store({
     },
 
     submitLogin(state, user) {
-      localStorage.token = user.token;
+      if (!localStorage.token) localStorage.token = user.token;
       state.isLogin = true;
-      state.user = user;
+      console.log(user);
+      
+
+      state.user = {
+        _id: user._id,
+        username: user.username,
+        email: user.email
+      };
     },
 
     logout(state) {
+      localStorage.clear();
       state.isLogin = false;
       state.user = {};
     },
@@ -51,6 +61,26 @@ export default new Vuex.Store({
       myServer
         .post('/user/login', form)
         .then(({ data }) => {
+          console.log(data);
+
+          context.commit('submitLogin', data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    stayLogin(context) {
+      console.log('masuk stay login');
+      console.log(myServer.defaults.headers.common.token);
+
+      myServer
+        .post('/user/token')
+        .then(({ data }) => {
+          console.log('ini data');
+
+          console.log(data);
+          console.log('ini data');
           context.commit('submitLogin', data);
         })
         .catch((err) => {
@@ -59,8 +89,6 @@ export default new Vuex.Store({
     },
 
     submitRegister(context, form) {
-      console.log(form);
-
       myServer
         .post('/user/register', form)
         .then(({ data }) => {
@@ -76,9 +104,6 @@ export default new Vuex.Store({
       myServer
         .get(`/question/${id}`)
         .then(({ data }) => {
-          console.log('masuk action');
-
-          console.log(data);
           context.commit('getQuestion', data);
         })
         .catch((err) => {
