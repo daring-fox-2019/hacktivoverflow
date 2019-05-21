@@ -7,8 +7,6 @@ module.exports = (req, res, next) => {
         User.findOne({ _id: req.decoded._id })
             .then(user => {
                 if (user) {
-                    console.log();
-                    
                     next()
                 } else {
                     res.status(401).json("Unautheticated")

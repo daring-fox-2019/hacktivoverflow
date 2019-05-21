@@ -24,8 +24,6 @@ class AnswerController {
     }
 
     static update(req, res) {
-        console.log(req.body);
-        
         Answer
             .findOneAndUpdate(
                 { _id: req.params.id },

@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import myServer from '@/api/myServer';
 import Router from './router';
 
-if (localStorage.token) myServer.defaults.headers.common.token = localStorage.token;
+myServer.defaults.headers.common.token = localStorage.token;
 
 Vue.use(Vuex);
 
@@ -103,6 +103,7 @@ export default new Vuex.Store({
     },
 
     stayLogin(context) {
+      myServer.defaults.headers.common.token = localStorage.token;
       myServer
         .post('/user/token')
         .then(({ data }) => {
@@ -123,6 +124,7 @@ export default new Vuex.Store({
     },
 
     createQuestion(context, form) {
+      myServer.defaults.headers.common.token = localStorage.token;
       myServer
         .post('/question', form)
         .then(({ data }) => {
@@ -155,17 +157,6 @@ export default new Vuex.Store({
         });
     },
 
-    // getAnswer(context, answerId){
-    //   myServer
-    //     .get(`/answer/${answerId}`)
-    //     .then(({data})=>{
-    //       context
-    //     })
-    //     .catch(err =>{
-    //       console.log(err)
-    //     })
-    // },
-
     getAnswers(context, questionId) {
       myServer
         .get(`/answer/allAnswer/${questionId}`)
@@ -189,6 +180,8 @@ export default new Vuex.Store({
     },
 
     createAnswer(context, [questionId, answer]) {
+      myServer.defaults.headers.common.token = localStorage.token;
+
       myServer
         .post('/answer', { questionId, answer })
         .then(({ data }) => {
@@ -211,13 +204,9 @@ export default new Vuex.Store({
     },
 
     deleteAnswer(context, answerId) {
-      console.log(answerId);
-
       myServer
         .delete(`/answer/${answerId}`)
         .then(({ data }) => {
-          console.log(data);
-
           context.commit('deleteAnswer', data);
         })
         .catch((err) => {
