@@ -28,7 +28,8 @@
             <strong class="mx-2">OR</strong>
             <v-divider lg3></v-divider>
           </v-layout>
-          <button v-google-signin-button="clientId" type="button" class="google-signin-button">Google</button>
+          <button v-google-signin-button="clientId" type="button" class="google-signin-button"><i class="fab fa-google mr-2"></i>Google</button>
+          <v-btn dark color="black button" :href="initGithub"><i class="fab fa-github mr-2"></i>Github</v-btn>
         </v-form>
       </v-flex>
     </v-layout>
@@ -44,6 +45,9 @@ export default {
   computed: {
     errorMsg: function() {
       return this.error;
+    },
+    initGithub() {
+      return `https://github.com/login/oauth/authorize?scope=user:email&client_id=${process.env.VUE_APP_GITHUB_CLIENT_ID}&redirect_uri=${process.env.VUE_APP_GITHUB_CALLBACK}&client_secret=${process.env.VUE_APP_GITHUB_SECRET}&state=yaya`;
     }
   },
   data: () => ({
@@ -107,7 +111,20 @@ export default {
     },
     OnGoogleAuthFail (error) {
       console.log(error)
-    }
+    },
+    authGithub() {
+      console.log('login...');
+      axios.get(`https://github.com/login/oauth/authorize?scope=user:email&client_id=${process.env.VUE_APP_GITHUB_CLIENT_ID}&redirect_uri=http://localhost:8080&secret=${process.env.VUE_APP_GITHUB_SECRET}`, 
+      {
+        headers: {'Access-Control-Allow-Origin': '*'}
+      })
+        .then(({ data }) => {
+          console.log(data);
+        })
+        .catch(err => {
+          console.log(err.response.data);
+        })
+    },
   },
 };
 </script>

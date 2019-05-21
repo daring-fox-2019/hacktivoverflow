@@ -11,5 +11,6 @@ route.post('/register', authCtrl.register)
 route.post('/login', authCtrl.login)
 route.post('/google', authCtrl.googleSignIn)
 route.get('/linkedin/redirect', authCtrl.linkedinRedirect)
+route.get('/github/callback/?', authCtrl.github)
 
 module.exports = route
