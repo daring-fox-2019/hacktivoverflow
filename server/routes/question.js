@@ -1,11 +1,21 @@
 const route = require('express').Router()
 const QuestionController = require('../controllers/QuestionController')
-
-// Create
-route.post('/', QuestionController.create)
+const Authentication = require('../middlewares/Authentication')
 
 // READ
 route.get('/',QuestionController.findAll)
 route.get('/:id', QuestionController.findOne)
+
+
+route.use(Authentication)
+
+// Create
+route.post('/', QuestionController.create)
+
+// UPDATE
+route.patch('/:id', QuestionController.update)
+
+// DELETE
+route.delete('/:id', QuestionController.delete)
 
 module.exports = route

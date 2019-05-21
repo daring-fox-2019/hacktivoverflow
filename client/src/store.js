@@ -1,11 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import myServer from '@/api/myServer';
+import Router from './router';
 
-if (localStorage.token) {
-  myServer.defaults.headers.common.token = localStorage.token;
-  console.log('ada token kok!');
-}
+if (localStorage.token) myServer.defaults.headers.common.token = localStorage.token;
 
 Vue.use(Vuex);
 
@@ -17,6 +15,11 @@ export default new Vuex.Store({
     currentQuestion: {},
   },
   mutations: {
+    createQuestion(state, question) {
+      state.allQuestions.push(question);
+      Router.push('/');
+    },
+
     getQuestion(state, question) {
       state.currentQuestion = question;
     },
@@ -25,16 +28,18 @@ export default new Vuex.Store({
       state.allQuestions = questions;
     },
 
+    deleteQuestion(state, question) {
+      state.allQuestions = state.allQuestions.filter(el => el._id !== question._id);
+      Router.push('/');
+    },
+
     submitLogin(state, user) {
       if (!localStorage.token) localStorage.token = user.token;
       state.isLogin = true;
-      console.log(user);
-      
-
       state.user = {
         _id: user._id,
         username: user.username,
-        email: user.email
+        email: user.email,
       };
     },
 
@@ -61,8 +66,6 @@ export default new Vuex.Store({
       myServer
         .post('/user/login', form)
         .then(({ data }) => {
-          console.log(data);
-
           context.commit('submitLogin', data);
         })
         .catch((err) => {
@@ -71,16 +74,9 @@ export default new Vuex.Store({
     },
 
     stayLogin(context) {
-      console.log('masuk stay login');
-      console.log(myServer.defaults.headers.common.token);
-
       myServer
         .post('/user/token')
         .then(({ data }) => {
-          console.log('ini data');
-
-          console.log(data);
-          console.log('ini data');
           context.commit('submitLogin', data);
         })
         .catch((err) => {
@@ -91,9 +87,17 @@ export default new Vuex.Store({
     submitRegister(context, form) {
       myServer
         .post('/user/register', form)
+        .then(({ data }) => {})
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    createQuestion(context, form) {
+      myServer
+        .post('/question', form)
         .then(({ data }) => {
-          console.log(data);
-          console.log('yeay berhasil register');
+          context.commit('createQuestion', data);
         })
         .catch((err) => {
           console.log(err);
@@ -105,6 +109,17 @@ export default new Vuex.Store({
         .get(`/question/${id}`)
         .then(({ data }) => {
           context.commit('getQuestion', data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    deleteQuestion(context, id) {
+      myServer
+        .delete(`/question/${id}`)
+        .then(({ data }) => {
+          context.commit('deleteQuestion', data);
         })
         .catch((err) => {
           console.log(err);

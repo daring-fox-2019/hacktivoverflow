@@ -12,21 +12,6 @@
           <a href="#" style="color: #df9a97" @click="goHome">
             <li style="font-weight: bold; font-size: 20px">Tanya! Jawab?</li>
           </a>
-          <a href="#" @click="askQuestion">
-            <li v-if="isLogin">
-              <button
-                type="button"
-                class="btn btn-warning"
-                style="padding: 0px; margin-left: 25px;"
-              >
-                <h5
-                  style="color: black;
-                  padding: 2.5px;
-                  margin: 0;"
-                >Ask Question</h5>
-              </button>
-            </li>
-          </a>
         </ul>
 
         <!-- Login Form -->
@@ -69,12 +54,12 @@
                     >
                   </div>
                   <div class="modal-footer">
-                  <button
-                    @click="submitLogin"
-                    type="submit"
-                    class="btn btn-primary"
-                    data-dismiss="modal"
-                  >Login</button>
+                    <button
+                      @click="submitLogin"
+                      type="submit"
+                      class="btn btn-primary"
+                      data-dismiss="modal"
+                    >Login</button>
                   </div>
                 </form>
               </div>
@@ -150,6 +135,9 @@
         <!-- Far Right buttons --->
         <ul>
           <li v-if="isLogin">
+            <a href="#" @click="askQuestion">
+              <i class="fas fa-feather-alt"></i>
+            </a>
             <a href="#" @click="myProfile">
               <i class="fas fa-user"></i>
             </a>
