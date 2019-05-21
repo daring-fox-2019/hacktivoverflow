@@ -13,6 +13,8 @@ export default new Vuex.Store({
     isLogin: false,
     user: {},
     currentQuestion: {},
+    questionToEdit: null,
+    answers: [],
   },
   mutations: {
     createQuestion(state, question) {
@@ -22,6 +24,29 @@ export default new Vuex.Store({
 
     getQuestion(state, question) {
       state.currentQuestion = question;
+    },
+
+    getAnswers(state, answers) {
+      state.answers = answers;
+    },
+
+    createAnswer(state, answer) {
+      state.answers.push(answer);
+    },
+
+    editAnswer(state, answer) {
+      for(let i = 0 ; i < state.answers.length ; i++){
+        if(state.answers[i]._id === answer._id){
+          state.answers[i] = answer
+        }
+      }
+    },
+
+    editQuestion(state, question) {
+      state.allQuestions = state.allQuestions.map((el) => {
+        if (el._id === question._id) el = question;
+      });
+      Router.push('/');
     },
 
     getAllQuestions(state, questions) {
@@ -87,7 +112,7 @@ export default new Vuex.Store({
     submitRegister(context, form) {
       myServer
         .post('/user/register', form)
-        .then(({ data }) => {})
+        .then(({ data }) => { })
         .catch((err) => {
           console.log(err);
         });
@@ -98,6 +123,17 @@ export default new Vuex.Store({
         .post('/question', form)
         .then(({ data }) => {
           context.commit('createQuestion', data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    editQuestion(context, [id, form]) {
+      myServer
+        .patch(`/question/${id}`, form)
+        .then(({ data }) => {
+          context.commit('editQuestion', data);
         })
         .catch((err) => {
           console.log(err);
@@ -115,11 +151,44 @@ export default new Vuex.Store({
         });
     },
 
+    getAnswers(context, questionId) {
+      myServer
+        .get(`/answer/allAnswer/${questionId}`)
+        .then(({ data }) => {
+          context.commit('getAnswers', data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     deleteQuestion(context, id) {
       myServer
         .delete(`/question/${id}`)
         .then(({ data }) => {
           context.commit('deleteQuestion', data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    createAnswer(context, [questionId, answer]) {
+      myServer
+        .post('/answer', { questionId, answer })
+        .then(({ data }) => {
+          context.commit('createAnswer', data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    editAnswer(context, [answerId, editedAnswer]) {
+      myServer
+        .patch(`/answer/${answerId}`, editedAnswer)
+        .then(({ data }) => {
+          context.commit('editAnswer', data);
         })
         .catch((err) => {
           console.log(err);

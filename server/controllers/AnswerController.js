@@ -2,19 +2,36 @@ const Answer = require('../models/Answer')
 
 class AnswerController {
     static create(req, res) {
-        const { description, user, answer } = req.body
+        const { answer, questionId } = req.body
         Answer
             .create({
-                description,
+                description: answer,
                 upvote: [],
                 downvote: [],
-                user,
-                answer,
+                user: req.decoded._id,
+                question: questionId,
                 createdAt: new Date(),
                 updatedAt: new Date()
             })
             .then(answer => {
-                res.status(201).json(answer)
+                answer.populate('user').populate('question', err => {
+                    res.status(201).json(answer)
+                })
+            })
+            .catch(err => {
+                res.status(500).json(err)
+            })
+    }
+
+    static update(req, res) {
+        Answer
+            .findOneAndUpdate(
+                { _id: req.params.id },
+                { description: Object.keys(req.body)[0] },
+                { new: true })
+            .then(answer => {
+                console.log(answer)
+                res.status(200).json(answer)
             })
             .catch(err => {
                 res.status(500).json(err)
@@ -38,7 +55,7 @@ class AnswerController {
 
     static findAll(req, res) {
         Answer
-            .find()
+            .find({ question: req.params.id })
             .populate('upvote')
             .populate('downvote')
             .populate('user')

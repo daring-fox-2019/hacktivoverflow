@@ -26,6 +26,12 @@ export default new Router({
       path: '/askQuestion',
       name: 'askQuestion',
       component: AskQuestion,
+      children: [
+        {
+          path: ':id',
+          component: AskQuestion,
+        },
+      ],
     },
     {
       path: '/myProfile',

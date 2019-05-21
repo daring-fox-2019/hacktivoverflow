@@ -12,6 +12,7 @@ const cors = require('cors')
 const DB = process.env.MONGODB_CONNECTION_URL || 'mongodb://localhost/hacktivoverflow'
 const mongoose = require('mongoose')
 mongoose.connect(DB + process.env.NODE_ENV, { useNewUrlParser: true })
+mongoose.set('useFindAndModify', false);
 
 app.use(cors())
 

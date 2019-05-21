@@ -1,11 +1,16 @@
 <template>
-    <div class="container">
-        my profile
-    </div>
+  <div class="container">
+    {{user}}
+    my profile
+  </div>
 </template>
 
 <script>
-export default {
+import { mapState } from 'vuex';
 
+export default {
+  computed: {
+    ...mapState(['user']),
+  },
 };
 </script>

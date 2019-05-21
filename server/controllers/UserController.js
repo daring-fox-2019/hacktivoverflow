@@ -4,10 +4,6 @@ const bcrypt = require('../helpers/bcrypt')
 
 class UserController {
     static register(req, res) {
-        console.log(`my bodyh`);
-        
-        console.log(req.body);
-        
         const { username, email, password } = req.body
         User
             .create({ username, email, password })
@@ -53,10 +49,6 @@ class UserController {
         User
         .findOne({_id: req.decoded._id})
         .then(user =>{
-
-            console.log(user);
-
-            
             res.status(200).json({
                 _id: user._id,
                 username: user.username,
