@@ -4,9 +4,13 @@ const bcrypt = require('../helpers/bcrypt')
 
 class UserController {
     static register(req, res) {
-        const { name, email, password } = req.body
+        console.log(`my bodyh`);
+        
+        console.log(req.body);
+        
+        const { username, email, password } = req.body
         User
-            .create({ name, email, password })
+            .create({ username, email, password })
             .then(user => {
                 res.status(201).json(user)
             })
@@ -24,12 +28,12 @@ class UserController {
                     if (bcrypt.compareSync(password, user.password)) {
                         const myToken = jwt.sign({
                             _id: user._id,
-                            name: user.name,
+                            username: user.username,
                             email: user.email
                         })
                         res.status(200).json({
                             token: myToken,
-                            name: user.name,
+                            username: user.username,
                             email: user.email
                         })
                     } else {

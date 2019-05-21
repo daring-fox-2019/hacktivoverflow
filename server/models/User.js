@@ -19,9 +19,9 @@ let uniqueEmail = function (email) {
 }
 
 let userSchema = new Schema({
-    name: {
+    username: {
         type: String,
-        required: [true, "Please input your name"]
+        required: [true, "Please input your username"]
     },
     email: {
         type: String,

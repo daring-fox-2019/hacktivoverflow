@@ -9,15 +9,11 @@ let questionSchema = new Schema({
     description: {
         type: String
     },
-    upvotes: {
-        type: Number,
-        default: 0
-    },
-    downvotes: {
-        type: Number,
-        default: 0
-    },
-    user: { type: Schema.Types.ObjectId, ref: "User" }
+    upvotes: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    downvotes: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    user: { type: Schema.Types.ObjectId, ref: "User" },
+    createdAt: Date,
+    updatedAt: Date
 })
 
 let Question = mongoose.model('Question', questionSchema)
