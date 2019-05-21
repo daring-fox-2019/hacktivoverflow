@@ -72,13 +72,12 @@ export default {
     mounted() {
         this.getTags()
         this.localQuestion = {...this.$props.question};
-        let selected = []
 
         this.localQuestion.tags.forEach(x => 
             {
                 this.tags.forEach(t => {
                     if(t._id.toString() === x.toString()) {
-                        selected.push(t.name)
+                        this.select.push(t.name)
                     }
                 })
             }
@@ -121,10 +120,10 @@ export default {
             }   
         },
         getTags: function() {
-            backend
+            return backend
                 .get(process.env.VUE_APP_SERVER_URL + '/tags')
                 .then(({data}) => {
-                    console.log(`tags arrived..`);
+                    console.log(`tags arrived..`, data);
                     this.tags = data
                     this.visibleTags = data.map(x => x.name)
                 })

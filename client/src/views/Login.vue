@@ -28,17 +28,18 @@
             <strong class="mx-2">OR</strong>
             <v-divider lg3></v-divider>
           </v-layout>
-          <button v-google-signin-button="clientId" class="google-signin-button">Google</button>
+          <button v-google-signin-button="clientId" type="button" class="google-signin-button">Google</button>
         </v-form>
       </v-flex>
     </v-layout>
 </template>
 <script>
-import http from '@/api/http';
+import axios from 'axios'
+import GoogleSignInButton from 'vue-google-signin-button-directive'
 
 export default {
   directives: {
-    GoogleSignInButton,
+    GoogleSignInButton
   },
   computed: {
     errorMsg: function() {
@@ -49,9 +50,7 @@ export default {
     show: false,
     error: "",
     isError: false,
-    googleSignInParams: {
-        client_id: process.env.VUE_APP_GOOGLE_CLIENT_ID
-    },
+    clientId: process.env.GOOGLE_CLIENT_ID,
     valid: true,
     email: "",
     emailRules: [
@@ -66,17 +65,16 @@ export default {
   }),
   methods: {
     login() {
-      console.log('--------'+process.env);
-      http.post(process.env.VUE_APP_SERVER_URL+'/auth/login',
+      axios.post(process.env.VUE_APP_SERVER_URL+'/auth/login',
       {
         email: this.email.toLowerCase(),
         password: this.password,
       })
       .then(({data}) => {
-        console.log(data);
-        localStorage.setItem('hackflow_token', data)
+        console.log(data.access_token);
+        localStorage.setItem('hackflow_token', data.access_token)
         this.$store.commit('setIsLogin', true)
-        this.$store.dispatch('getUser')
+        this.$store.commit('setUser', data.user)
         this.$router.push('/')
       })
       .catch((err) => {
@@ -90,8 +88,8 @@ export default {
         this.snackbar = true;
       }
     },
-    onSignInSuccess (idToken) {
-      http.post('/auth/google',
+    OnGoogleAuthSuccess (idToken) {
+      axios.post(process.env.VUE_APP_SERVER_URL+'/auth/google',
       {
         token: idToken,
       })
@@ -99,16 +97,16 @@ export default {
         localStorage.setItem('hackflow_token', data)
         this.$store.commit('setIsLogin', true)
         this.$store.dispatch('getUser')
-        swal.fire('Success', `Welcome back!`, 'error')
         this.$router.push('/')
       })
       .catch((err) => {
         this.error = err.response.data
         this.isError = true;
+        console.log(this.error);
       });
     },
-    onSignInError (error) {
-      swal.fire('Error', error, 'error')
+    OnGoogleAuthFail (error) {
+      console.log(error)
     }
   },
 };

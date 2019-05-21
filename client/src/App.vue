@@ -4,16 +4,14 @@
       <v-toolbar-title class="headline">
         <router-link to="/" class="link"><span>HacktivOverflow</span></router-link>
       </v-toolbar-title>
-      <v-toolbar-items hidden-sm-only>
-       <!--  <v-flex xs12 sm12 ml-5> -->
-          <v-text-field class="searchInput"
-              placeholder="Search questions..."
-              single-line
-              solo
-              append-icon="search"
-            ></v-text-field>
-        <!-- </v-flex> -->
-      </v-toolbar-items>
+        <v-spacer></v-spacer>
+      <v-flex lg6 xs8 ml-2>
+        <v-text-field class="searchInput"
+            placeholder="Search questions..."
+            single-line
+            append-icon="search"
+          ></v-text-field>
+      </v-flex>
       <v-flex>
         <v-spacer></v-spacer>
       </v-flex>
@@ -27,7 +25,7 @@
               :size="40"
               color="grey lighten-4"
               >
-              <img src="https://storage.googleapis.com/ecommerce-client.andresuchitra.com/profile/1555731943170-Andre%20test.jpg" alt="avatar">
+              <img :src="$store.state.user.image" alt="avatar">
             </v-avatar>
           </v-btn>
           <v-btn v-if="$store.state.isLogin" @click="logout" flat>Logout</v-btn>

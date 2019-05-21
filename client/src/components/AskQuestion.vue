@@ -47,17 +47,19 @@ export default {
     },
     methods: {
         submitQuestion: function(evt) {
+            let config = { headers: { Authorization: localStorage.getItem('hackflow_token') } };
             backend
-                .post(process.env.VUE_APP_SERVER_URL + '/questions', evt.question, 
-                    { headers: { Authorization: localStorage.getItem('hackflow_token') } }
-                )
+                .post(process.env.VUE_APP_SERVER_URL + '/questions', evt.question, config)
                 .then(({data}) => {
                     this.$router.push('/questions')
                 })
                 .catch(err => {
-                    this.error = err.response.data
-                    this.isError = true;
-                    console.log(this.error);
+                    if(err.response) {
+                        err = err.response.data
+                    }
+                    console.log(err);
+                    this.isError = err;
+                    this.message= err;
                 })
         },
     }

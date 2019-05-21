@@ -29,13 +29,16 @@ class AuthController {
     }
 
     static register(req, res) {
+        if(!req.body.image) {
+            req.body.image = process.env.USER_AVATAR;
+        }
+
         User.create({...req.body})
             .then(created => {
-
                 queue.create('welcome-email', {  
-                    title: `Welcome to HacktivOverflow, ${newUser.firstname}!`,
-                    email: newUser.email.trim(),
-                    firstname: newUser.firstname
+                    title: `Welcome to HacktivOverflow, ${created.firstname}!`,
+                    email: created.email.trim(),
+                    firstname: created.firstname
                 }).attempts(2).save();
 
                 res.status(201).json(created)

@@ -69,9 +69,6 @@ export default {
             let len = 0
             len = !this.question.upvote ? 0 : this.question.upvote.length
             len += !this.question.downvote ? 0 : -(this.question.downvote.length)
-            
-            console.log(this.question.vote);
-            console.log(this.question.downvote);
 
             return len
         },

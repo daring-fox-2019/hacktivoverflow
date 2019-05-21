@@ -108,6 +108,7 @@ export default new Vuex.Store({
       backend
         .get('/auth/user', { headers: { Authorization: localStorage.getItem('hackflow_token') } })
         .then(({ data }) => {
+          console.log(data);
           context.commit('setUser', data);
         })
         .catch((err) => {

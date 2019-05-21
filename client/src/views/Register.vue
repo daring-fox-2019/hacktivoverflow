@@ -27,6 +27,7 @@
 
 <script>
 import axios from 'axios'
+import swal from 'sweetalert2'
 
 export default {
   data: () => ({
@@ -49,17 +50,16 @@ export default {
 
   methods: {
     register() {
-      console.log(this.password);
       axios.post(process.env.VUE_APP_SERVER_URL+'/auth/register',
       {
         email: this.email.toLowerCase(),
         firstname: this.firstname,
         lastname: this.lastname,
         password: this.password,
-        phone: this.phone,
       })
       .then(({data}) => {
-        console.log(data);
+        console.log(this);
+        swal.fire('Registration Success', 'Please login to the website!', 'success')
         this.$router.push('login')
       })
       .catch((err) => {
