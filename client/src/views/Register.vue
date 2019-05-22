@@ -90,7 +90,6 @@
             pp: this.pp
           })
           .then(data => {
-            console.log(data);
             Swal.fire({
               type: "success",
               text: "You have successfully registered, please login to continue!"
@@ -98,6 +97,7 @@
             this.$router.push("login");
           })
           .catch(err => {
+            console.log(err)
             Swal.fire({
               type: "error",
               title: "Error!",

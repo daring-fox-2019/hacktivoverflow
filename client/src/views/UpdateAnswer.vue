@@ -55,7 +55,6 @@
             }
           )
           .then(data => {
-            console.log(data);
             Swal.fire({
               type: "success",
               text: "You have successfully edit an answer!"

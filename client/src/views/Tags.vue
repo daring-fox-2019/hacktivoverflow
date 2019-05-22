@@ -9,8 +9,7 @@
                     <tag :tag="tag"></tag>
                 </span>
             </div>
-            <h6 style="color:red;margin-top:10px"><small><i>* You can remove unwanted tag by right-clicking the
-                        tag</i></small></h6>
+            <h6 style="color:red;margin-top:10px"><small><i>* Remove unwanted tag by right-clicking on it</i></small></h6>
         </div>
         <div>
             <h3 style="margin-top:10px; margin-bottomL20px; text-align:left">Tags</h3>
@@ -20,10 +19,10 @@
                     <tag :tag="tag[0]"></tag>
                 </span>
             </div>
-            <h6 style="color:red;margin-top:10px"><small><i>* You can add any tag by right-clicking the tag</i></small>
+            <h6 style="color:red;margin-top:10px"><small><i>* Add any tag you want by right-clicking the tag</i></small>
             </h6>
         </div>
-        <h6 style="position:fixed; right:20px;bottom:20px;color:red;margin-top:10px"><small><i>** Go directly into group of relevant tag by clicking into one of it</i></small></h6>
+        <h6 style="position:fixed; right:20px;bottom:20px;color:red;margin-top:10px"><small><i>** Go directly into group of questions relevant to the tag by clicking into one of it</i></small></h6>
     </b-container>
 </template>
 
@@ -59,7 +58,6 @@
                         }
                     })
                     .then(data => {
-                        console.log('joew')
                         this.onStart()
                     })
                     .catch(err => {

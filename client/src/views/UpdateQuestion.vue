@@ -72,7 +72,6 @@
     },
     methods: {
       updatequestion() {
-        console.log(this.watchTags, ' qoioi')
         axios
           .put(
             "/questions/update/" + this.questionId, {

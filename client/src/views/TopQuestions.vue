@@ -14,8 +14,8 @@
                         <p><small>answers</small></p>
                     </td>
                     <td class="align-middle" style="width:5%; text-align:center">
-                        {{question.views}}0
-                        <p><small>views</small></p>
+                        {{question.views}}
+                        <p><small>activities</small></p>
                     </td>
                     <td>
                         <b-row class="align-middle"
@@ -58,13 +58,14 @@
             },
             onStart() {
                 axios
-                    .get("/questions/list", {
+                    .get("/questions/top10list", {
                         headers: {
                             jwtoken: localStorage.jwtoken
                         }
                     })
                     .then(questionList => {
                         this.topQuestionList = questionList;
+                        questionList.data.sort((a,b) => (a.views < b.views)? 1: -1)
                     })
                     .catch(err => {
                         console.log(err);

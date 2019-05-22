@@ -3,7 +3,7 @@
     <h3 style="margin-top:10px; text-align:left">Question List</h3>
     <br>
     <b-container v-if="questionList">
-      <div v-for="(question, index) in questionList.data" :key="index"
+      <div v-for="(question, index) in questionList" :key="index"
         style="margin-bottom:30px; padding:20px; border-radius:5px; border: 1px solid rgb(200,200,200)">
         <div>
           <h2 style="margin-bottom:30px">
@@ -35,9 +35,9 @@
           <div>
             <router-link v-if="question.owner._id == user"
               :to="{ name: 'updatequestion', params: { id: question._id } }">
-              <b-button variant="success" @click="saveDataGlobal(question)">Update</b-button>
+              <b-button variant="outli=e-success" @click="saveDataGlobal(question)">Update</b-button>
             </router-link>
-            <b-button style="margin-left:10px" v-if="question.owner._id == user" variant="warning" @click="deleteQuestion(question._id)">
+            <b-button v-if="question.owner._id == user" variant="outline-danger" @click="deleteQuestion(question._id)">
               Delete</b-button>
           </div>
           <br />
@@ -61,10 +61,20 @@
   import tag from "@/components/tag.vue"
 
   export default {
-    name: "question",
+    name: "search",
     components: {
       Answer,
       tag
+    },
+    computed: {
+      route() {
+        return this.$route
+      }
+    },
+    watch: {
+      route(){
+        this.onStart()
+      }
     },
     data() {
       return {
@@ -78,18 +88,20 @@
       },
 
       onStart() {
+        let search = this.$route.query.keyword
         axios
-          .get("/questions/list", {
-            headers: {
-              jwtoken: localStorage.jwtoken
-            }
-          })
-          .then(questionList => {
-            this.questionList = questionList;
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        .get('questions/list?keyword='+search, {
+          headers: {jwtoken: localStorage.jwtoken}
+        })
+        .then(({data}) => {
+            this.questionList = data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      },
+      findByTag(filteredQuestion) {
+        this.questionList = filteredQuestion
       },
       upvote(questionId) {
         axios
@@ -102,7 +114,7 @@
           )
           .then(report => {
             this.onStart();
-            
+
           })
           .catch(err => {
             console.log(err);
@@ -123,7 +135,7 @@
           )
           .then(report => {
             this.onStart();
-            
+
           })
           .catch(err => {
             console.log(err);

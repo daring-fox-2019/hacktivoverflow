@@ -21,7 +21,7 @@ module.exports = {
                 }) + " " + new Date().toLocaleTimeString({
                     timezone: 'Asia/Jakarta'
                 }),
-                views: 0
+                views: 1
             })
             .then(questionAdded => {
                 res.status(201).json(questionAdded)
@@ -40,18 +40,27 @@ module.exports = {
                     }
                 }
             }
+        } else if (req.query.keyword) {
+            let regex = new RegExp(`${req.query.keyword}`)
+            // let regex2 = new RegExp(`[${req.query.keyword}]`)
+            // console.log(regex2)
+            query = {
+                $or: [
+                    // {watchTags: {0:{$regex: regex2, $options: 'i'}}},
+                    {question: {$regex: regex, $options: 'i'}},
+                ]
+            }
         } else {
             query = {}
         }
-        console.log(query)
         Question.find(query)
             .populate('answers')
             .populate('owner')
             .then(allQuestions => {
-                console.log(allQuestions, 'hehey')
                 res.status(200).json(allQuestions)
             })
             .catch(err => {
+                console.log(err)
                 next(err)
             })
     },
@@ -70,7 +79,7 @@ module.exports = {
                 let answers = questionRes.answers
                 let owner = questionRes.owner
                 let createdAt = questionRes.createdAt
-                let views = questionRes.views
+                let views = questionRes.views+1
                 Question.updateOne({
                         _id: questionId
                     }, {
@@ -132,6 +141,9 @@ module.exports = {
                             return Question.updateOne({
                                     _id: questionId
                                 }, {
+                                    $inc: {
+                                        views: 1
+                                    },  
                                     $push: {
                                         upvotes: id
                                     }
@@ -155,6 +167,9 @@ module.exports = {
                             return Question.updateOne({
                                     _id: questionId
                                 }, {
+                                    $inc: {
+                                        views: 1
+                                    },  
                                     $push: {
                                         upvotes: id
                                     }
@@ -170,6 +185,9 @@ module.exports = {
                     return Question.updateOne({
                             _id: questionId
                         }, {
+                            $inc: {
+                                views: 1
+                            },  
                             $push: {
                                 upvotes: id
                             }
@@ -205,6 +223,9 @@ module.exports = {
                             return Question.updateOne({
                                     _id: questionId
                                 }, {
+                                    $inc: {
+                                        views: 1
+                                    },  
                                     $push: {
                                         downvotes: id
                                     }
@@ -229,6 +250,9 @@ module.exports = {
                             return Question.updateOne({
                                     _id: questionId
                                 }, {
+                                    $inc: {
+                                        views: 1
+                                    },  
                                     $push: {
                                         downvotes: id
                                     }
@@ -244,6 +268,9 @@ module.exports = {
                     return Question.updateOne({
                             _id: questionId
                         }, {
+                            $inc: {
+                                views: 1
+                            },  
                             $push: {
                                 downvotes: id
                             }
@@ -261,6 +288,9 @@ module.exports = {
         Question.updateOne({
                 _id: questionId
             }, {
+                $inc: {
+                    views: 1
+                },  
                 $push: {
                     answers: id
                 }
@@ -272,13 +302,22 @@ module.exports = {
                 console.log(err, 'terjadi error')
             })
     },
-    getAllTags(req,res){
+    getAllTags(req,res,next){
         Question.distinct('watchTags', function(err,tags){
             if(err){
                 next(err)
             } else {
                 res.status(200).json(tags)
             }
+        })
+    },
+    top10list(req,res,next){
+        Question.find({}).sort({views:-1}).limit(5)
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(err => {
+            next(err)
         })
     }
 }

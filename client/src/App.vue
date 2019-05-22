@@ -26,8 +26,8 @@
           </b-navbar-nav>
 
           <b-navbar-nav class="">
-            <b-nav-form v-if="this.$store.state.isLoggedIn">
-              <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
+            <b-nav-form v-if="this.$store.state.isLoggedIn" @submit.prevent="searchByTitleOrTags">
+              <b-form-input size="sm" style="width:600px" class="mr-sm-2" v-model="search" placeholder="Search for question by title.."></b-form-input>
               <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
             </b-nav-form>
           </b-navbar-nav>
@@ -85,6 +85,11 @@
     computed: {
       ...mapState(["isLoggedIn", "indivQuestionData", "indivAnswerData"])
     },
+    data() {
+      return {
+        search: ''
+      }
+    },
     methods: {
       Logout() {
         this.$store.commit("logout");
@@ -94,9 +99,16 @@
           name: "login"
         });
       },
+      searchByTitleOrTags() {
+        let x = `/search?keyword=`+this.search
+        this.search =''
+        this.$router.push({
+          path: x,
+        })
+      },
       ...mapActions(["login", "logout", "simpenGlobalQuest", "simpenGlobalAns"]),
       getLogin() {
-        console.log(this.$store.state.isLoggedIn);
+        // console.log(this.$store.state.isLoggedIn);
       }
     },
     created() {

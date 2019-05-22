@@ -65,7 +65,6 @@ export default {
           }
         )
         .then(data => {
-          console.log(data);
           Swal.fire({
             type: "success",
             text: "You have successfully add an answer!"

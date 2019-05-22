@@ -1,28 +1,54 @@
 <template>
-    <div style="margin-top: 15px">
-        <h3><strong> Answers ({{answers.answers.length}})</strong></h3>
-        <div v-for="(answer,indexAns) in answers.answers" :key="indexAns" style="margin-top:40px;margin-bottom:40px">
-            <div>
-                <h4 style="margin-bottom: 25px">{{ answer.answer }}</h4>
-                <div v-html="answer.description"></div>
+    <div id="accordion">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" :data-target="'#'+answers._id"
+                        aria-expanded="true" aria-controls="collapseOne">
+                        <h5><strong> Answers ({{answers.answers.length}})</strong></h5>
+                    </button>
+                </h5>
             </div>
-            <div v-if="answers.owner._id != user">
-                <b-button variant="outline-success" @click="upvoteAn(answer._id)">uv: {{ answer.upvotes.length }}
-                </b-button>
-                <b-button variant="outline-danger" @click="downvoteAn(answer._id)">dv: {{ answer.downvotes.length }}
-                </b-button>
+
+            <div :id="answers._id" class="collapse hide" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                    <div style="margin-top: 15px">
+                        <div v-for="(answer,indexAns) in answers.answers" :key="indexAns"
+                            style="margin-top:40px;margin-bottom:40px">
+                            <div>
+                                <h4 style="margin-bottom: 25px">{{ answer.answer }}</h4>
+                                <div v-html="answer.description"></div>
+                            </div>
+                            <br>
+                            <div class="ml-3" v-if="answers.owner._id != user">
+                                <b-row>
+                                    <b-button class="mb-2" variant="outline-success" @click="upvoteAn(answer._id)">
+                                        <i class="fas fa-angle-up"> {{ answer.upvotes.length }}</i>
+                                    </b-button>
+                                </b-row>
+                                <b-row>
+                                    <b-button variant="outline-danger" @click="downvoteAn(answer._id)">
+                                        <i class="fas fa-angle-down"> {{ answer.downvotes.length }}</i>
+                                    </b-button>
+                                </b-row>
+                            </div>
+                            <br>
+                            <div v-if="answer.owner == user">
+                                <router-link :to="{ name: 'updateanswer', params: { id: answer._id }}">
+                                    <b-button class="mr-2" variant="success" @click="saveDataGlobalAnswer(answer)">Update
+                                    </b-button>
+                                </router-link>
+                                <b-button variant="warning" @click="deleteAnswer(answer._id)">Delete</b-button>
+                            </div>
+                            <hr>
+                            <hr>
+                        </div>
+                        <router-link :to="{ name: 'addanswer', params: { questionId: answers._id }}"><button>Add
+                                Answer</button></router-link>
+                    </div>
+                </div>
             </div>
-            <div v-if="answer.owner == user">
-                <router-link :to="{ name: 'updateanswer', params: { id: answer._id }}">
-                    <b-button variant="outline-success" @click="saveDataGlobalAnswer(answer)">Update</b-button>
-                </router-link>
-                <b-button variant="outline-danger" @click="deleteAnswer(answer._id)">Delete</b-button>
-            </div>
-            <hr>
-            <hr>
         </div>
-        <router-link :to="{ name: 'addanswer', params: { questionId: answers._id }}"><button>Add
-                Answer</button></router-link>
     </div>
 </template>
 
@@ -49,12 +75,8 @@
                         }
                     })
                     .then(report => {
-                        console.log(report)
                         this.onStart()
-                        Swal.fire({
-                            text: 'upvote success!',
-                            type: 'success'
-                        })
+                        
                     })
                     .catch(err => {
                         console.log(err)
@@ -72,12 +94,8 @@
                         }
                     })
                     .then(report => {
-                        console.log(report)
                         this.onStart()
-                        Swal.fire({
-                            text: 'downvote success!',
-                            type: 'success'
-                        })
+                        
                     })
                     .catch(err => {
                         console.log(err)
@@ -95,7 +113,6 @@
                         }
                     })
                     .then(report => {
-                        console.log(report)
                         this.onStart()
                         Swal.fire({
                             text: 'delete success!',
@@ -112,7 +129,7 @@
 
                     })
             },
-            onStart(){
+            onStart() {
                 this.$emit('terjadiPerubahan')
             }
         },

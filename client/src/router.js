@@ -81,11 +81,17 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () =>
         import( /* webpackChunkName: "about" */ "./views/UpdateAnswer.vue")
-    }, {
+    },
+    {
+      path: "/search",
+      name: "search",
+      component: () => import(/* webpackChunkName: "search"*/ "./views/Search.vue"),
+    },
+    {
       path: "/tagged",
       name: "tagged",
       component: () =>
-        import( /* webpackChunkName: "tagged" */ "./views/Tagged.vue")
-    }
+        import(/* webpackChunkName: "tagged"*/ "./views/Tagged.vue")
+    },
   ]
 });

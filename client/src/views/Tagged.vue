@@ -1,33 +1,37 @@
 <template>
   <b-container>
-    <router-link to="/addquestion">Add Question</router-link>
-    <h3 style="margin-top:40px; text-align:left">Question List</h3>
-    <br><br>
+    <h3 style="margin-top:10px; text-align:left">Question List</h3>
+    <br>
     <b-container v-if="questionList">
       <div v-for="(question, index) in questionList.data" :key="index"
-        style="margin-bottom:30px;background-color:rgba(0,0,0,0.2); padding:50px; border-radius:40px;">
+        style="margin-bottom:30px; padding:20px; border-radius:5px; border: 1px solid rgb(200,200,200)">
         <div>
           <h2 style="margin-bottom:30px">
             <strong>{{ question.question }}</strong>
           </h2>
-          <strong></strong>
         </div>
         <div>
           <div v-html="question.description"></div>
-          <br /><br />
-          <h6>Asked by: {{ question.owner.name }}</h6>
-          <h6>
-            Watch Tags:
-            <span v-for="(tag, idtag) in question.watchTags" :key="idtag">
-              <tag :tag="tag[0]" @findbytag="findByTag"></tag>
-            </span>
-          </h6>
-          <b-button v-if="question.owner._id != user" variant="outline-success" @click="upvote(question._id)"><i
-              class="fas fa-thumbs-up"></i>uv:
-            {{ question.upvotes.length }}</b-button>
-          <b-button v-if="question.owner._id != user" variant="outline-danger" @click="downvote(question._id)"><i
-              class="fas fa-thumbs-down"></i>dv:
-            {{ question.downvotes.length }}</b-button>
+          <br />
+          <div style="float:right;text-align:right">
+            <h6>{{ question.owner.name }}</h6>
+            <h6>
+              <span v-for="(tag, idtag) in question.watchTags" :key="idtag">
+                <tag :tag="tag[0]"></tag>
+              </span>
+            </h6>
+            <h6><small>Last Updated: {{ question.updatedAt }}</small> </h6>
+          </div>
+          <div style="margin-left: 15px">
+            <b-row cols=12 class="mb-2">
+              <b-button v-if="question.owner._id != user" variant="outline-success" @click="upvote(question._id)"><i
+                  class="fas fa-angle-up"></i> {{ question.upvotes.length }}</b-button>
+            </b-row>
+            <b-row>
+              <b-button v-if="question.owner._id != user" variant="outline-danger" @click="downvote(question._id)"><i
+                  class="fas fa-angle-down"></i> {{ question.downvotes.length }}</b-button>
+            </b-row>
+          </div>
           <div>
             <router-link v-if="question.owner._id == user"
               :to="{ name: 'updatequestion', params: { id: question._id } }">
@@ -40,7 +44,10 @@
           <hr />
           <hr />
           <br />
+
           <answer :answers="question" @terjadiPerubahan="onStart"></answer>
+
+
         </div>
       </div>
     </b-container>
@@ -71,9 +78,8 @@
       },
 
       onStart() {
-          console.log(this.$route.query.tag)
-        axios 
-          .get("/questions/list?tag="+this.$route.query.tag, {
+        axios
+          .get("/questions/list?tag=" + this.$route.query.tag, {
             headers: {
               jwtoken: localStorage.jwtoken
             }
@@ -86,20 +92,7 @@
           });
       },
       findByTag(filteredQuestion) {
-        console.log(filteredQuestion,'opop')
         this.questionList = filteredQuestion
-        // axios
-        //   .get("/questions/list?tag=" + tag,{
-        //     headers: {jwtoken: localStorage.jwtoken}
-        //   })
-        //   .then((
-        //     data
-        //   ) => {
-        //     this.questionList = data
-        //   })
-        //   .catch(err => {
-        //     console.log(err)
-        //   })
       },
       upvote(questionId) {
         axios
@@ -112,10 +105,7 @@
           )
           .then(report => {
             this.onStart();
-            Swal.fire({
-              text: "upvote success!",
-              type: "success"
-            });
+
           })
           .catch(err => {
             console.log(err);
@@ -136,10 +126,7 @@
           )
           .then(report => {
             this.onStart();
-            Swal.fire({
-              text: "downvote success!",
-              type: "success"
-            });
+
           })
           .catch(err => {
             console.log(err);

@@ -57,7 +57,6 @@
     watch: {
       tags() {
         this.watchTags = this.tags.map(el => el.text)
-        console.log(this.watchTags)
       }
     },
     methods: {
@@ -75,7 +74,6 @@
             }
           )
           .then(data => {
-            console.log(data);
             Swal.fire({
               type: "success",
               text: "You have successfully add new question!"
@@ -83,6 +81,7 @@
             this.$router.push("question");
           })
           .catch(err => {
+            console.log(err)
             Swal.fire({
               type: "error",
               title: "Error!",

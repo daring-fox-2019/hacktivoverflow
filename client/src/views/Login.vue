@@ -69,26 +69,21 @@
             password: this.password
           })
           .then(data => {
-            console.log(data);
             localStorage.setItem("jwtoken", data.data.jwtoken);
             localStorage.setItem("id", data.data.userId);
             localStorage.setItem("username", data.data.name);
             localStorage.setItem("pp", data.data.pp);
-            // localStorage.setItem('pp', data.data.pp)
             Swal.fire({
               type: "success",
               text: "you have successfully logged in!"
             });
             this.$store.commit("login");
             this.$router.push({
-              path: "/question"
+              path: "/"
             });
           });
       }
     },
-    // ...mapActions([
-    //   'login', 'logout'
-    // ]),
     computed: {
       ...mapState(["isLoggedIn"])
     }

@@ -7,9 +7,10 @@ const routes = require('./routes/')
 const mongoose = require('mongoose')
 const errorHandler = require('./middlewares/errorHandler')
 var kue = require('kue')
+const cron = require('./helpers/cronJob')
 let { CronJob } = require('cron')
 
-mongoose.connect('mongodb://localhost/hacktivOverflow', {
+mongoose.connect(process.env.MONGO_DB, {
     useNewUrlParser: true
 }, function () {
     console.log(' Connected into database !')
@@ -24,16 +25,13 @@ app.use(cors())
 
 app.use('/', routes)
 
-// app.use(function(){
-//     new CronJob('* * * * * *', function(){
-//         console.log('hehehe')
-//     }, null, true, 'Asia/Jakarta' )
-// })
-
 app.use(errorHandler)
 
 app.use("/kue-ui", kue.app)
 
 app.listen(PORT, function () {
     console.log(`listening on port ${PORT}`)
+    new CronJob('0 0 9 1 * *', function(){
+                cron()
+            }, null, true, 'Asia/Jakarta' )
 })
