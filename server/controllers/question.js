@@ -19,6 +19,23 @@ class Question {
       })
   }
 
+  static search(req, res) {    
+    Model.find(req.body.datas)
+      .populate('userId')
+      .populate({
+        path: 'answers',
+        populate: {
+          path: 'userId'
+        }
+      })
+      .then(data => {
+        res.status(200).json(data)
+      })
+      .catch(err => {
+        res.status(500).json(err)
+      })
+  }
+
   static findMine(req, res) {
     Model.find({ userId: req.userId })
       .populate('userId')

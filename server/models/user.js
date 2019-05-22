@@ -22,6 +22,7 @@ let userSchema = new Schema({
     }]
   },
   password: String,
+  watchTag: [String]
 })
 
 userSchema.pre('save', function (next) {

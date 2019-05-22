@@ -14,9 +14,9 @@
         </div>
         <v-btn color="blue" to="/addQuestion" style="color:white;">Ask New Question</v-btn>
       </v-layout>
-      <v-divider/>
+      <v-divider class="mb-3"/>
 
-      <v-layout fluid>
+      <v-layout fluid >
         <v-flex>
           <v-layout align-center justify-space-between fluid py-3>
             <v-flex md1>
@@ -100,14 +100,7 @@
         </v-flex>
 
         <v-flex xs3>
-          <v-layout fluid justify-center mt-3>
-            <v-card id="watch-tag">
-              <v-toolbar color="dark" style="justify-content:center;">
-                <v-toolbar-title>Watch tag</v-toolbar-title>
-              </v-toolbar>
-              <v-card-text>tes</v-card-text>
-            </v-card>
-          </v-layout>
+           <WatchTag />
         </v-flex>
       </v-layout>
     </v-container>
@@ -118,12 +111,14 @@
 import axios from "axios";
 import Tags from "@/components/Tags.vue";
 import Answer from "@/components/Answer.vue";
+import WatchTag from '@/components/WatchTag.vue';
 
 export default {
   name: "home",
   components: {
     Tags,
-    Answer
+    Answer,
+    WatchTag,
   },
   data() {
     return {
@@ -297,7 +292,13 @@ export default {
 .fas {
   width: 30px;
 }
+
 img {
   cursor: pointer;
+}
+
+.vue-tags-input {
+  max-width: none;
+  width: 100%;
 }
 </style>

@@ -3,23 +3,17 @@
     <v-layout fluid>
       <v-flex>
         <v-layout align-center justify-space-between fluid px-5 py-3>
-          <h2>Top Questions</h2>
+          <h2 v-if="!this.$store.state.isSearch">Top Questions</h2>
+          <h2 v-else>Questions tagged [ {{this.$store.state.searchTag}} ]</h2>
           <v-btn color="blue" to="/addQuestion">Ask Question</v-btn>
         </v-layout>
         <v-divider/>
         <!-- LISTQUESTION -->
-        <Question :list-question="this.$store.state.listQuestion"/>
+        <Question :list-question="this.$store.state.displayQuestion"/>
       </v-flex>
 
       <v-flex xs3>
-        <v-layout fluid justify-center>
-          <v-card id="watch-tag">
-            <v-toolbar color="dark" style="justify-content:center;">
-              <v-toolbar-title>Watch tag</v-toolbar-title>
-            </v-toolbar>
-            <v-card-text>tes</v-card-text>
-          </v-card>
-        </v-layout>
+        <WatchTag/>
       </v-flex>
     </v-layout>
   </div>
@@ -28,14 +22,18 @@
 <script>
 // @ is an alias to /src
 import Question from "@/components/Question.vue";
+import WatchTag from "@/components/WatchTag.vue";
 
 export default {
   name: "home",
   components: {
+    WatchTag,
     Question
   },
   created() {
     this.$store.dispatch("loadQuestion");
+    this.$store.commit("setSearchTag", "");
+    this.$store.commit("setIsSearch", false);
   }
 };
 </script>

@@ -1,43 +1,40 @@
 <template>
   <div class="home">
-          <v-layout align-center justify-space-between fluid px-5 py-3>
-            <h2>My Questions</h2>
-            <v-btn color="blue" to="/addQuestion">Ask Question</v-btn>
-          </v-layout>
-          <v-divider/>
+    <v-layout align-center justify-space-between fluid px-5 py-3>
+      <h2>My Questions</h2>
+      <v-btn color="blue" to="/addQuestion">Ask Question</v-btn>
+    </v-layout>
+    <v-divider class="mb-3"/>
 
-      <v-layout fluid mt-3>
-        <v-flex>
-          <!-- LISTQUESTION -->
-          <Question :list-question="this.$store.state.myQuestion"/>
-        </v-flex>
+    <v-layout fluid mt-3>
+      <v-flex>
+        <!-- LIST QUESTION -->
+        <Question :list-question="this.$store.state.myQuestion"/>
+      </v-flex>
 
-        <v-flex xs3>
-          <v-layout fluid justify-center>
-            <v-card id="watch-tag">
-              <v-toolbar color="dark" style="justify-content:center;">
-                <v-toolbar-title>Watch tag</v-toolbar-title>
-              </v-toolbar>
-              <v-card-text>tes</v-card-text>
-            </v-card>
-          </v-layout>
-        </v-flex>
-      </v-layout>
+      <v-flex xs3>
+        <v-layout fluid justify-center>
+          <WatchTag/>
+        </v-layout>
+      </v-flex>
+    </v-layout>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import Question from '@/components/Question.vue';
+import Question from "@/components/Question.vue";
+import WatchTag from "@/components/WatchTag.vue";
 
 export default {
-  name: 'home',
+  name: "home",
   components: {
     Question,
+    WatchTag
   },
   created() {
-    this.$store.dispatch('loadMyQuestion');
-  },
+    this.$store.dispatch("loadMyQuestion");
+  }
 };
 </script>
 

@@ -3,6 +3,7 @@ const question = require('../controllers/question')
 const {authentication, authorizationQuestion} = require('../middleware/auth')
 
 router.get('/', question.findAll)
+router.post('/search', question.search)
 router.get('/user', authentication, question.findMine)
 
 router.get('/:id', question.findOne)

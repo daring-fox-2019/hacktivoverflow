@@ -16,6 +16,12 @@
                 hint="Description question"
                 v-model="question.description"
               ></v-textarea>
+              <!-- <v-flex> -->
+<v-layout>
+
+              <wysiwyg v-model="myHTML" />
+</v-layout>
+              <!-- </v-flex> -->
               <v-flex>
                 <vue-tags-input
                   v-model="tag"
@@ -80,6 +86,12 @@ export default {
         });
     },
     addQuestion() {
+      let tag = [];
+      this.question.tags.forEach(element => {
+        tag.push(element.text);
+      });
+      this.question.tags = tag;
+
       axios
         .post("http://localhost:3000/questions", this.question, {
           headers: { token: localStorage.token }
@@ -124,6 +136,8 @@ export default {
 </script>
 
 <style scoped>
+@import "~vue-wysiwyg/dist/vueWysiwyg.css";
+
 .detailProduct {
   margin-left: 30px;
 }
