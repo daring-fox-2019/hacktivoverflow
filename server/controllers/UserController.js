@@ -1,5 +1,20 @@
 const User = require('../models/user')
 const Helper = require('../helpers/helper')
+const transporter = require("../helpers/nodemailer")
+const kue=require("kue")
+const queue = kue.createQueue();
+
+const emailObj = {
+    from:"lutfii.dev@gmail.com",
+    subject: "Welcome to hiJarvis",
+    html:`<p>Selamat datang di hiJarvis</p>`
+}
+
+queue.process("email-register", function(job, done){
+    emailObj.to = job.data.to;
+    transporter.sendMail(emailObj);
+    done()
+})
 
 class UserController {
     static register(req, res) {        
@@ -10,6 +25,14 @@ class UserController {
         })
         .then(user=> {
             res.status(201).json(user)
+
+            var job = queue.create("email-register",{to:user.email})
+            .priority("high")
+            .save(function(err){
+                if(!err){
+                    console.log(job.id)
+                }
+            })
         })
         .catch(err => {
             res.status(400).json({msg: err})

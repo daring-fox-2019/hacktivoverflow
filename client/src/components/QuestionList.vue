@@ -8,18 +8,18 @@
             >
             <div class="response">
                 <div class="response__answer">
-                    <div>7</div>
+                    <div>{{question.answers.length}}</div>
                     <div class="desc">Answer</div>
                 </div>
                 <div class="response__answer">
                     <div>
-                        <i class="far fa-laugh"></i>
+                        {{question.upvote.length}}
                     </div>
                     <span class="desc">Upvote</span>
                 </div>
                 <div class="response__answer">
                     <div>
-                        <i class="far fa-frown"></i>
+                        {{question.downvote.length}}
                     </div>
                     <span class="desc">Downvote</span>
                 </div>

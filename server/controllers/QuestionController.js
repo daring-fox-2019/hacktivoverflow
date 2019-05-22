@@ -1,4 +1,6 @@
 const Question = require('../models/question')
+const kue = require('kue')
+const queue = kue.createQueue()
 
 class QuestionController {
     static findAll(req, res) {
@@ -35,7 +37,7 @@ class QuestionController {
     }
 
     static create(req, res) {
-        const { title, description, tags } = req.body     
+        const { title, description, tags } = req.body
 
         let userId = req.headers.id
 
@@ -46,7 +48,16 @@ class QuestionController {
             userId
         })
         .then(question => {
-            res.status(200).json(question)
+            
+        queue
+        .create("queue example", {
+        title: "This testing request",
+        data: i
+        })
+        .priority("high")
+        .save();
+    
+        res.status(200).json(question)
         })
         .catch(err => {
             res.status(400).json({msg: err})

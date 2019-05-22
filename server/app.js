@@ -5,6 +5,7 @@ const PORT = process.env.PORT
 const routes = require('./routes')
 const mongoose = require('mongoose');
 const cors = require('cors')
+const kue = require('kue')
 
 mongoose.set('useFindAndModify', false);
 // mongoose.connect(process.env.MONGODB_CONNECTION_URL, {useNewUrlParser: true});
@@ -26,4 +27,8 @@ app.use('/', routes)
 
 app.listen(PORT, () => {
     console.log(`Running on http://localhost:${PORT}`)
+})
+
+kue.app.listen(3001, () => {
+    console.log(`Running on http://localhost:3001`)
 })
