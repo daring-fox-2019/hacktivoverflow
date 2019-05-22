@@ -94,7 +94,8 @@ export default new Vuex.Store({
       state.allQuestions = state.allQuestions.map((el) => {
         if (el._id === question._id) el = question;
       });
-      Router.push('/');
+      // Router.push('/');
+      Router.push(`/question/${question._id}`)
     },
 
     getAllQuestions(state, questions) {

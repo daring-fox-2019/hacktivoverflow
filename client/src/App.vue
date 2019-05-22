@@ -1,12 +1,16 @@
 <template>
   <div>
     <Navbar/>
-    <router-view />
+    <div class="d-flex">
+      <router-view/>
+      <Quote/>
+    </div>
   </div>
 </template>
 
 <script>
 import Navbar from '@/components/Navbar.vue';
+import Quote from '@/components/Quote.vue';
 
 export default {
   created() {
@@ -16,6 +20,7 @@ export default {
   },
   components: {
     Navbar,
+    Quote,
   },
 };
 </script>

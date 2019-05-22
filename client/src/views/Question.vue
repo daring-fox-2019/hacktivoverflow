@@ -18,7 +18,7 @@
           <p v-html="currentQuestion.description"></p>
           <br>
           <h5>Asked by: {{ currentQuestion.user.username }}</h5>
-          <br>
+          <p>{{new Date(currentQuestion.createdAt).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}}</p>
           <div
             v-if="currentQuestion.user._id === user._id || currentQuestion.user === user._id"
             class="row"
@@ -28,7 +28,7 @@
                     width: -moz-max-content;
                     border-radius: 100%; padding: 10px;"
             >
-              <a @click="toEditPage" href="#">
+              <a @click.prevent="toEditPage" href="#">
                 <i
                   style="text-align: center; width: 25px; font-size: 25px; color: #DF9A97"
                   class="fas fa-edit"
@@ -39,7 +39,7 @@
               style="background-color: #97DCDF;width: -moz-max-content;
               border-radius: 100%; padding: 10px;"
             >
-              <a @click="deleteQuestion" href="#">
+              <a @click.prevent="deleteQuestion" href="#">
                 <i
                   style="text-align: center; width: 25px; font-size: 25px; color: #DF9A97"
                   class="far fa-trash-alt"
@@ -50,7 +50,9 @@
         </div>
       </div>
     </div>
+    <br>
     <hr>
+    <br>
     <h2>Answer question</h2>
     <form @submit.prevent="createAnswer">
       <wysiwyg v-model="answer"/>
@@ -58,6 +60,7 @@
       <button type="submit" class="btn btn-warning">Submit answer</button>
     </form>
     <br>
+    <hr>
     <br>
     <h1>Answers</h1>
     <div v-for="(answer, index) in answers" :key="index">
@@ -66,11 +69,11 @@
       <p v-html="answer.description"></p>
       <h5>By: {{ answer.user.username}}</h5>
 
-      <a href="#" @click="upvoteAnswer(answer._id)">
+      <a href="#" @click.prevent="upvoteAnswer(answer._id)">
         <i style="font-size: 30px;" class="fas fa-sort-up"></i>
       </a>
       <h4>{{ answer.upvotes.length - answer.downvotes.length }}</h4>
-      <a href="#" @click="downvoteAnswer(answer._id)">
+      <a href="#" @click.prevent="downvoteAnswer(answer._id)">
         <i style="font-size: 30px;" class="fas fa-sort-down"></i>
       </a>
 
@@ -139,7 +142,11 @@ export default {
       this.$router.push(`/editAnswer/${answerId}`);
     },
     upvoteQuestion() {
-      this.$store.dispatch('upvoteQuestion');
+      if (!localStorage.token) {
+        console.log('lala');
+      } else {
+        this.$store.dispatch('upvoteQuestion');
+      }
     },
     downvoteQuestion() {
       this.$store.dispatch('downvoteQuestion');

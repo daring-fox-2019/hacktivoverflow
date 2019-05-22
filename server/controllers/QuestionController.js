@@ -1,6 +1,19 @@
 const Question = require('../models/Question')
+var CronJob = require('cron').CronJob;
+const Axios = require('axios')
 
 class QuestionController {
+    static random(req, res) {
+        Axios
+            .get(`https://opentdb.com/api.php?amount=1&type=multiple`)
+            .then(({ data }) => {
+                res.status(200).json(data)
+            })
+            .catch(err => {
+                res.status(500).json(err)
+            })
+    }
+
     static create(req, res) {
         const { title, description } = req.body
         Question

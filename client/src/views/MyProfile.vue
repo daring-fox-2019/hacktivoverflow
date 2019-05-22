@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    {{user}}
-    my profile
+    <h1>Username: {{user.username}}</h1>
+    <h2>Email: {{user.email}}</h2>
   </div>
 </template>
 

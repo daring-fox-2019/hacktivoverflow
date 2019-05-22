@@ -38,6 +38,7 @@ export default {
       this.$store.dispatch('createQuestion', this.questionForm);
     },
     editQuestion() {
+      this.getQuestion()
       this.$store.dispatch('editQuestion', [this.$route.params.id, this.questionForm]);
     },
     getQuestion() {

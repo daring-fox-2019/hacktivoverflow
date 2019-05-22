@@ -20,7 +20,11 @@
           <div class="col-10">
             <h3>{{ question.title}}</h3>
           </div>
-          <p>{{ question.user.username }}</p>
+          <div class="">
+            <p>By: {{ question.user.username }}</p>
+            <p>{{new Date(question.createdAt).toLocaleDateString('en-US',
+              { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}}</p>
+          </div>
         </div>
       </a>
     </div>

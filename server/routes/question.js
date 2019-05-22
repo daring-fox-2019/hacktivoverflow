@@ -4,6 +4,7 @@ const Authentication = require('../middlewares/Authentication')
 
 // READ
 route.get('/',QuestionController.findAll)
+route.get('/random', QuestionController.random)
 route.get('/:id', QuestionController.findOne)
 
 

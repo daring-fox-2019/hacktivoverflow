@@ -14,6 +14,13 @@ const mongoose = require('mongoose')
 mongoose.connect(DB + process.env.NODE_ENV, { useNewUrlParser: true })
 mongoose.set('useFindAndModify', false);
 
+// var CronJob = require('cron').CronJob;
+// new CronJob('*/5 * * * * *', function () {
+//       console.log('lala');
+// }, null, true, 'America/Los_Angeles');
+
+
+
 app.use(cors())
 
 app.use(express.urlencoded({ extended: false }))
