@@ -27,8 +27,8 @@ export default {
     background-color: #fff;
     border-top: solid 1px #ededed;
     margin-top: 5em;
-    justify-content: space-around;
-    padding: .7em 0em;
+    justify-content: space-between;
+    padding: 0.7em 16.5em;
 }
 .footer__content {
     text-align: center;
