@@ -7,9 +7,9 @@
 ### URL : 'user/register'
 * METHOD : POST
 * BODY : {
-    * username : Olivia Jaco
-    * email : "Olivia@jaco.com"
-    * password : "bethebest"
+    * username : ""
+    * email : ""
+    * password : ""
 }
 * AUTHENTICATION : NO
 * RESPONSE STATUS : 201
@@ -34,8 +34,8 @@
 ### URL : '/login'
 * METHOD : POST
 * BODY : {
-    * email : "olivia@jaco.com"
-    * password : "bethebest"
+    * email : ""
+    * password : ""
 }
 * AUTHENTICATION : NO
 * RESPONSE STATUS : 200
@@ -57,42 +57,32 @@
     }
     ```
 
-## List of item routes
-### URL : '/items'
+## List of questions routes
+### URL : '/questions'
 * METHOD : POST
+* HEADERS : < TOKEN >
 * BODY : {
-    * title : "Sweater Wool",
-    * description : "Bohemian Style",
-    * price : 800000,
-    * mainPage : true,
-    * kategori : Tops,
-    * stock : 24,
-    * image : bohoTops.png
+    * title : "",
+    * description : "",
     }
-* AUTHENTICATION : NO
+* AUTHENTICATION : YES
 * RESPONSE STATUS : 201
     ``` 
     OUTPUT : {
         title : "Sweater Wool",
-        description : "Bohemian Style",
-        price : 800000,
-        mainPage : true,
-        kategori : Tops,
-        stock : 24,
-        image : <url_link>
+        description : "",
+        upVotes : []
+        downVotes : [],
+        userId : "",
+        username : ""
     }
     ```
 * RESPONSE STATUS : 400
     ```
     OUTPUT : {
         _id : "knkn89797sg8jh9spjsa9obcaiscal7"
-        product validation : title : "Title is required",description : "Description is required",
-        price : "Pricec minimal : 1"
-        price : "Price is required",
-        kategori : "Kategori required",
-        stock : "Stock minimal : 1",
-        stock : "Stock required",
-        image : "Image required"
+        title validation : title : "Title is required",
+        description validation : "Description is required",
     }
     ```
 * RESPONSE STATUS : 500
@@ -102,20 +92,20 @@
     }
     ```'
 
-### URL : '/items'
+### URL : '/questions'
 * METHOD : GET
-* AUTHENTICATION : NO
+* AUTHENTICATION : YES
+* HEADERS : < TOKEN >
 * RESPONSE STATUS : 200
     ```
     OUTPUT : [{
-        _id : "knkn89797sg8jh9spjsa9obcaiscal7"      
-        title : "Sweater Wool",
-        description : "Bohemian Style",
-        price : 800000,
-        mainPage : true,
-        kategori : Tops,
-        stock : 24,
-        image : <url_link>,
+        _id : ""      
+        title : "",
+        description : "",
+        upVotes : []
+        downVotes : [],
+        userId : "",
+        username : ""
     }]
     ```
 * RESPONSE STATUS : 500
@@ -125,20 +115,20 @@
     }
     ```
 
-### URL : '/items/:id'
+### URL : '/questions/:id'
 * METHOD : GET
-* AUTHENTICATION : NO
+* AUTHENTICATION : YES
+* HEADERS : < TOKEN >
 * RESPONSE STATUS : 200
     ```
     OUTPUT : {
-        _id : "knkn89797sg8jh9spjsa9obcaiscal7"      
-        title : "Sweater Wool",
-        description : "Bohemian Style",
-        price : 800000,
-        mainPage : true,
-        kategori : Tops,
-        stock : 24,
-        image : <url_link>,
+        _id : ""      
+        title : "",
+        description : "",
+        upVotes : []
+        downVotes : [],
+        userId : "",
+        username : ""
     }
     ```
 * RESPONSE STATUS : 500
@@ -148,16 +138,24 @@
     }
     ```
 
-### URL : '/items/:id'
+### URL : '/questions/:id'
 * METHOD : PUT
-* AUTHENTICATION : NO
+* AUTHENTICATION : YES
+* HEADERS : < TOKEN >
 * BODY : {
-       tittle : "Afrixana Style Summer" 
+       title : "",
+       description : ""
     }
 * RESPONSE STATUS : 200
     ```
     OUTPUT : {
-        message : "Update successfully"
+        _id : ""      
+        title : "",
+        description : "",
+        upVotes : []
+        downVotes : [],
+        userId : "",
+        username : ""
     }
     ```
 * RESPONSE STATUS : 500
@@ -167,9 +165,10 @@
     }
     ```
 
-### URL : '/products/:id'
+### URL : '/questions/:id'
 * METHOD : DELETE
-* AUTHENTICATION : NO
+* AUTHENTICATION : YES
+* HEADERS : < TOKEN >
 * RESPONSE STATUS : 200
      ```
      OUTPUT : {
@@ -182,59 +181,19 @@
         message : "Internal server error"
     }
     ```
-
-## List of item routes
-### URL : '/cart'
-* METHOD : POST
-* AUTHENTICATION : YES
-* HEADERS : < TOKEN >
-* BODY : {
-        userId : "knkn89797sg8jh9spjsa9obcaiscal7",
-        itemId : _id,
-        title : "Sweater Wool",
-        description : "Afrixana style,
-        price : 100000, 
-        kategori : Tops,
-        image : < url_link >,
-        stock : 24
-}
-* RESPONSE STATUS : 201
-     ```
-     OUTPUT : {
-         _id : absjda89dsa7d9aba9-d0aoh
-        userId : "knkn89797sg8jh9spjsa9obcaiscal7",
-        itemId : _id,
-        title : "Sweater Wool",
-        description : "Afrixana style,
-        price : 100000, 
-        kategori : Tops,
-        image : < url_link >,
-        stock : 1"
-    }
-    ```
-* RESPONSE STATUS : 500 
-    ```
-    OUTPUT : {
-        message : "Internal server error"
-    }
-    ```
-### URL : '/cart'
+### URL : 'question/:questionId/answers'
 * METHOD : GET
 * AUTHENTICATION : YES
 * HEADERS : < TOKEN >
 * RESPONSE STATUS : 200
      ```
      OUTPUT : {
-         _id : absjda89dsa7d9aba9-d0aoh
-        userId : "knkn89797sg8jh9spjsa9obcaiscal7",
-        itemId : _id,
-        title : "Sweater Wool",
-        description : "Afrixana style,
-        price : 100000, 
-        kategori : Tops,
-        image : < url_link >,
-        stock : 1"
-    }
+         description : "",
+         questionId : "",
+         upVotes : [],
+         downVotes : [],
+         userId : "",
+         username : ""
     ```
 * RESPONSE STATUS : 500 
     ```
@@ -242,25 +201,42 @@
         message : "Internal server error"
     }
     ```
-### URL : '/cart'
-* METHOD : PUT
+### URL : '/questions/:id/upVotes'
+* METHOD : POST
 * AUTHENTICATION : YES
 * HEADERS : < TOKEN >
-* BODY : {
-        quantity : 2
-    }
 * RESPONSE STATUS : 200
      ```
      OUTPUT : [{
          _id : absjda89dsa7d9aba9-d0aoh
-        userId : "knkn89797sg8jh9spjsa9obcaiscal7",
-        itemId : _id,
-        title : "Sweater Wool",
-        description : "Afrixana style,
-        price : 100000, 
-        kategori : Tops,
-        image : < url_link >,
-        stock : 1"
+        description : "",
+        questionId : "",
+        upVotes : [],
+        downVotes : [],
+        userId : "",
+        username : ""
+    }]
+    ```
+* RESPONSE STATUS : 500 
+    ```
+    OUTPUT : {
+        message : "Internal server error"
+    }
+    ```
+### URL : '/questions/:id/downVotes'
+* METHOD : POST
+* AUTHENTICATION : YES
+* HEADERS : < TOKEN >
+* RESPONSE STATUS : 200
+     ```
+     OUTPUT : [{
+         _id : absjda89dsa7d9aba9-d0aoh
+        description : "",
+        questionId : "",
+        upVotes : [],
+        downVotes : [],
+        userId : "",
+        username : ""
     }]
     ```
 * RESPONSE STATUS : 500 
@@ -270,24 +246,25 @@
     }
     ```
 
-### URL : '/cart'
-* METHOD : DELETE
+## List of answer routes
+### URL : '/answers'
+* METHOD : POST
 * AUTHENTICATION : YES
 * HEADERS : < TOKEN >
-* RESPONSE STATUS : 200
+* BODY : {
+        description : "",
+}
+* RESPONSE STATUS : 201
      ```
-     OUTPUT : [{
-         _id : absjda89dsa7d9aba9-d0aoh
-        userId : "knkn89797sg8jh9spjsa9obcaiscal7",
-        itemId : _id,
-        title : "Sweater Wool",
-        description : "Afrixana style,
-        price : 100000, 
-        kategori : Tops,
-        image : < url_link >,
-        stock : 1"
-    }]
-vue.a
+     OUTPUT : {
+        _id : absjda89dsa7d9aba9-d0aoh
+        description : "",
+        questionId : "",
+        upVotes : [],
+        downVotes : [],
+        userId : "",
+        username : ""
+    }
     ```
 * RESPONSE STATUS : 500 
     ```
@@ -295,19 +272,113 @@ vue.a
         message : "Internal server error"
     }
     ```
-    
-## List Transaction
-### URL : '/transaction'
+### URL : '/answers/:id'
+* METHOD : GET
+* AUTHENTICATION : YES
+* HEADERS : < TOKEN >
+* RESPONSE STATUS : 200
+     ```
+     OUTPUT : {
+        _id : absjda89dsa7d9aba9-d0aoh
+        description : "",
+        questionId : "",
+        upVotes : [],
+        downVotes : [],
+        userId : "",
+        username : ""
+    }
+    ```
+* RESPONSE STATUS : 500 
+    ```
+    OUTPUT : {
+        message : "Internal server error"
+    }
+    ```
+### URL : '/answers/:id'
+* METHOD : PUT
+* AUTHENTICATION : YES
+* HEADERS : < TOKEN >
+* BODY : {
+        description : ""
+    }
+* RESPONSE STATUS : 200
+     ```
+     OUTPUT : [{
+        _id : absjda89dsa7d9aba9-d0aoh
+        description : "",
+        questionId : "",
+        upVotes : [],
+        downVotes : [],
+        userId : "",
+        username : ""
+    }]
+    ```
+* RESPONSE STATUS : 500 
+    ```
+    OUTPUT : {
+        message : "Internal server error"
+    }
+    ```
+
+### URL : '/answers/:id'
 * METHOD : DELETE
-* AUTHENTICATION : POST
+* AUTHENTICATION : YES
 * HEADERS : < TOKEN >
 * RESPONSE STATUS : 200
      ```
      OUTPUT : [{
          _id : absjda89dsa7d9aba9-d0aoh
-        cart => {}
+        description : "",
+        questionId : "",
+        upVotes : [],
+        downVotes : [],
+        userId : "",
+        username : ""
     }]
-vue.reef
+    ```
+* RESPONSE STATUS : 500 
+    ```
+    OUTPUT : {
+        message : "Internal server error"
+    }
+    ```
+### URL : '/answers/:id/upVotes'
+* METHOD : POST
+* AUTHENTICATION : YES
+* HEADERS : < TOKEN >
+* RESPONSE STATUS : 200
+     ```
+     OUTPUT : [{
+         _id : absjda89dsa7d9aba9-d0aoh
+        description : "",
+        questionId : "",
+        upVotes : [],
+        downVotes : [],
+        userId : "",
+        username : ""
+    }]
+    ```
+* RESPONSE STATUS : 500 
+    ```
+    OUTPUT : {
+        message : "Internal server error"
+    }
+    ```
+### URL : '/answers/:id/downVotes'
+* METHOD : POST
+* AUTHENTICATION : YES
+* HEADERS : < TOKEN >
+* RESPONSE STATUS : 200
+     ```
+     OUTPUT : [{
+         _id : absjda89dsa7d9aba9-d0aoh
+        description : "",
+        questionId : "",
+        upVotes : [],
+        downVotes : [],
+        userId : "",
+        username : ""
+    }]
     ```
 * RESPONSE STATUS : 500 
     ```
