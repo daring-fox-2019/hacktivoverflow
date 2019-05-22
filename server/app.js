@@ -7,9 +7,10 @@ const cors = require('cors')
 const routes = require('./routes')
 
 const app = express()
-const PORT = 3000
+const PORT = process.env.PORT
+const MONGODB_URI = process.env.MONGODB_URI
 
-mongoose.connect('mongodb://localhost:27017/hacktivoverflow', {
+mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true
 })
 
