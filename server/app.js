@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const routes = require('./routes')
 const morgan = require('morgan')
 const errorHandling = require('./middlewares/errorHandling')
+const kue = require('kue');
 
 app.use(morgan('tiny'))
 app.use(cors())
@@ -31,4 +32,5 @@ app.listen(process.env.PORT, ( err )=> {
    console.log(`listen on port ${process.env.PORT}`)
 })
 
-module.exports = app
+kue.app.listen(process.env.PORT_KUE)
+

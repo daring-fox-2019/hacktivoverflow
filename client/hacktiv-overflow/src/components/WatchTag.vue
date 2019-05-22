@@ -57,6 +57,7 @@
 <script>
 import VueTagsInput from "@johmun/vue-tags-input";
 import axios from "@/database/axios";
+import { mapState } from 'vuex';
 
 export default {
   data() {
@@ -75,6 +76,9 @@ export default {
     inputTag() {
       this.getSuggestTag();
     }
+  },
+  computed:{
+    ...mapState(['isLogin'])
   },
   components: {
     VueTagsInput
@@ -100,30 +104,34 @@ export default {
       this.mode = !this.mode;
     },
     updateTag(removetag) {
-      if (typeof removetag == "string" || this.optionsTag.length != 0) {
-        if(typeof removetag != "string"){
-          removetag = null
-        }
-        axios
-          .patch(
-            "/users",
-            { tag: this.inputTag, removetag },
-            { headers: { token: localStorage.getItem("token") } }
-          )
-          .then(({ data }) => {
-            this.inputTag = "";
+      if(this.isLogin){
+        if (typeof removetag == "string" || this.optionsTag.length != 0) {
+          if(typeof removetag != "string"){
+            removetag = null
+          }
+          axios
+            .patch(
+              "/users",
+              { tag: this.inputTag, removetag },
+              { headers: { token: localStorage.getItem("token") } }
+            )
+            .then(({ data }) => {
+              this.inputTag = "";
 
-            let newTags = [];
-            data.tags.map(el => {
-              newTags.push({ text: el, tiClasses: ["ti-valid"] });
+              let newTags = [];
+              data.tags.map(el => {
+                newTags.push({ text: el, tiClasses: ["ti-valid"] });
+              });
+              this.tags = newTags;
+            })
+            .catch(err => {
+              this.$swal(":(", `${err.response.data.message}`, "error");
             });
-            this.tags = newTags;
-          })
-          .catch(err => {
-            this.$swal(":(", `${err.response.data.message}`, "error");
-          });
-      } else if (this.optionsTag.length == 0) {
-        this.$swal(":(", `not valid tag, choose wisely`, "error");
+        } else if (this.optionsTag.length == 0) {
+          this.$swal(":(", `not valid tag, choose wisely`, "error");
+        }
+      } else {
+        this.$swal(`Login First`,'', "info");
       }
     },
     getSuggestTag() {

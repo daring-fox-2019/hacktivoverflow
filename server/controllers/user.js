@@ -3,10 +3,28 @@ const Helper = require('../helpers/helper')
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(process.env.CLIENT_ID_GOOGLE);
 
+const {transporter, mailOptions} = require('../helpers/nodemailer')
+
+const kue = require('kue');
+const queue = kue.createQueue();
+
+queue.process('send_email', (job, done) => {
+    mailOptions.to = job.data.to
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if(error)
+            { return console.log( error ); }
+        else
+            { done() }      
+     }); 
+});
+
 class User {
     static create( req, res, next ){
         const { name, email, password } = req.body
         const tags = []
+
+        queue.create('send_email', { to:email }).priority('high').attempts(5).save();
 
         userModel.create( { name, email, password, tags})
         .then( data => {

@@ -93,6 +93,7 @@ export default {
           this.$swal(';D', 'Register Success', 'success');
         })
         .catch((err) => {
+          //console.log(err)
           this.$swal('Oppps...', `${err.response.data.message}`, 'error');
         });
     },
