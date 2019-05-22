@@ -26,6 +26,7 @@ module.exports = {
   },
 
   authorization: function(req, res, next) {
+    console.log("kesini")
     Question.findById(req.params.id)
       .then((question) => {
         if (String(question.userId) === req.authenticatedUser.id) {

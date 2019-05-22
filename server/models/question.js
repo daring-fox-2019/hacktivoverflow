@@ -20,11 +20,16 @@ const questionSchema = new Schema({
   }],
   tags: [{
     type: String,
+    required: [true, "Tags is required"],
   }],
   userId: {
     type: Schema.Types.ObjectId,
     ref: "User",
-  }
+  },
+  answers: [{
+    type: Schema.Types.ObjectId,
+    ref: "Answer",
+  }]
 }, {
   timestamps: true,
 });

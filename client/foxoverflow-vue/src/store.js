@@ -12,7 +12,8 @@ export default new Vuex.Store({
     allUserQuestions: [],
     currentQuestion: {},
     fullName: "",
-    currentPage: "Home",
+    currentPage: "FoxOverflow",
+    keyword: "",
   },
   mutations: {
     login (state) {
@@ -38,6 +39,9 @@ export default new Vuex.Store({
     },
     setCurrentPage(state, payload) {
       state.currentPage = payload;
+    },
+    updateKeyword(state, payload) {
+      state.keyword = payload;
     }
   },
   actions: {
@@ -68,34 +72,22 @@ export default new Vuex.Store({
           console.log(err);
         });
     },
-    // getCurrentItem(context, id) {
-    //   axios({
-    //     method: "GET",
-    //     url: `/items/${id}`,
-    //   })
-    //     .then(({ data }) => {
-    //       console.log(data);
-    //       context.commit("setCurrentItem", data);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // },
-    // deleteItem(context, id) {
-    //   axios({
-    //     method: "DELETE",
-    //     url: `/items/${id}`,
-    //   })
-    //     .then(({ data }) => {
-    //       console.log(data);
-    //       this.test();
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // },
-    // test(context) {
-    //   console.log("invoked")
-    // }
+    getCurrentQuestion(context, id) {
+      axios({
+        method: "GET",
+        url: `/questions/${id}`,
+      })
+        .then(({ data }) => {
+          console.log(data);
+          context.commit("setCurrentQuestion", data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    test(context) {
+      console.log("invoked")
+    }
   }
 })

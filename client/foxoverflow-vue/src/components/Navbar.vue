@@ -13,7 +13,7 @@
       </router-link>
     </v-toolbar-title>
     <div style="width: 50%;">
-      <v-text-field solo label="Search..." append-icon="search"></v-text-field>
+      <v-text-field solo label="Search..." append-icon="search" v-model="keyword"></v-text-field>
     </div>
 
     <div>
@@ -38,7 +38,10 @@
           <v-btn style="background-color: white; color: #BF360C;" v-on="on">
             <i class="fas fa-user mr-2"></i>
             {{ fullName }}
-            <i class="material-icons" style="margin-right: -0.7rem;">arrow_drop_down</i>
+            <i
+              class="material-icons"
+              style="margin-right: -0.7rem;"
+            >arrow_drop_down</i>
           </v-btn>
         </template>
         <v-list>
@@ -58,7 +61,9 @@ import { mapState } from "vuex";
 
 export default {
   data() {
-    return {};
+    return {
+      keyword: ""
+    };
   },
   created() {
     if (localStorage.token) {
@@ -77,6 +82,11 @@ export default {
       sessionStorage.clear();
       this.$store.commit("logout");
       this.$router.push("/");
+    }
+  },
+  watch: {
+    keyword(value) {
+      this.$store.commit("updateKeyword", value);
     }
   }
 };

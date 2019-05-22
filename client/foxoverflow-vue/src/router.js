@@ -1,9 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import Login from "./views/Login.vue"
-import Register from "./views/Register.vue"
-import AddQuestion from "./views/AddQuestion.vue"
 
 Vue.use(Router)
 
@@ -17,8 +14,8 @@ export default new Router({
       component: Home
     },
     {
-      path: '/browse',
-      name: 'browse',
+      path: '/foxoverflow',
+      name: 'foxoverflow',
       component: Home
     },
     {
@@ -34,12 +31,17 @@ export default new Router({
     {
       path: "/questions/add",
       name: "add question",
-      component: AddQuestion
+      component: () => import(/* webpackChunkName: "AddQuestion" */ './views/AddQuestion.vue')
     },
     {
       path: "/questions/:id",
       name: "question",
-      component: AddQuestion
+      component: () => import(/* webpackChunkName: "ViewQuestion" */ './views/ViewQuestion.vue')
+    },
+    {
+      path: "/questions/:id/edit",
+      name: "edit question",
+      component: () => import(/* webpackChunkName: "EditQuestion" */ './views/EditQuestion.vue')
     },
     {
       path: '/about',
@@ -52,12 +54,12 @@ export default new Router({
     {
       path: "/login",
       name: "login",
-      component: Login
+      component: () => import(/* webpackChunkName: "login" */ './views/ViewLogin.vue')
     },
     {
       path: "/register",
       name: "register",
-      component: Register
+      component: () => import(/* webpackChunkName: "register" */ './views/ViewRegister.vue')
     }
   ]
 })

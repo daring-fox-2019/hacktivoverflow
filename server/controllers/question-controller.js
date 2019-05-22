@@ -4,7 +4,7 @@ class QuestionController {
   static getQuestions(req, res, next) {
     console.log("getQuestions");
     
-    Question.find()
+    Question.find().sort({ createdAt: -1 })
       .populate({ path: "userId", select: "fullName displayPicture"})
 
       .then((questions) => {
@@ -19,7 +19,7 @@ class QuestionController {
   static getUserQuestions(req, res, next) {
     console.log("getUserQuestions");
     
-    Question.find({ userId: req.authenticatedUser.id })
+    Question.find({ userId: req.authenticatedUser.id }).sort({ createdAt: -1 })
       .populate({ path: "userId", select: "fullName displayPicture"})
 
       .then((questions) => {
@@ -35,6 +35,7 @@ class QuestionController {
     console.log("getQuestion");
 
     Question.findOne({ _id: req.params.id })
+      .populate({ path: "userId", select: "fullName displayPicture"})
       .then((question) => {
         console.log("getQuestion success");
         res.status(200).json(question);
@@ -68,8 +69,8 @@ class QuestionController {
   static updateQuestion(req, res, next) {
     console.log("updateQuestion");
 
-    const { title, description} = req.body;
-    const updatedQuestion = { title, description};
+    const { title, description, tags } = req.body;
+    const updatedQuestion = { title, description, tags};
     const options = { new: true, useFindAndModify: false };
 
     Question.findByIdAndUpdate(req.params.id, updatedQuestion, options)

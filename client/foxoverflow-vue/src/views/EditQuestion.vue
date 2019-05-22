@@ -2,7 +2,7 @@
   <v-container
     style="width: 55%; background-color: white; border-radius: 5px; padding-left: 3rem; padding-right: 3rem; padding-bottom: 0.5rem; margin-top: 3%;"
   >
-    <v-form @submit.prevent="submitNewQuestion">
+    <v-form @submit.prevent="submitUpdateQuestion">
       <v-layout row wrap>
         <v-flex xs12 mb-3>
           <h4>Title:</h4>
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
 import axios from "@/api/axios";
 import Swal from "sweetalert2";
 
@@ -42,12 +43,19 @@ export default {
   data: () => ({
     title: "",
     description: "",
+    questionId: "",
     selectedTags: [],
   }),
-  computed: {
+  created() {
+    this.getCurrentQuestion(this.$route.params.id);  
+    this.title = this.currentQuestion.title;
+    this.description = this.currentQuestion.description;
+    this.selectedTags = this.currentQuestion.tags;
+    this.questionId = this.currentQuestion._id;
   },
   methods: {
-    submitNewQuestion() {
+    ...mapActions(["getCurrentQuestion"]),
+    submitUpdateQuestion() {
       const { title, description, selectedTags } = this;
       const questionData = { 
         title, 
@@ -56,8 +64,8 @@ export default {
       };
 
       axios({
-        method: "POST",
-        url: `/questions`,
+        method: "PUT",
+        url: `/questions/${this.questionId}`,
         data: questionData,
         headers: { token: localStorage.token }
       })
@@ -77,7 +85,7 @@ export default {
 
           Toast.fire({
             type: "success",
-            title: "Question posted"
+            title: "Question updated"
           });
         })
         .catch(err => {
@@ -97,6 +105,9 @@ export default {
           });
         });
     }
+  },
+  computed: {
+    ...mapState(["currentQuestion"])
   }
 };
 </script>

@@ -1,44 +1,40 @@
 <template>
-  <v-container
-    style="width: 40%; background-color: white; border-radius: 5px; padding-left: 3rem; padding-right: 3rem; padding-bottom: 0.5rem; margin-top: 3%;"
-  >
-    <v-form v-model="valid" @submit.prevent="loginFormSubmit">
-      <v-layout row wrap>
-        <v-flex xs12>
-          <v-text-field
-            v-model="email"
-            :rules="emailRules"
-            label="E-mail"
-            prepend-inner-icon="far fa-envelope"
-            required
-          ></v-text-field>
-        </v-flex>
+  <v-form v-model="valid" @submit.prevent="loginFormSubmit">
+    <v-layout row wrap>
+      <v-flex xs12>
+        <v-text-field
+          v-model="email"
+          :rules="emailRules"
+          label="E-mail"
+          prepend-inner-icon="far fa-envelope"
+          required
+        ></v-text-field>
+      </v-flex>
 
-        <v-flex xs12>
-          <v-text-field
-            v-model="password"
-            :rules="passwordRules"
-            label="Password"
-            prepend-inner-icon="fas fa-lock"
-            type="password"
-            required
-          >
-            <template v-slot:progress>
-              <v-progress-linear :value="progress" :color="color" height="7"></v-progress-linear>
-            </template>
-          </v-text-field>
-        </v-flex>
-
-      </v-layout>
-      <v-btn block color="success" class="mt-3" type="submit">Log In</v-btn>
-      <v-btn block color="error" class="mt-2" flat to="/">Cancel</v-btn>
-    </v-form>
-  </v-container>
+      <v-flex xs12>
+        <v-text-field
+          v-model="password"
+          :rules="passwordRules"
+          label="Password"
+          prepend-inner-icon="fas fa-lock"
+          type="password"
+          required
+        >
+          <template v-slot:progress>
+            <v-progress-linear :value="progress" :color="color" height="7"></v-progress-linear>
+          </template>
+        </v-text-field>
+      </v-flex>
+    </v-layout>
+    <v-btn block color="success" class="mt-3" type="submit">Log In</v-btn>
+    <v-btn block color="error" class="mt-2" flat to="/">Cancel</v-btn>
+  </v-form>
 </template>
 
 <script>
 import axios from "@/api/axios";
 import Swal from "sweetalert2";
+import { mapActions } from "vuex";
 
 export default {
   data: () => ({
@@ -46,7 +42,7 @@ export default {
     password: "",
     valid: false,
     emailRules: [v => !!v || "E-mail is required"],
-    passwordRules: [ v => !!v || "Password is required"]
+    passwordRules: [v => !!v || "Password is required"]
   }),
   computed: {
     progress() {
@@ -57,6 +53,8 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["getUserQuestions"]),
+
     loginFormSubmit(evt) {
       evt.preventDefault();
 
@@ -77,6 +75,7 @@ export default {
           localStorage.fullName = data.fullName;
           localStorage.displayPicture = data.displayPicture;
 
+          this.getUserQuestions();
           this.email = "";
           this.password = "";
           this.$store.commit("login");

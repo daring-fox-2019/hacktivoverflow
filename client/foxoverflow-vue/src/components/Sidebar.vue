@@ -26,8 +26,8 @@ export default {
   data() {
     return {
       items: [
+        { title: "FoxOverflow", icon: "fas fa-globe-americas" },
         { title: "Home", icon: "fas fa-home" },
-        { title: "Browse", icon: "fas fa-lock" },
         { title: "Tags", icon: "fas fa-tags" },
         { title: "Users", icon: "fas fa-user-friends" }
       ],
