@@ -1,5 +1,4 @@
 const Question = require('../models/Question')
-var CronJob = require('cron').CronJob;
 const Axios = require('axios')
 
 class QuestionController {
