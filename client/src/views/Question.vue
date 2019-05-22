@@ -13,7 +13,7 @@
           </a>
         </div>
         <div class="col-11">
-          <h1>{{ currentQuestion.title }}</h1>
+          <h1 v-html="currentQuestion.title"></h1>
           <br>
           <p v-html="currentQuestion.description"></p>
           <br>
@@ -93,18 +93,18 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-
+import { mapState } from "vuex";
+import Swal from "sweetalert2";
 export default {
   data() {
     return {
-      answer: '',
-      editedAnswer: '',
+      answer: "",
+      editedAnswer: ""
     };
   },
 
   computed: {
-    ...mapState(['isLogin', 'currentQuestion', 'user', 'answers']),
+    ...mapState(["isLogin", "currentQuestion", "user", "answers"])
   },
   created() {
     this.getQuestion();
@@ -112,28 +112,36 @@ export default {
   },
   methods: {
     getQuestion() {
-      this.$store.dispatch('getQuestion', this.$route.params.id);
+      this.$store.dispatch("getQuestion", this.$route.params.id);
     },
     getAnswers() {
-      this.$store.dispatch('getAnswers', this.$route.params.id);
+      this.$store.dispatch("getAnswers", this.$route.params.id);
     },
     toEditPage() {
       this.$router.push(`/askQuestion/${this.currentQuestion._id}`);
     },
     deleteQuestion() {
-      this.$store.dispatch('deleteQuestion', this.$route.params.id);
+      this.$store.dispatch("deleteQuestion", this.$route.params.id);
     },
     createAnswer() {
-      this.$store.dispatch('createAnswer', [
-        this.currentQuestion._id,
-        this.answer,
-      ]);
+      if (!localStorage.token) {
+        Swal.fire({
+          type: "error",
+          title: "Oops...",
+          text: "You must be logged in!"
+        });
+      } else {
+        this.$store.dispatch("createAnswer", [
+          this.currentQuestion._id,
+          this.answer
+        ]);
+      }
     },
     editAnswer(answerId) {
-      this.$store.dispatch('editAnswer', [answerId, this.editedAnswer]);
+      this.$store.dispatch("editAnswer", [answerId, this.editedAnswer]);
     },
     deleteAnswer(answerId) {
-      this.$store.dispatch('deleteAnswer', answerId);
+      this.$store.dispatch("deleteAnswer", answerId);
     },
     getText(text) {
       this.editedAnswer = text;
@@ -143,23 +151,51 @@ export default {
     },
     upvoteQuestion() {
       if (!localStorage.token) {
-        console.log('lala');
+        Swal.fire({
+          type: "error",
+          title: "Oops...",
+          text: "You must be logged in!"
+        });
       } else {
-        this.$store.dispatch('upvoteQuestion');
+        this.$store.dispatch("upvoteQuestion");
       }
     },
     downvoteQuestion() {
-      this.$store.dispatch('downvoteQuestion');
+      if (!localStorage.token) {
+        Swal.fire({
+          type: "error",
+          title: "Oops...",
+          text: "You must be logged in!"
+        });
+      } else {
+        this.$store.dispatch("downvoteQuestion");
+      }
     },
     upvoteAnswer(id) {
-      this.getAnswers();
-      this.$store.dispatch('upvoteAnswer', id);
+      if (!localStorage.token) {
+        Swal.fire({
+          type: "error",
+          title: "Oops...",
+          text: "You must be logged in!"
+        });
+      } else {
+        this.getAnswers();
+        this.$store.dispatch("upvoteAnswer", id);
+      }
     },
     downvoteAnswer(id) {
-      this.getAnswers();
-      this.$store.dispatch('downvoteAnswer', id);
-    },
-  },
+      if (!localStorage.token) {
+        Swal.fire({
+          type: "error",
+          title: "Oops...",
+          text: "You must be logged in!"
+        });
+      } else {
+        this.getAnswers();
+        this.$store.dispatch("downvoteAnswer", id);
+      }
+    }
+  }
 };
 </script>
 

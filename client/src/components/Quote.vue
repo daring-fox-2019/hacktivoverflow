@@ -14,12 +14,13 @@
 
 
 <script>
-import myServer from '@/api/myServer';
+import myServer from "@/api/myServer";
+import Swal from "sweetalert2";
 
 export default {
   data() {
     return {
-      randomQuestion: '',
+      randomQuestion: ""
     };
   },
   created() {
@@ -27,32 +28,40 @@ export default {
   },
   methods: {
     askQuestion() {
-      const form = {};
-      form.title = this.randomQuestion;
-      form.description = '';
-      this.$store.dispatch('createQuestion', form);
+      if (localStorage.token) {
+        const form = {};
+        form.title = this.randomQuestion;
+        form.description = "";
+        this.$store.dispatch("createQuestion", form);
+      } else {
+        Swal.fire({
+          type: "error",
+          title: "Oops...",
+          text: "You must be logged in!",
+        });
+      }
     },
 
     getRandomQuestion() {
-      const { CronJob } = require('cron');
+      const { CronJob } = require("cron");
       new CronJob(
-        '*/15 * * * * *',
+        "*/15 * * * * *",
         () => {
           myServer
-            .get('/question/random')
+            .get("/question/random")
             .then(({ data }) => {
               this.randomQuestion = data.results[0].question;
             })
-            .catch((err) => {
+            .catch(err => {
               console.log(err);
             });
         },
         null,
         true,
-        'America/Los_Angeles',
+        "America/Los_Angeles"
       );
-    },
-  },
+    }
+  }
 };
 </script>
 

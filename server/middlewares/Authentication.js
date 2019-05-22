@@ -9,6 +9,7 @@ module.exports = (req, res, next) => {
                 if (user) {
                     next()
                 } else {
+                    console.log(`unauth?`);
                     res.status(401).json("Unautheticated")
                 }
             })

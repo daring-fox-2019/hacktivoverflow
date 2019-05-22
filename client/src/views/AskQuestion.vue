@@ -10,8 +10,8 @@
         <label>Description:</label>
         <wysiwyg v-model="questionForm.description"/>
         <br>
-        <button @click="createQuestion" v-if="!this.$route.params.id" type="submit" class="btn btn-warning">Submit question</button>
-        <button @click="editQuestion" v-if="this.$route.params.id" type="submit" class="btn btn-warning">Edit question</button>
+        <button @click.prevent="createQuestion" v-if="!this.$route.params.id" type="submit" class="btn btn-warning">Submit question</button>
+        <button @click.prevent="editQuestion" v-if="this.$route.params.id" type="submit" class="btn btn-warning">Edit question</button>
       </form>
     </div>
   </div>

@@ -18,7 +18,7 @@
             <h3>{{ question.upvotes.length - question.downvotes.length }}</h3>
           </div>
           <div class="col-10">
-            <h3>{{ question.title}}</h3>
+            <h3 v-html="question.title"></h3>
           </div>
           <div class="">
             <p>By: {{ question.user.username }}</p>

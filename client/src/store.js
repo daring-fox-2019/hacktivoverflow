@@ -65,36 +65,26 @@ export default new Vuex.Store({
     },
 
     upvoteAnswer(state, answer) {
-      console.log('before');
-      console.log(state.answers);
       for (let i = 0; i < state.answers.length; i++) {
         if (state.answers[i]._id === answer._id) {
-          console.log('ada yg sama kok');
           state.answers[i] = answer;
         }
       }
-      console.log('after');
-      console.log(state.answers);
     },
 
     downvoteAnswer(state, answer) {
-      console.log('before');
-      console.log(state.answers);
       for (let i = 0; i < state.answers.length; i++) {
         if (state.answers[i]._id === answer._id) {
           console.log('ada yg sama kok');
           state.answers[i] = answer;
         }
       }
-      console.log('after');
-      console.log(state.answers);
     },
 
     editQuestion(state, question) {
-      state.allQuestions = state.allQuestions.map((el) => {
-        if (el._id === question._id) el = question;
-      });
-      // Router.push('/');
+      for(let i = 0; i < state.allQuestions.length ; i++){
+        if(state.allQuestions[i]._id == question._id)  state.allQuestions[i] = question
+      }
       Router.push(`/question/${question._id}`)
     },
 
@@ -181,6 +171,7 @@ export default new Vuex.Store({
     },
 
     editQuestion(context, [id, form]) {
+      myServer.defaults.headers.common.token = localStorage.token;
       myServer
         .patch(`/question/${id}`, form)
         .then(({ data }) => {
@@ -214,6 +205,7 @@ export default new Vuex.Store({
     },
 
     deleteQuestion(context, id) {
+      myServer.defaults.headers.common.token = localStorage.token;
       myServer
         .delete(`/question/${id}`)
         .then(({ data }) => {
@@ -238,6 +230,7 @@ export default new Vuex.Store({
     },
 
     editAnswer(context, [answerId, editedAnswer]) {
+      myServer.defaults.headers.common.token = localStorage.token;
       myServer
         .patch(`/answer/${answerId}`, editedAnswer)
         .then(({ data }) => {
@@ -249,6 +242,7 @@ export default new Vuex.Store({
     },
 
     deleteAnswer(context, answerId) {
+      myServer.defaults.headers.common.token = localStorage.token;
       myServer
         .delete(`/answer/${answerId}`)
         .then(({ data }) => {
