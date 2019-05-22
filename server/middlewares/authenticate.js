@@ -5,7 +5,6 @@ module.exports = function(req, res, next) {
     if(req.headers.authorization) {
         let payload, email
         try {
-            console.log(req.headers.authorization);
             payload = jwt.verify(req.headers.authorization)
             email = payload.email
             User.findOne({email: email})

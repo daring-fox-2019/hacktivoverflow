@@ -19,6 +19,9 @@ export default {
     components: {
         QuestionsList,
         WatchedTags,
+    },
+    mounted() {
+        this.$store.dispatch('getUser');
     }
 }
 </script>

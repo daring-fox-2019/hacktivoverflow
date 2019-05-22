@@ -186,7 +186,6 @@ export default new Vuex.Store({
         .then(({
           data,
         }) => {
-          console.log(data);
           context.commit('setQuestion', data);
         })
         .catch((err) => {
@@ -194,7 +193,16 @@ export default new Vuex.Store({
         });
     },
     getTags(context) {
-      return backend.get(`${process.env.VUE_APP_SERVER_URL}/tags`);
+      return backend.get(`${process.env.VUE_APP_SERVER_URL}/tags`)
+        .then(({ data }) => {
+          context.commit('setTags', data);
+        })
+        .catch((err) => {
+          if (err.response) {
+            err = err.response.data;
+          }
+          console.log(err)
+        });
     },
   },
 });

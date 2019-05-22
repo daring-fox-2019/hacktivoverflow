@@ -2,6 +2,8 @@ const {
     OAuth2Client
 } = require('google-auth-library')
 const User = require('../models/user')
+const Tag  = require('../models/tag')
+
 const {
     comparePassword
 } = require('../helpers/hash')
@@ -11,7 +13,6 @@ const linkedinRequestAuth = `https://www.linkedin.com/oauth/v2/accessToken`
 const kue = require('kue'),
     queue = kue.createQueue()
 const mailer = require('../helpers/sendEmail')
-
 queue.process('welcome-email', function (job, done) {
     console.log('processing kue ---\n', job.data);
     mailer(job.data, done);
@@ -397,10 +398,39 @@ class AuthController {
     }
 
     static addWatchTag(req, res) {
+        let tagname = req.params.name
+
+        Tag.findOne({name: tagname})
+            .then(found => {
+                User.findOneAndUpdate({_id: req.user._id}, {$push: {tags: found._id}}, {new: true})
+                    .populate('tags')
+                    .then(user => {
+                        res.status(200).json(found)
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(500).json(err.message);
+                    })
+            })
 
     }
     static removeWatchTag(req, res) {
-
+        Tag.findOne({name: req.params.name})
+            .then(found => {
+                User.findOneAndUpdate({_id: req.user._id}, {$pull: {tags: found._id}}, {new: true})
+                    .populate('tags')
+                    .then(user => {
+                        res.status(200).json(found)
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(500).json(err.message);
+                    })
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(500).json(err.message);
+                })              
     }
 }
 

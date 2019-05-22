@@ -16,33 +16,38 @@
       </v-layout>
       <v-layout column pa-2>
         <v-layout wrap pa-2>
-          <div v-if="!editMode">
-            <v-chip small v-for="(tag,i) in watched" :key="i" color="blue lighten-4">
+          <div>
+            <v-chip
+              close
+              small
+              v-for="(tag,i) in watchedTags"
+              :key="i"
+              color="blue lighten-4"
+              @input="removeWatchTag(tag)"
+            >
               <a class="tag" v-bind:href="'questions/tagged/' + tag.name">{{tag.name}}</a>
             </v-chip>
           </div>
-          <div v-if="editMode"></div>
         </v-layout>
-        <v-form pa-2>
+        <v-layout v-if="editMode" column>
           <v-autocomplete
-            v-model="watchedTags"
+            small-chips
+            v-model="selection"
             :items="availableTags"
             box
-            chips
             color="blue-grey lighten-4"
             item-text="name"
-            item-value="name"
-            multiple
+            dense
             class="autocomplete"
           >
             <template v-slot:selection="data">
               <v-chip
                 :selected="data.selected"
                 close
+                class="chip--select-multi"
                 color="blue lighten-4"
-                class="chip--select-multi tagBtn"
                 @input="remove(data.item)"
-              >{{ data.name }}</v-chip>
+              >{{ data.item.name }}</v-chip>
             </template>
             <template v-slot:item="data">
               <template>
@@ -52,7 +57,8 @@
               </template>
             </template>
           </v-autocomplete>
-        </v-form>
+          <v-btn type="button" color="orange darken-4" dark @click="addWatchTag">Add Watch Tag</v-btn>
+        </v-layout>
       </v-layout>
     </v-layout>
   </v-card>
@@ -63,32 +69,71 @@ import http from "@/api/http";
 export default {
   data() {
     return {
-      watched: [],
-      editMode: false,
+      selection: "",
       watchedTags: [],
+      editMode: false,
+      newTag: "",
       availableTags: []
     };
   },
   methods: {
     remove(item) {
-      const index = this.friends.indexOf(item.name);
-      if (index >= 0) this.friends.splice(index, 1);
+      this.selection = "";
+    },
+    removeWatchTag(tag) {
+      http
+        .delete("/auth/user/removetag/" + tag.name, {
+          headers: {
+            Authorization: localStorage.getItem("hackflow_token")
+          }
+        })
+        .then(({ data }) => {
+          swal.fire("Success", "Tag has been removed", "success");
+          this.watchedTags = this.watchedTags.filter(x => x.name !== data.name);
+        })
+        .catch(err => {
+          console.log(err);
+          if (err.response) {
+            err = err.response.data;
+          }
+          swal.fire("Error", err.toString(), "error");
+        });
+    },
+    addWatchTag(tag) {
+      http
+        .patch("/auth/user/addtag/" + this.selection, {}, {
+          headers: {
+            Authorization: localStorage.getItem("hackflow_token")
+          }
+        })
+        .then(({ data }) => {
+          swal.fire("Success", "Tag has been added", "success");
+          this.selection = "";
+          this.watchedTags.push(data)
+        })
+        .catch(err => {
+          console.log(err);
+          if (err.response) {
+            err = err.response.data;
+          }
+          swal.fire("Error", err.toString(), "error");
+        });
     }
   },
   mounted() {
-    this.watchedTags = { ...this.$store.state.user.tags };
-    this.$store
-      .dispatch("getTags")
+    http
+      .get("tags")
       .then(({ data }) => {
-        console.log(`tags arrived..`, data);
-        this.$store.commit('setTags', data);
+        this.$store.commit("setTags", data);
         this.availableTags = data;
+        this.watchedTags = [ ...this.$store.state.user.tags ];
       })
       .catch(err => {
-        if(err.response) {
+        console.log(err);
+        if (err.response) {
           err = err.response.data;
         }
-        swal.fire('Error', err, 'error')
+        swal.fire("Error", err, "error");
       });
   }
 };
@@ -96,8 +141,9 @@ export default {
 <style scoped>
 .watchedPanel {
   min-width: 300px;
-  max-height: 300px;
+  height: auto;
   overflow-y: scroll;
+  margin-bottom: auto;
 }
 .titleTag {
   color: rgb(114, 111, 111);
@@ -114,11 +160,14 @@ export default {
 }
 
 .autocomplete {
-  font-size: 0.6em;
+  font-size: 1em;
 }
 
 .tagBtn {
   font-size: 10px;
+}
+.tag {
+  text-decoration: none;
 }
 </style>
 

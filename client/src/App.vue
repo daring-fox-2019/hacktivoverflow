@@ -56,11 +56,12 @@ export default {
   components: {
     Sidebar,
   },
-  created() {
+  mounted() {
     if(localStorage.getItem('hackflow_token')) {
-      this.$store.dispatch('getUser');
       this.$store.commit('setIsLogin', true)
     }
+    this.$store.dispatch('getUser');
+    this.$store.dispatch('getTags')
   },
   data () {
     return {
