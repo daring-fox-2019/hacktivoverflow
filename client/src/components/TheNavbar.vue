@@ -10,13 +10,24 @@
       <div class="navbar-menu">
         <div class="navbar-end">
           <div class="navbar-item">
-            <div class="field">
-              <input
-                class="input"
-                type="text"
-                placeholder="Search questions"
-                v-model="search"
-              />
+            <div class="field has-addons">
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="Search questions"
+                  :value="searchQuery"
+                  @input="onInputQuery"
+                  @keyup.enter="$store.dispatch('question/search')"
+                  required
+                />
+              </div>
+              <div class="control">
+                <button
+                  class="button is-primary"
+                  @click="handleClickSearch"
+                >Go</button>
+              </div>
             </div>
           </div>
           <template v-if="$store.getters['auth/isLogin']">
@@ -57,10 +68,19 @@
 <script>
 export default {
   name: 'TheNavbar',
+  computed: {
+    searchQuery: (vm) => vm.$store.state.question.searchQuery
+  },
   methods: {
     handleClickLogout: function () {
       this.$store.commit('auth/CLEAR_AUTH')
       this.$router.push('/')
+    },
+    handleClickSearch: function () {
+      this.$store.dispatch('question/search')
+    },
+    onInputQuery: function (e) {
+      this.$store.commit('question/SET_QUERY', e.target.value)
     }
   }
 }

@@ -2,8 +2,16 @@ const QuestionModel = require('../models/Question')
 
 class Question {
   static findAll (req, res) {
+    let query = {}
+
+    if (req.query.q) {
+      query = {
+        tags: req.query.q
+      }
+    }
+
     QuestionModel
-      .find()
+      .find(query)
       .populate('author')
       .then(questions => res.status(200).json({ questions }))
       .catch(() => res.status(500).json({ message: 'Internal Server Error' }))

@@ -100,7 +100,7 @@ export default {
       let payload = {
         title: this.title,
         description: this.description,
-        tags: this.tags.map(tag => tag.text),
+        tags: this.tags.map(tag => tag.text)
       }
 
       this.$emit('submit', payload)

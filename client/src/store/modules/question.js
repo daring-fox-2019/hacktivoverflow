@@ -5,7 +5,8 @@ import types from '../mutation-types.js'
 
 const state = {
   all: [],
-  select: {}
+  select: {},
+  searchQuery: ''
 }
 
 const actions = {
@@ -63,6 +64,12 @@ const actions = {
       .votes(payload)
       .then(({ data }) => commit(types.UPDATE_ANSWER, data.answer))
       .catch(err => console.log(err))
+  },
+  search: ({ commit, state }) => {
+    question
+      .searchQuestions(state.searchQuery)
+      .then(({ data }) => commit(types.GET_QUESTIONS, data.questions))
+      .catch(err => console.log(err))
   }
 }
 
@@ -89,6 +96,9 @@ const mutations = {
   },
   [types.CLEAR_SELECT]: (state, payload) => {
     state.select = {}
+  },
+  [types.SET_QUERY]: (state, payload) => {
+    state.searchQuery = payload
   }
 }
 

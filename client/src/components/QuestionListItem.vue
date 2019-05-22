@@ -26,6 +26,7 @@
           class="tag is-danger mr8"
           v-for="(tag, index) in question.tags"
           :key="index"
+          @click="onClickTag(tag)"
         >{{tag}}</a>
       </div>
     </div>
@@ -49,6 +50,9 @@ export default {
     onClickQuestion: function () {
       this.$store.dispatch('question/getById', this.question._id)
       this.$router.push(`/questions/` + this.question._id)
+    },
+    onClickTag: function (tag) {
+      this.$store.dispatch('question/search', tag)
     }
   }
 }

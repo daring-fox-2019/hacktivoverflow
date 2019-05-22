@@ -22,7 +22,8 @@ class Auth {
           res.status(200).json({
             user: {
               _id: user._id,
-              email: user.email
+              email: user.email,
+              tags: user.tags
             },
             jwtToken
           })

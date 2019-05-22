@@ -10,10 +10,10 @@ export default {
   created: function () {
     if (localStorage.getItem('hacktivOverflow_auth')) {
       let auth = JSON.parse(localStorage.getItem('hacktivOverflow_auth'))
-      this.$store.commit('auth/SET_AUTH', {
-        user: auth.user,
+      this.$store.commit('auth/SET_TOKEN', {
         token: auth.jwtToken
       })
+      this.$store.dispatch('auth/getUser', auth.user._id)
     }
   }
 }

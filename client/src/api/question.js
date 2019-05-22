@@ -38,11 +38,16 @@ const votes = (payload) => {
   })
 }
 
+const searchQuestions = (payload) => {
+  return api.get(`/questions?q=${payload}`)
+}
+
 export default {
   fetchAll,
   fetchById,
   create,
   votes,
   update,
-  deleteQuestion
+  deleteQuestion,
+  searchQuestions
 }

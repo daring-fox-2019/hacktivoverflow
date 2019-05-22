@@ -37,6 +37,7 @@
                 class="tag is-danger is-medium mr8"
                 v-for="(tag, index) in question.tags"
                 :key="index"
+                @click="onClickTag(tag)"
               >{{tag}}</a>
             </div>
             <div
@@ -142,6 +143,7 @@ export default {
     }
   },
   computed: {
+    isLoggedIn: (vm) => vm.$store.getters['auth/isLogin'],
     question: (vm) => vm.$store.state.question.select,
     totalVotes: (vm) => vm.question.upvotes.length - vm.question.downvotes.length,
     isQuestionAuthor: (vm) => vm.question.author._id === vm.$store.state.auth.user._id,
@@ -150,14 +152,14 @@ export default {
       let hasUpvotes = this.question.upvotes
         .indexOf(this.$store.state.auth.user._id)
 
-      return !isAuthor && hasUpvotes === -1
+      return this.isLoggedIn && !isAuthor && hasUpvotes === -1
     },
     canDownvotesQuestion: function () {
       let isAuthor = this.$store.state.auth.user._id === this.question.author._id
       let hasDownvotes = this.question.downvotes
         .indexOf(this.$store.state.auth.user._id)
 
-      return !isAuthor && hasDownvotes === -1
+      return this.isLoggedIn && !isAuthor && hasDownvotes === -1
     }
   },
   created: function () {
@@ -176,55 +178,64 @@ export default {
       }
 
       this.$store.dispatch('question/addAnswer', payload)
+      this.description = ''
     },
     onClickUpvotesQuestion: function () {
-      let payload = {
-        votes: 'upvotes',
-        token : this.$store.state.auth.token,
-        questionId: this.question._id
+      if (this.isLoggedIn) {
+        let payload = {
+          votes: 'upvotes',
+          token : this.$store.state.auth.token,
+          questionId: this.question._id
+        }
+        this.$store.dispatch('question/addVotes', payload)
       }
-      this.$store.dispatch('question/addVotes', payload)
     },
     onClickDownvotesQuestion: function () {
-      let payload = {
-        votes: 'downvotes',
-        token: this.$store.state.auth.token,
-        questionId: this.question._id
+      if (this.isLoggedIn) {
+        let payload = {
+          votes: 'downvotes',
+          token: this.$store.state.auth.token,
+          questionId: this.question._id
+        }
+        this.$store.dispatch('question/addVotes', payload)
       }
-      this.$store.dispatch('question/addVotes', payload)
     },
     getAnswerTotalVotes: function (answer) {
       return answer.upvotes.length - answer.downvotes.length
     },
     onClickUpvotesAnswer: function (answerId) {
-      let payload = {
-        votes: 'upvotes',
-        token : this.$store.state.auth.token,
-        questionId: this.question._id,
-        answerId
+      if (this.isLoggedIn) {
+        let payload = {
+          votes: 'upvotes',
+          token : this.$store.state.auth.token,
+          questionId: this.question._id,
+          answerId
+        }
+        this.$store.dispatch('question/addAnswerVotes', payload)
       }
-      this.$store.dispatch('question/addAnswerVotes', payload)
     },
     onClickDownvotesAnswer: function (answerId) {
-      let payload = {
-        votes: 'downvotes',
-        token: this.$store.state.auth.token,
-        questionId: this.question._id,
-        answerId
+      if (this.isLoggedIn) {
+        let payload = {
+          votes: 'downvotes',
+          token: this.$store.state.auth.token,
+          questionId: this.question._id,
+          answerId
+        }
+        this.$store.dispatch('question/addAnswerVotes', payload)
       }
-      this.$store.dispatch('question/addAnswerVotes', payload)
     },
     canUpvotesAnswer: function (answer) {
       let isAuthor = this.$store.state.auth.user._id === answer.author._id
       let hasUpvotes = answer.upvotes.indexOf(this.$store.state.auth.user._id)
 
-      return !isAuthor && hasUpvotes === -1
+      return this.isLoggedIn && !isAuthor && hasUpvotes === -1
     },
     canDownvotesAnswer: function (answer) {
       let isAuthor = this.$store.state.auth.user._id === answer.author._id
       let hasDownvotes = answer.downvotes.indexOf(this.$store.state.auth.user._id)
 
-      return !isAuthor && hasDownvotes === -1
+      return this.isLoggedIn && !isAuthor && hasDownvotes === -1
     },
     onClickDeleteQuestion: function () {
       Swal.fire({
@@ -247,6 +258,29 @@ export default {
             .catch(err => console.log(err))
         }
       })
+    },
+    onClickTag: function (tag) {
+      if (this.isLoggedIn) {
+        if (this.$store.state.auth.user.tags.indexOf(tag) === -1) {
+          let payload = {
+            token: this.$store.state.auth.token,
+            tags: [...this.$store.state.auth.user.tags, tag]
+          }
+
+          this.$store.dispatch('auth/updateTags', payload)
+
+          Swal.fire({
+            type: 'success',
+            title: 'Tag added',
+            text: `Tag '${tag}' is added into your watched tags`
+          })
+        } else {
+          Swal.fire({
+            type: 'info',
+            text: 'You already watched this tag'
+          })
+        }
+      }
     }
   }
 }

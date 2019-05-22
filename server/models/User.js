@@ -7,7 +7,8 @@ const {
 
 const userSchema = mongoose.Schema({
   email: String,
-  password: String
+  password: String,
+  tags: [String]
 })
 
 userSchema.pre('save', function (next) {
