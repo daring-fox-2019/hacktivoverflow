@@ -7,9 +7,9 @@ const mongoose = require('mongoose');
 const cors = require('cors')
 const kue = require('kue')
 
+app.use(cors())
 mongoose.set('useFindAndModify', false);
-// mongoose.connect(process.env.MONGODB_CONNECTION_URL, {useNewUrlParser: true});
-mongoose.connect('mongodb://localhost/hacktivoverflow', {useNewUrlParser: true})
+mongoose.connect('mongodb+srv://admin:root@cluster0-r5gmo.gcp.mongodb.net/hijarvis?retryWrites=true', {useNewUrlParser: true})
 .then(function(success){
     console.log("succesfully connect to database")
 })
@@ -18,8 +18,6 @@ mongoose.connect('mongodb://localhost/hacktivoverflow', {useNewUrlParser: true})
 });
 
 app.use('/public',express.static('./public'))
-
-app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 

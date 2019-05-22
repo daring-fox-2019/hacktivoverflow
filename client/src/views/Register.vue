@@ -68,6 +68,7 @@ export default {
                 this.form={}
             })
             .catch(err => {
+                console.log(err);
                 Swal.fire({
                     type: 'error',
                     title: `${err.response.data.msg.message}`,

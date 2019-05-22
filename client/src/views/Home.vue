@@ -17,12 +17,18 @@
 // @ is an alias to /src
 import QuestionList from '@/components/QuestionList.vue'
 import Sidebar from '@/components/Sidebar.vue'
+import {mapState} from 'vuex'
 
 export default {
   name: 'home',
   components: {
     QuestionList,
     Sidebar
+  },
+  data() {
+    return {
+      questionLanding: []
+    }
   },
   methods: {
     goToCreateQuestion() {
@@ -36,11 +42,12 @@ export default {
   computed: {
     stateQuestion() {
       return this.$store.state.questions
-    }
+    },
+    ...mapState(['questions'])
   },
   watch: {
-    stateQuestion() {
-      return this.$store.state.questions
+    questions(val) {
+      this.stateQuestion = val
     }
   },
 }
