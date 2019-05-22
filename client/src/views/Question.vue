@@ -66,22 +66,22 @@
       <p v-html="answer.description"></p>
       <h5>By: {{ answer.user.username}}</h5>
 
-      <a href="#" @click="upvoteAnswer">
+      <a href="#" @click="upvoteAnswer(answer._id)">
         <i style="font-size: 30px;" class="fas fa-sort-up"></i>
       </a>
       <h4>{{ answer.upvotes.length - answer.downvotes.length }}</h4>
-      <a href="#" @click="downvoteAnswer">
+      <a href="#" @click="downvoteAnswer(answer._id)">
         <i style="font-size: 30px;" class="fas fa-sort-down"></i>
       </a>
 
       <button
         class="btn btn-warning"
         v-if="answer.user._id === user._id"
-        @click="toEditAnswer(answer._id)"
+        @click.prevent="toEditAnswer(answer._id)"
       >Edit</button>
 
       <button
-        @click="deleteAnswer(answer._id)"
+        @click.prevent="deleteAnswer(answer._id)"
         class="btn btn-danger"
         v-if="answer.user._id === user._id"
       >Delete</button>
@@ -90,18 +90,18 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 
 export default {
   data() {
     return {
-      answer: "",
-      editedAnswer: ""
+      answer: '',
+      editedAnswer: '',
     };
   },
 
   computed: {
-    ...mapState(["isLogin", "currentQuestion", "user", "answers"])
+    ...mapState(['isLogin', 'currentQuestion', 'user', 'answers']),
   },
   created() {
     this.getQuestion();
@@ -109,28 +109,28 @@ export default {
   },
   methods: {
     getQuestion() {
-      this.$store.dispatch("getQuestion", this.$route.params.id);
+      this.$store.dispatch('getQuestion', this.$route.params.id);
     },
     getAnswers() {
-      this.$store.dispatch("getAnswers", this.$route.params.id);
+      this.$store.dispatch('getAnswers', this.$route.params.id);
     },
     toEditPage() {
       this.$router.push(`/askQuestion/${this.currentQuestion._id}`);
     },
     deleteQuestion() {
-      this.$store.dispatch("deleteQuestion", this.$route.params.id);
+      this.$store.dispatch('deleteQuestion', this.$route.params.id);
     },
     createAnswer() {
-      this.$store.dispatch("createAnswer", [
+      this.$store.dispatch('createAnswer', [
         this.currentQuestion._id,
-        this.answer
+        this.answer,
       ]);
     },
     editAnswer(answerId) {
-      this.$store.dispatch("editAnswer", [answerId, this.editedAnswer]);
+      this.$store.dispatch('editAnswer', [answerId, this.editedAnswer]);
     },
     deleteAnswer(answerId) {
-      this.$store.dispatch("deleteAnswer", answerId);
+      this.$store.dispatch('deleteAnswer', answerId);
     },
     getText(text) {
       this.editedAnswer = text;
@@ -139,14 +139,20 @@ export default {
       this.$router.push(`/editAnswer/${answerId}`);
     },
     upvoteQuestion() {
-      this.$store.dispatch("upvoteQuestion");
+      this.$store.dispatch('upvoteQuestion');
     },
     downvoteQuestion() {
-      this.$store.dispatch("downvoteQuestion");
+      this.$store.dispatch('downvoteQuestion');
     },
-    upvoteAnswer() {},
-    downvoteAnswer() {}
-  }
+    upvoteAnswer(id) {
+      this.getAnswers();
+      this.$store.dispatch('upvoteAnswer', id);
+    },
+    downvoteAnswer(id) {
+      this.getAnswers();
+      this.$store.dispatch('downvoteAnswer', id);
+    },
+  },
 };
 </script>
 

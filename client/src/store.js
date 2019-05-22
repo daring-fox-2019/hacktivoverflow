@@ -27,19 +27,19 @@ export default new Vuex.Store({
     },
 
     upvoteQuestion(state, question) {
-      state.currentQuestion = question
+      state.currentQuestion = question;
       for (let i = 0; i < state.allQuestions.length; i++) {
         if (state.allQuestions[i]._id == question._id) {
-          state.allQuestions[i] = question
+          state.allQuestions[i] = question;
         }
       }
     },
 
     downvoteQuestion(state, question) {
-      state.currentQuestion = question
+      state.currentQuestion = question;
       for (let i = 0; i < state.allQuestions.length; i++) {
         if (state.allQuestions[i]._id == question._id) {
-          state.allQuestions[i] = question
+          state.allQuestions[i] = question;
         }
       }
     },
@@ -62,6 +62,32 @@ export default new Vuex.Store({
 
     deleteAnswer(state, answer) {
       state.answers = state.answers.filter(el => el._id !== answer._id);
+    },
+
+    upvoteAnswer(state, answer) {
+      console.log('before');
+      console.log(state.answers);
+      for (let i = 0; i < state.answers.length; i++) {
+        if (state.answers[i]._id === answer._id) {
+          console.log('ada yg sama kok');
+          state.answers[i] = answer;
+        }
+      }
+      console.log('after');
+      console.log(state.answers);
+    },
+
+    downvoteAnswer(state, answer) {
+      console.log('before');
+      console.log(state.answers);
+      for (let i = 0; i < state.answers.length; i++) {
+        if (state.answers[i]._id === answer._id) {
+          console.log('ada yg sama kok');
+          state.answers[i] = answer;
+        }
+      }
+      console.log('after');
+      console.log(state.answers);
     },
 
     editQuestion(state, question) {
@@ -232,33 +258,52 @@ export default new Vuex.Store({
         });
     },
 
-    upvoteQuestion(context, id) {
-      console.log(`masuk action`);
-      
+    upvoteQuestion(context) {
       myServer.defaults.headers.common.token = localStorage.token;
       myServer
         .patch(`/question/upvote/${this.state.currentQuestion._id}`, this.state.user._id)
         .then(({ data }) => {
-          context.commit('upvoteQuestion', data)
+          context.commit('upvoteQuestion', data);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
+        });
+    },
 
-        })
-    }
-    ,
-    downvoteQuestion(context, id) {
-      console.log(`masuk action`);
+    downvoteQuestion(context) {
       myServer.defaults.headers.common.token = localStorage.token;
       myServer
         .patch(`/question/downvote/${this.state.currentQuestion._id}`, this.state.user._id)
         .then(({ data }) => {
-          context.commit('downvoteQuestion', data)
+          context.commit('downvoteQuestion', data);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
+        });
+    },
 
+    upvoteAnswer(context, id) {
+      myServer.defaults.headers.common.token = localStorage.token;
+      myServer
+        .patch(`/answer/upvote/${id}`, this.state.user._id)
+        .then(({ data }) => {
+          context.commit('upvoteAnswer', data);
         })
-    }
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    downvoteAnswer(context, id) {
+      myServer.defaults.headers.common.token = localStorage.token;
+      myServer
+        .patch(`/answer/downvote/${id}`, this.state.user._id)
+        .then(({ data }) => {
+          context.commit('downvoteAnswer', data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 });

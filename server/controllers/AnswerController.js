@@ -81,6 +81,71 @@ class AnswerController {
                 res.status(500).json(err)
             })
     }
+
+    static upvote(req, res) {
+        Answer
+            .findOne({ _id: req.params.id })
+            .populate('user')
+            .then(answer => {
+                let count = 0
+                answer.upvotes.find(el => {
+                    if (el == req.decoded._id) { count += 2 }
+                })
+                answer.downvotes.find((el, i) => {
+                    if (el == req.decoded._id) { count++ }
+                })
+                if (count === 0) {
+                    answer.upvotes.push(req.decoded._id)
+                    answer.save()
+                    res.status(200).json(answer)
+                } else if (count === 1) {
+                    answer.downvotes.pull(req.decoded._id)
+                    answer.upvotes.push(req.decoded._id)
+                    answer.save()
+                    res.status(200).json(answer)
+                } else {
+                    answer.upvotes.pull(req.decoded._id)
+                    answer.save()
+                    res.status(200).json(answer)
+                }
+            })
+            .catch(err => {
+                res.status(500).json(err)
+            })
+
+    }
+
+    static downvote(req, res) {
+        Answer
+            .findOne({ _id: req.params.id })
+            .populate('user')
+            .then(answer => {
+                let count = 0
+                answer.downvotes.find(el => {
+                    if (el == req.decoded._id) { count += 2 }
+                })
+                answer.upvotes.find((el, i) => {
+                    if (el == req.decoded._id) { count++ }
+                })
+                if (count === 0) {
+                    answer.downvotes.push(req.decoded._id)
+                    answer.save()
+                    res.status(200).json(answer)
+                } else if (count === 1) {
+                    answer.upvotes.pull(req.decoded._id)
+                    answer.downvotes.push(req.decoded._id)
+                    answer.save()
+                    res.status(200).json(answer)
+                } else {
+                    answer.downvotes.pull(req.decoded._id)
+                    answer.save()
+                    res.status(200).json(answer)
+                }
+            })
+            .catch(err => {
+                res.status(500).json(err)
+            })
+    }
 }
 
 module.exports = AnswerController

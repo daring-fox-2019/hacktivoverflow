@@ -80,8 +80,6 @@ class QuestionController {
             .findOne({ _id: req.params.id })
             .populate('user')
             .then(question => {
-                
-                
                 let count = 0
                 question.upvotes.find(el => {
                     if (el == req.decoded._id) { count += 2 }
@@ -90,24 +88,17 @@ class QuestionController {
                     if (el == req.decoded._id) { count++ }
                 })
                 if (count === 0) {
-                    console.log(`lgsg tambah`);
-                    console.log(count);
-                    
                     question.upvotes.push(req.decoded._id)
                     question.save()
                     res.status(200).json(question)
                 } else if (count === 1) {
-                    console.log(`potong samping`);
-                    console.log(count);
                     question.downvotes.pull(req.decoded._id)
                     question.upvotes.push(req.decoded._id)
                     question.save()
                     res.status(200).json(question)
                 } else {
-                    console.log(`nothing`);
-                    console.log(count);
-                    console.log(question);
-                    
+                    question.upvotes.pull(req.decoded._id)
+                    question.save()
                     res.status(200).json(question)
                 }
             })
@@ -138,6 +129,8 @@ class QuestionController {
                     question.save()
                     res.status(200).json(question)
                 } else {
+                    question.downvotes.pull(req.decoded._id)
+                    question.save()
                     res.status(200).json(question)
                 }
             })
