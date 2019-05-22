@@ -14,7 +14,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
 
-mongoose.connect(process.env.DB_TEST, { useNewUrlParser: true })
+mongoose.connect(process.env.DB_ATLAS, { useNewUrlParser: true })
 mongoose.connection.on('connected', function (err) {
    if( err ) {
       console.log( err )

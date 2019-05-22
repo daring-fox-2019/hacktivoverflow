@@ -23,16 +23,16 @@ UserSchema.pre('save',function(next){
     next()
 })
 
-// UserSchema.path('email').validate(function(value){
-//     return User.findOne({email:value})
-//     .then(data => {
-//         if(data){
-//             return Promise.resolve(false)
-//         } else {
-//             return Promise.resolve(true)
-//         }
-//     })
-// },`email already in use`)
+UserSchema.path('email').validate(function(value){
+    return User.findOne({email:value})
+    .then(data => {
+        if(data){
+            return Promise.resolve(false)
+        } else {
+            return Promise.resolve(true)
+        }
+    })
+},`email already in use`)
 
 UserSchema.path('email').validate(function(value){
     return /\w{4,}\@\w{3,}\.\w{2,}/.test(value)
