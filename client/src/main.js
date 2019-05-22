@@ -7,6 +7,7 @@ import store from './store';
 import 'vuetify/dist/vuetify.min.css';
 import wysiwyg from "vue-wysiwyg";
 
+
 Vue.use(wysiwyg, {});
 Vue.use(Vuetify);
 Vue.config.productionTip = false;

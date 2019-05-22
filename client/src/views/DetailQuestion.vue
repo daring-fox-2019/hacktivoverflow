@@ -12,7 +12,7 @@
             style="color:white;"
           >Edit Question</v-btn>
         </div>
-        <v-btn color="blue" to="/addQuestion" style="color:white;">Ask New Question</v-btn>
+        <v-btn color="blue" @click="askQuestion" style="color:white;">Ask New Question</v-btn>
       </v-layout>
       <v-divider class="mb-3"/>
 
@@ -272,6 +272,13 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    askQuestion() {
+      if (localStorage.token) {
+        this.$router.push("/addQuestion");
+      } else {
+        swal("You must signin!", "warning");
+      }
     }
   }
 };
