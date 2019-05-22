@@ -1,11 +1,10 @@
 <template>
   <v-container>
     <v-flex xs12 sm6 d-flex>
-      <v-select v-model="selected" :items="category" :value="category[0]" solo></v-select>
+      <v-select v-model="selected" :items="category" solo></v-select>
     </v-flex>
-    <ListQuestions v-show="selected=='Newest'" title="Newest"/>
-    <ListQuestions v-show="selected=='Most Voted'" title="Most Voted"/>
-    <ListQuestions v-show="selected=='Most Answers'" title="Most Answers"/>
+    <h1>{{}}</h1>
+    <ListQuestions v-for="cat in category" v-show="selected==cat" :title="cat"/>
   </v-container>
 </template>
 
@@ -19,11 +18,11 @@ export default {
   data(){
     return {
       selected: 'Newest',
-      category: ['Newest','Most Voted','Most Answers']
+      category: ['Updated Recently','Newest','Most Voted','Most Answers']
     }
   },
   created() {
-    
+    this.$store.dispatch('getAllQuestions')
   },
   methods: {
   }

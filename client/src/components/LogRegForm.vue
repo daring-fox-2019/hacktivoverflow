@@ -8,7 +8,7 @@
             
           </v-toolbar>
           <v-card-text>
-            <v-form @submit.prevent="$emit('submitted',email,password)">
+            <v-form @submit.prevent="submitForm" v-model="valid">
               <slot></slot>
               <v-text-field v-model="email" :rules="emailRules" prepend-icon="email" name="email" label="Email" type="email"></v-text-field>
               <v-text-field
@@ -46,7 +46,11 @@ export default {
   },
   props: ['teks'],
   methods: {
-    
+    submitForm(){
+      this.$emit('submitted',this.email,this.password)
+      this.email = ''
+      this.password = ''
+    }
   }
 }
 </script>

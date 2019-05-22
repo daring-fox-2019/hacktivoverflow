@@ -5,19 +5,21 @@
         <v-btn icon>
           <v-icon color="grey">arrow_drop_up</v-icon>
         </v-btn>
-        <span>{{ content.upvotes.length - content.downvotes.length }}</span>
+        <span>{{ value.upvotes.length - value.downvotes.length }}</span>
         <v-btn icon>
           <v-icon color="grey">arrow_drop_down</v-icon>
         </v-btn>
       </v-layout>
-      <v-flex xs11>
-        <v-card-title primary-title class="display-1 font-weight-black">{{ content.title }}</v-card-title>
-        <v-card-text v-html="content.description" class="subheading">{{ content.description }}</v-card-text>
-        <v-btn @click="editing = !editing" color="success" icon class="ml-auto">
-          Edit
-          <v-icon color="grey" right>border_color</v-icon>
-        </v-btn>
+      <v-flex xs10>
+        <v-card-title primary-title class="display-1 font-weight-black">{{ value.title }}</v-card-title>
+        <v-card-text v-html="value.description" class="subheading">{{ value.description }}</v-card-text>
+        
       </v-flex>
+      <v-layout justify-end xs1>
+        <v-btn v-show="owner" @click="editing = !editing" color="success" icon>
+          <v-icon color="white">border_color</v-icon>
+        </v-btn>
+      </v-layout>
     </v-layout>
     <PostForm v-show="editing"/>
   </v-card>
@@ -34,6 +36,29 @@ export default {
       editing: false
     }
   },
-  props: ["content"]
+  props: ["value"],
+  methods: {
+    owner(){
+      return this.value.user === localStorage.getItem('userId')
+    },
+    voteQuestion(voteType){
+      this.$store.dispatch('voteQuestion',{
+        questionid: this.value._id,
+        voteType
+        })
+    },
+    voteAnswer(voteType){
+      this.$store.dispatch('voteAnswer',{
+        answerid: this.value._id,
+        voteType
+        })
+      },
+  }
+  // computed: {
+  //   votes(){
+  //     console.log(this.value)
+  //     return this.value.upvotes.length - this.value.downvotes.length
+  //   }
+  // }
 };
 </script>

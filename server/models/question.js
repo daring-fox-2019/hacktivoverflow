@@ -16,7 +16,7 @@ let questionSchema = new Schema({
   },
   answers: [{
     type: Schema.Types.ObjectId,
-    ref: 'Answers'
+    ref: 'Answer'
   }],
   upvotes: [{
     type: Schema.Types.ObjectId,

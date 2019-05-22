@@ -1,12 +1,13 @@
 <template>
   <div>
     <v-text-field
+      v-model="title"
       name="name"
       label="Title"
       placeholder="Title"
       single-line
     ></v-text-field>
-    <ckeditor :editor="editor" v-model="description"></ckeditor>
+    <ckeditor :editor="editor" v-model="description" :config="editorConfig"></ckeditor>
     <v-btn @click="$emit('submitted',title,description)" color="primary" dark class="mt-4">Submit</v-btn>
   </div>
 </template>
@@ -17,7 +18,10 @@ export default {
     return {
       editor: ClassicEditor,
       title: '',
-      description: ''
+      description: '',
+      editorConfig: {
+            // The configuration of the editor.
+        }
     }
   },
   methods: {

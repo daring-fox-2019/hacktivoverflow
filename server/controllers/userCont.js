@@ -6,6 +6,22 @@ const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 class UserController {
+  static readOne(req,res){
+    User.findOne({
+      _id: req.decoded._id
+    })
+    .populate('questions')
+    .populate('answers')
+    .then(row =>{
+      res.status(200).json(row)
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: "Failed to read one User",
+        err
+      })
+    })
+  }
   static GoogleSignIn(req, res) {
     let payload = null;
     client.verifyIdToken({
@@ -20,7 +36,7 @@ class UserController {
       })
       .then((user) => {
         if (user) {
-          let { name } = user
+          let { _id, name } = user
           let payload = {
             _id: user._id,
             name: user.name,
@@ -28,7 +44,7 @@ class UserController {
           }
           let token = jwt.sign(payload, process.env.KUNCI, { expiresIn: "7d" })
           console.log('token --->', token, '<---token')
-          res.status(200).json({ token, name })
+          res.status(200).json({ _id, token, name })
         } else {
           let passRandom = randomPass()
           User.create({
@@ -37,7 +53,7 @@ class UserController {
             password: passRandom
           })
             .then((user) => {
-              let { name } = user
+              let { _id, name } = user
               let payload = {
                 _id: user._id,
                 name: user.name,
@@ -45,7 +61,7 @@ class UserController {
               }
               let token = jwt.sign(payload, process.env.KUNCI)
               console.log('token --->', token, '<---token')
-              res.status(201).json({ token, name, passRandom })
+              res.status(201).json({ _id, token, name, passRandom })
             })
             .catch((err) => {
               res.status(500).json(err)
@@ -98,7 +114,7 @@ class UserController {
         if (user) {
           const isSame = comparePass(req.body.password, user.password)
           if (isSame) {
-            let { name } = user
+            let { _id, name } = user
             let payload = {
               _id: user._id,
               name: user.name,
@@ -107,7 +123,7 @@ class UserController {
             let token = jwt.sign(payload, process.env.KUNCI, { expiresIn: "7d" })
             console.log('token login -->', token)
             res.status(200).json({
-              token, name
+              _id, token, name
             })
           }
           else {

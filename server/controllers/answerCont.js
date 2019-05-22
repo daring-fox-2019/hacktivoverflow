@@ -5,7 +5,7 @@ const Answer = require('../models/answer')
 class AnswerController {
   static create(req,res){
     Answer.create({
-      question: req.body.questionId,
+      question: req.params.questionid,
       user: req.decoded._id,
       title: req.body.title,
       description: req.body.description,
@@ -104,7 +104,7 @@ class AnswerController {
     Answer.findByIdAndDelete(req.params._id)
     .then(row=>{
       return Question.findByIdAndUpdate(row.question,{
-        $pull: { answers: { _id: row._id } },
+        $pull: { answers: row._id },
       })
     })
     .then(row =>{

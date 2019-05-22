@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <h1>Create New Question</h1>
     <PostForm @submitted="submitQuestion"/>
   </v-container>
 </template>
@@ -7,6 +8,9 @@
 import PostForm from '@/components/PostForm';
 
 export default {
+  components: {
+    PostForm
+  },
   data(){
     return {
       
@@ -14,6 +18,7 @@ export default {
   },
   methods: {
     submitQuestion(title, description){
+      console.log('halo')
       this.$store.dispatch('createQuestion',{
         title, description
       })

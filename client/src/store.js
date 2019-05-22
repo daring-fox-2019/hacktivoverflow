@@ -10,8 +10,10 @@ export default new Vuex.Store({
   state: {
     loggedIn: false,
     questions: [],
+    user: {},
     queries: [],
-    question: {}
+    question: {},
+    answered: false
   },
   mutations: {
     register(state, payload) {
@@ -27,29 +29,41 @@ export default new Vuex.Store({
         'Successfully logged in!',
         'success',
       );
-      localStorage.setItem('token', payload.token);
+      localStorage.setItem('userId', payload._id);
       localStorage.setItem('name', payload.name);
+      localStorage.setItem('token', payload.token);
       state.loggedIn = true;
       router.push('/');
     },
     logout(state) {
-      localStorage.removeItem('token');
+      localStorage.removeItem('userId');
       localStorage.removeItem('name');
-      localStorage.removeItem('role');
+      localStorage.removeItem('token');
       state.loggedIn = false;
       router.push('/auth');
     },
     getAllQuestions(state, payload) {
       state.questions = [...payload]
     },
+    getUserQuestions(state, payload){
+      state.user = {...payload}
+    },
     searchQuestions(state, payload) {
       state.queries = [...payload]
     },
     getQuestion(state,payload){
+      if(payload.user === localStorage.getItem('userId'))
+        state.answered = true
+      else state.answered = false
       state.question = {...payload}
     },
-    createQuestion(state,payload){
-      router.push(`/question/${payload._id}`)
+    createQuestion(state,_id){
+      router.push(`/question/${_id}`)
+      // Swal.fire(
+      //   'Created!',
+      //   'Question Created!',
+      //   'success',
+      // );
     }
   },
   actions: {
@@ -63,8 +77,7 @@ export default new Vuex.Store({
         }
       })
         .then(({ data }) => {
-          context.dispatch('getQuestion',data._id)
-          context.commit('createQuestion',data)
+          context.commit('createQuestion',data._id)
         })
         .catch((err) => {
           console.log(err);
@@ -73,7 +86,7 @@ export default new Vuex.Store({
     getQuestion(context, questionid) {
       axios({
         method: "GET",
-        url: `/answers/read/${questionid}`,
+        url: `/questions/read/${questionid}`,
         headers: {
           token: localStorage.getItem('token'),
         }
@@ -88,14 +101,50 @@ export default new Vuex.Store({
     answerQuestion(context, payload) {
       axios({
         method: "POST",
-        url: `/answers/create`,
+        url: `/answers/${payload.questionid}/create`,
         data: payload,
         headers: {
           token: localStorage.getItem('token'),
         }
       })
         .then(({ data }) => {
-          context.dispatch('getAllQuestions')
+          context.dispatch('getQuestion', payload.questionid)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    voteQuestion(context,payload){
+      axios({
+        method: "PUT",
+        url: `/questions/update/${payload.questionid}`,
+        data: {
+          voteType: payload.voteType
+        },
+        headers: {
+          token: localStorage.getItem('token'),
+        }
+      })
+        .then(({ data }) => {
+          context.dispatch('getUserQuestions')
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    voteAnswer(context,payload){
+      axios({
+        method: "PUT",
+        url: `/answers/update/${payload.answerid}`,
+        data: {
+          voteType: payload.voteType
+        },
+        headers: {
+          token: localStorage.getItem('token'),
+        }
+      })
+        .then(({ data }) => {
+          context.dispatch('getQuestion',payload.questionid)
         })
         .catch((err) => {
           console.log(err);
@@ -108,6 +157,21 @@ export default new Vuex.Store({
       })
         .then(({ data }) => {
           context.commit('getAllQuestions', data)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getUserQuestions(context) {
+      axios({
+        method: "GET",
+        url: '/users/questions',
+        headers: {
+          token: localStorage.getItem('token'),
+        }
+      })
+        .then(({ data }) => {
+          context.commit('getUserQuestions', data)
         })
         .catch((err) => {
           console.log(err);
@@ -126,24 +190,7 @@ export default new Vuex.Store({
           console.log(err);
         });
     },
-    createQuestion(context, payload) {
-      axios({
-        method: "POST",
-        url: '/questions/create',
-        data: payload,
-        headers: {
-          token: localStorage.getItem('token'),
-        }
-      })
-        .then(({ data }) => {
-          context.dispatch('getAllQuestions')
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
     register(context, payload) {
-      console.log('di action')
       axios({
         method: 'POST',
         url: '/users/register',
@@ -170,4 +217,9 @@ export default new Vuex.Store({
         });
     },
   },
+  getters: {
+    getQuestion(state){
+      return state.question
+    }
+  }
 });

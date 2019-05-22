@@ -3,8 +3,8 @@
     <div style="display: flex; justify-content: center;">
       <v-btn @click="registerForm = !registerForm">Form</v-btn>
     </div>
-    <LogRegForm v-show="registerForm" teks="Register">
-      <v-text-field @submitted="register" v-model="name" :rules="nameRules" prepend-icon="person" name="name" label="Name" type="text"></v-text-field>
+    <LogRegForm @submitted="register" v-show="registerForm" teks="Register">
+      <v-text-field v-model="name" :rules="nameRules" prepend-icon="person" name="name" label="Name" type="text"></v-text-field>
     </LogRegForm>
 
     <LogRegForm v-show="!registerForm" teks="Login" @submitted="login"></LogRegForm>
@@ -35,7 +35,6 @@ export default {
   // },
   methods: {
     register(email,password){
-      console.log(name,email,password)
       this.$store.dispatch('register',{ 
         name: this.name, email, password })
       this.name = ''

@@ -3,14 +3,14 @@ const User = require('../models/user')
 
 class QuestionController {
   static create(req,res){
-    let id
+    let _id
     Question.create({
       user: req.decoded._id,
       title: req.body.title,
       description: req.body.description,
     })
     .then(row=>{
-      id = row._id
+      _id = row._id
       return User.findByIdAndUpdate(row.user,{
         $push: { questions: row._id },
       })
@@ -28,6 +28,7 @@ class QuestionController {
   }
   static read(req,res){
     Question.find({})
+    .populate('answers')
     .then(rows =>{
       res.status(200).json(rows)
     })
@@ -42,6 +43,7 @@ class QuestionController {
     // let obj = { _id: req.decoded._id }
     if(req.query.title) obj.title = { '$regex' : req.query.title, '$options' : 'i' }
     Question.find(obj)
+    .populate('answers')
     .then(rows=>{
       res.status(200).json(rows)
     })
@@ -56,12 +58,13 @@ class QuestionController {
     Question.findOne({
       _id: req.params._id
     })
+    .populate('answers')
     .then(row =>{
       res.status(200).json(row)
     })
     .catch(err => {
       res.status(500).json({
-        message: "Failed to read Questions",
+        message: "Failed to read one Question",
         err
       })
     })
@@ -98,11 +101,13 @@ class QuestionController {
   }
   static delete(req,res){
     Question.deleteOne({_id: req.params._id})
-    .then(result=>{
+    .then(row=>{
       return User.findByIdAndUpdate(row.user,{
-        $pull: { questions: { _id: row._id } },
+        $pull: { questions: row._id },
       })
-      res.status(200).json(result)
+    })
+    .then(row =>{
+      res.status(200).json(row)
     })
     .catch(err => {
       res.status(500).json({

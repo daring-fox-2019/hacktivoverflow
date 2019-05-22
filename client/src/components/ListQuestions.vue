@@ -3,13 +3,9 @@
     <h1>{{ title }}</h1>
     <v-layout row wrap>
       <v-list three-line>
-        <Question/>
-        <v-divider inset></v-divider>
-        <Question/>
-        <v-divider inset></v-divider>
-        <Question/>
-        <v-divider inset></v-divider>
-        <Question/>
+        <Question v-for="(question,index) in $store.state.user.questions" v-model="$store.state.user.question[index]" :key="question._id"/>
+        <!-- <v-divider inset></v-divider> -->
+        
       </v-list>
     </v-layout>
   </div>

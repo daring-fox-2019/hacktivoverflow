@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <ListQuestions title="coy" />
+    <ListQuestions title="Your Questions" />
   </v-container>
 </template>
 
@@ -16,6 +16,7 @@ export default {
     if (!localStorage.getItem('token')) {
       this.$router.push("/auth");
     }
+    this.$store.dispatch('getUserQuestions')
   }
 };
 </script>
