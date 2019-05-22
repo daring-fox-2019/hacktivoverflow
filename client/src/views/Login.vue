@@ -56,8 +56,8 @@
     name: "login",
     data() {
       return {
-        email: "qoyyima@studentenergy.org",
-        password: "123"
+        email: "",
+        password: ""
       };
     },
     components: {},

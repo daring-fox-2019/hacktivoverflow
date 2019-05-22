@@ -1,0 +1,8 @@
+export PORT=80
+export JWT_SALT=shhhhh
+export user=qoyyimafiassalam@gmail.com
+export clientId=780335781428-ddgoshh8e3i1tdd0krnqn664qq1qvqj6.apps.googleusercontent.com
+export clientSecret=Zi56zgKCZU1dSCWMligN9ANJ
+export refreshToken=1/R-hyEDon8_Pt8b5eR0Ryum3U044SjNoi9EAEy9wluY0
+export accessToken=ya29.Glv0BhXtlBmNBJIrG_CG1704n6L1ivwqDfJKNThM7JPs-a4yGTI_evkCifnNafXs3hHIq8EgUsuw5JAPKY9LRDaka6PEZlqICe3pj8nkXdiODCokQ5E-fJcYXtW_
+export MONGO_DB=mongodb://localhost/hacktivOverflow
