@@ -95,10 +95,10 @@
         </div>
       </div>
 
-      <div class="mt-5">
+      <div class="mt-5" v-if="isLogin">
         <h5 class="m-1">Add Your Answer</h5>
         <hr>
-        <Editor @getdata="getData" ref="editor"/>
+        <Editor @getdata="getData" ref="editor" :init-value="initValue"/>
         <div class="d-flex justify-content-end mt-3">
           <b-button variant="outline-primary" @click="submitAnswer">Submit Answer</b-button>
         </div>
@@ -111,10 +111,14 @@
 import Editor from "@/components/Editor.vue";
 import axios from "@/database/axios";
 import EditAnswer from '@/components/EditAnswer.vue';
+import { mapState } from 'vuex';
 
 export default {
   components: {
     Editor
+  },
+  computed: {
+    ...mapState(['isLogin'])
   },
   data() {
     return {

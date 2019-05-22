@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h3>{{initValue}}</h3>
         <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
     </div>
 </template>
@@ -27,7 +28,6 @@
         methods : {
             emitData(){
                 this.$emit('getdata', this.editorData)
-                
             }
         }
     }
