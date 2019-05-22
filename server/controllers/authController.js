@@ -22,6 +22,8 @@ class AuthController {
         User.findOne({
                 _id: req.user._id
             })
+            .populate('tags')
+            .populate('questions')
             .then(data => {
                 if (data) {
                     res.status(200).json(data)
@@ -262,30 +264,34 @@ class AuthController {
     }
 
     static github(req, res) {
-        console.log(req.query);
-        let code = req.query.code;
+        let code = req.body.code;
         let access_token, token_type, app_token, githubData;
-
         axios.post(`https://github.com/login/oauth/access_token?client_id=${process.env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_SECRET}&code=${code}`)
             .then(({
                 data
             }) => {
-                console.log(data);
                 access_token = data.substring(data.indexOf('=')+1, data.indexOf('&'));
-                console.log(access_token);
-
-                axios.get(`https://api.github.com/user`, {}, {
+                axios.get(`https://api.github.com/user`, {
                         headers: {
-                            'Authorization': `${access_token} OAUTH-TOKEN`
+                            'Authorization': `Bearer ${access_token}`
                         }
                     })
                     .then(({
                         data
                     }) => {
-                        console.log(data);
                         githubData = data
 
-                        /* User.findOne({
+                        githubData.firstname = githubData.name.split(' ')[0]
+                        githubData.lastname = githubData.name.split(' ')[1] ? githubData.name.split(' ')[1] : githubData.firstname;
+                        axios.get(`https://api.github.com/user/emails`, {
+                            headers: {
+                                'Authorization': `Bearer ${access_token}`
+                            }
+                        })
+                        .then(({ data }) => {
+                            githubData.email = data[0].email;
+
+                            User.findOne({
                                 email: githubData.email
                             })
                             .then(found => {
@@ -306,8 +312,9 @@ class AuthController {
                                     return User.create({
                                         email: githubData.email,
                                         password: process.env.DEFAULT_PWD,
-                                        firstname: githubData.name,
-                                        lastname: githubData.name
+                                        firstname: githubData.firstname,
+                                        lastname: githubData.lastname,
+                                        image: githubData.avatar_url,
                                     })
                                 }
                             })
@@ -318,7 +325,7 @@ class AuthController {
                                         firstname: created.firstname,
                                         lastname: created.lastname,
                                         role: created.role,
-                                        _id: found._id
+                                        _id: created._id
                                     })
                                     res.status(200).json({
                                         access_token: access_token,
@@ -328,11 +335,17 @@ class AuthController {
                             })
                             .catch(err => {
                                 res.status(500).json(err.message)
-                            }) */
+                            })
+                        })
+                        .catch(({ response }) => {
+                            console.log(response.data);
+                            res.status(500).json(response.data);
+                        })
 
                     })
                     .catch(({ response }) => {
                         console.log(response.data);
+                        res.status(500).json(response.data);
                     })
             })
             .catch(({

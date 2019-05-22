@@ -1,6 +1,11 @@
 <template>
     <v-layout row wrap mt-5 text-xs-center>
-      <v-flex xs6 lg4 md4 offset-xs3 offset-md4 offset-lg4>
+      <loading :active.sync="$store.state.loading" 
+        :can-cancel="true" 
+        width="150"
+        height="150"
+        :is-full-page="fullPage"></loading>
+      <v-flex v-if="!$store.state.loading" xs6 lg4 md4 offset-xs3 offset-md4 offset-lg4>
         <v-alert
           type="error"
           v-model="isError"
@@ -30,17 +35,24 @@
           </v-layout>
           <button v-google-signin-button="clientId" type="button" class="google-signin-button"><i class="fab fa-google mr-2"></i>Google</button>
           <v-btn dark color="black button" :href="initGithub"><i class="fab fa-github mr-2"></i>Github</v-btn>
+          <v-btn dark color="blue" :href="initLinkedIn"><i class="fab fa-linkedin mr-2"></i>LinkedIn</v-btn>
         </v-form>
       </v-flex>
     </v-layout>
 </template>
 <script>
 import axios from 'axios'
+import http from '@/api/http'
 import GoogleSignInButton from 'vue-google-signin-button-directive'
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 export default {
+  components: {
+    Loading,
+  },
   directives: {
-    GoogleSignInButton
+    GoogleSignInButton,
   },
   computed: {
     errorMsg: function() {
@@ -48,9 +60,15 @@ export default {
     },
     initGithub() {
       return `https://github.com/login/oauth/authorize?scope=user:email&client_id=${process.env.VUE_APP_GITHUB_CLIENT_ID}&redirect_uri=${process.env.VUE_APP_GITHUB_CALLBACK}&client_secret=${process.env.VUE_APP_GITHUB_SECRET}&state=yaya`;
+    },
+    initLinkedIn() {
+      return `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.VUE_APP_LINKEDIN_CLIENT_ID}&redirect_uri=${process.env.VUE_APP_LINKEDIN_REDIRECT_URI}&scope=r_liteprofile%20r_emailaddress%20w_member_social`
     }
   },
   data: () => ({
+    fullPage: true,
+    linkedInCode: '',
+    githubCode: '',
     show: false,
     error: "",
     isError: false,
@@ -67,6 +85,17 @@ export default {
       v => (v && v.length >= 8) || "Name must be at least 8 characters"
     ]
   }),
+  mounted() {
+    console.log(this.$route.params);
+    if(this.$route.query.code && this.$route.query.state.includes('yaya')) {
+      this.githubCode = this.$route.query.code;
+
+      this.authGithub();
+    }
+    else {
+      this.linkedInCode = this.$route.query.code;
+    }
+  },
   methods: {
     login() {
       axios.post(process.env.VUE_APP_SERVER_URL+'/auth/login',
@@ -82,7 +111,10 @@ export default {
         this.$router.push('/')
       })
       .catch((err) => {
-        this.error = err.response.data
+        if(err.response) {
+          err= err.response.data;
+        }
+        this.error = err;
         this.isError = true;
         console.log(this.error);
       });
@@ -106,25 +138,53 @@ export default {
       .catch((err) => {
         this.error = err.response.data
         this.isError = true;
-        console.log(this.error);
       });
     },
     OnGoogleAuthFail (error) {
       console.log(error)
     },
     authGithub() {
-      console.log('login...');
-      axios.get(`https://github.com/login/oauth/authorize?scope=user:email&client_id=${process.env.VUE_APP_GITHUB_CLIENT_ID}&redirect_uri=http://localhost:8080&secret=${process.env.VUE_APP_GITHUB_SECRET}`, 
+      this.$store.commit('setLoading', true);
+      axios.post(process.env.VUE_APP_SERVER_URL+'/auth/github',
       {
-        headers: {'Access-Control-Allow-Origin': '*'}
+        code: this.githubCode,
       })
         .then(({ data }) => {
-          console.log(data);
+          localStorage.setItem('hackflow_token', data.access_token)
+          this.$store.commit('setIsLogin', true)
+          this.$store.commit('setUser', data.user)
+          this.$store.commit('setLoading', false);
+          swal.fire('Great!', `Welcome, ${data.user.firstname}`, 'success')
+          this.$router.push('/')
         })
         .catch(err => {
-          console.log(err.response.data);
+          if(err.response) {
+              err = err.response.data;
+          }
+          if(err.message) {
+            err = err.message
+          }
+          swal.fire('Oops!', err, 'error')
         })
     },
+    authLinkedIn() {
+      this.$store.commit('setLoading', true);
+      http.get('/auth/linkedin/redirect/?code='+this.linkedinCode)
+          .then(({data}) => {
+            localStorage.setItem('hackflow_token', data.access_token)
+            this.$store.commit('setUser', data.user)
+            this.$store.commit('setIsLogin', true)
+            this.$store.commit('setLoading', false);
+            swal.fire('Great!', `Welcome, ${data.user.firstname}`, 'success')
+            this.$router.push('/')
+          })
+          .catch((err) => {
+            if(err.resposne) {
+              err = err.response.data;
+            }
+            swal.fire('Oops!', err, 'error')
+          })
+    }
   },
 };
 </script>

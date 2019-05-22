@@ -9,13 +9,21 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     isLogin: false,
+    loading: false,
     user: {},
     questions: null,
     question: null,
     updateQuestion: null,
     error: '',
+    tags: null,
   },
   mutations: {
+    setLoading(s, p) {
+      s.loading = p;
+    },
+    setTags(state, payload) {
+      state.tags = payload;
+    },
     setError(state, payload) {
       state.error = payload;
     },
@@ -38,16 +46,30 @@ export default new Vuex.Store({
   actions: {
     editQuestion(context, question) {
       return backend
-        .put(`/questions/${question._id}`, question, { headers: { Authorization: localStorage.getItem('hackflow_token') } });
+        .put(`/questions/${question._id}`, question, {
+          headers: {
+            Authorization: localStorage.getItem('hackflow_token'),
+          },
+        });
     },
     deleteQuestion(context, id) {
       return backend
-        .delete(`/questions/${id}`, { headers: { Authorization: localStorage.getItem('hackflow_token') } });
+        .delete(`/questions/${id}`, {
+          headers: {
+            Authorization: localStorage.getItem('hackflow_token'),
+          },
+        });
     },
     deleteAnswer(context, id) {
       backend
-        .delete(`/answers/${id}`, { headers: { Authorization: localStorage.getItem('hackflow_token') } })
-        .then(({ data }) => {
+        .delete(`/answers/${id}`, {
+          headers: {
+            Authorization: localStorage.getItem('hackflow_token'),
+          },
+        })
+        .then(({
+          data,
+        }) => {
           console.log('updated question...', data);
           context.dispatch('getQuestions');
         })
@@ -58,8 +80,14 @@ export default new Vuex.Store({
     },
     upVoteQuestion(context, id) {
       backend
-        .get(`/questions/${id}/upvote`, { headers: { Authorization: localStorage.getItem('hackflow_token') } })
-        .then(({ data }) => {
+        .get(`/questions/${id}/upvote`, {
+          headers: {
+            Authorization: localStorage.getItem('hackflow_token'),
+          },
+        })
+        .then(({
+          data,
+        }) => {
           console.log('upvoted...', data);
           context.dispatch('getQuestionDetail', data._id);
         })
@@ -70,8 +98,14 @@ export default new Vuex.Store({
     },
     downVoteQuestion(context, id) {
       backend
-        .get(`/questions/${id}/downvote`, { headers: { Authorization: localStorage.getItem('hackflow_token') } })
-        .then(({ data }) => {
+        .get(`/questions/${id}/downvote`, {
+          headers: {
+            Authorization: localStorage.getItem('hackflow_token'),
+          },
+        })
+        .then(({
+          data,
+        }) => {
           console.log('downvoted...', data);
           context.dispatch('getQuestionDetail', data._id);
         })
@@ -82,8 +116,14 @@ export default new Vuex.Store({
     },
     upVoteAnswer(context, id) {
       backend
-        .get(`/answers/${id}/upvote`, { headers: { Authorization: localStorage.getItem('hackflow_token') } })
-        .then(({ data }) => {
+        .get(`/answers/${id}/upvote`, {
+          headers: {
+            Authorization: localStorage.getItem('hackflow_token'),
+          },
+        })
+        .then(({
+          data,
+        }) => {
           console.log('upvoted answer...', data);
           context.dispatch('getQuestionDetail', context.state.question._id);
         })
@@ -94,8 +134,14 @@ export default new Vuex.Store({
     },
     downVoteAnswer(context, id) {
       backend
-        .get(`/answers/${id}/downvote`, { headers: { Authorization: localStorage.getItem('hackflow_token') } })
-        .then(({ data }) => {
+        .get(`/answers/${id}/downvote`, {
+          headers: {
+            Authorization: localStorage.getItem('hackflow_token'),
+          },
+        })
+        .then(({
+          data,
+        }) => {
           console.log('downvoted answer...', data);
           context.dispatch('getQuestionDetail', context.state.question._id);
         })
@@ -106,8 +152,14 @@ export default new Vuex.Store({
     },
     getUser(context) {
       backend
-        .get('/auth/user', { headers: { Authorization: localStorage.getItem('hackflow_token') } })
-        .then(({ data }) => {
+        .get('/auth/user', {
+          headers: {
+            Authorization: localStorage.getItem('hackflow_token'),
+          },
+        })
+        .then(({
+          data,
+        }) => {
           console.log(data);
           context.commit('setUser', data);
         })
@@ -118,7 +170,9 @@ export default new Vuex.Store({
     getQuestions(context) {
       backend
         .get('/questions')
-        .then(({ data }) => {
+        .then(({
+          data,
+        }) => {
           context.commit('setQuestions', data);
         })
         .catch((err) => {
@@ -129,13 +183,18 @@ export default new Vuex.Store({
       backend
         // eslint-disable-next-line prefer-template
         .get('/questions/' + id)
-        .then(({ data }) => {
+        .then(({
+          data,
+        }) => {
           console.log(data);
           context.commit('setQuestion', data);
         })
         .catch((err) => {
           console.log(err);
         });
+    },
+    getTags(context) {
+      return backend.get(`${process.env.VUE_APP_SERVER_URL}/tags`);
     },
   },
 });

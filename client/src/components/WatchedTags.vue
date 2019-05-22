@@ -14,7 +14,7 @@
           @click="editMode = !editMode"
         >Edit</v-btn>
       </v-layout>
-      <v-layout column>
+      <v-layout column pa-2>
         <v-layout wrap pa-2>
           <div v-if="!editMode">
             <v-chip small v-for="(tag,i) in watched" :key="i" color="blue lighten-4">
@@ -23,11 +23,10 @@
           </div>
           <div v-if="editMode"></div>
         </v-layout>
-        <v-form>
+        <v-form pa-2>
           <v-autocomplete
-            v-model="friends"
-            :disabled="isUpdating"
-            :items="people"
+            v-model="watchedTags"
+            :items="availableTags"
             box
             chips
             color="blue-grey lighten-4"
@@ -43,18 +42,12 @@
                 color="blue lighten-4"
                 class="chip--select-multi tagBtn"
                 @input="remove(data.item)"
-              >
-                {{ data.item.name }}
-              </v-chip>
+              >{{ data.name }}</v-chip>
             </template>
             <template v-slot:item="data">
-              <template v-if="typeof data.item !== 'object'">
-                <v-list-tile-content v-text="data.item"></v-list-tile-content>
-              </template>
-              <template v-else>
+              <template>
                 <v-list-tile-content>
                   <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
-                  <v-list-tile-sub-title v-html="data.item.group"></v-list-tile-sub-title>
                 </v-list-tile-content>
               </template>
             </template>
@@ -66,39 +59,44 @@
 </template>
 <script>
 import http from "@/api/http";
+
 export default {
   data() {
     return {
       watched: [],
       editMode: false,
-      friends: ['Sandra Adams', 'Britta Holt'],
-      people: [
-        { name: 'Sandra Adams', group: 'Group 1' },
-        { name: 'Ali Connors', group: 'Group 1'},
-        { name: 'Trevor Hansen', group: 'Group 1' },
-        { name: 'Tucker Smith', group: 'Group 1' },
-        { name: 'Britta Holt', group: 'Group 2' },
-        { name: 'Jane Smith ', group: 'Group 2' },
-        { name: 'John Smith', group: 'Group 2'},
-        { name: 'Sandra Williams', group: 'Group 2' }
-      ],
+      watchedTags: [],
+      availableTags: []
     };
   },
   methods: {
-    remove (item) {
-        const index = this.friends.indexOf(item.name)
-        if (index >= 0) this.friends.splice(index, 1)
+    remove(item) {
+      const index = this.friends.indexOf(item.name);
+      if (index >= 0) this.friends.splice(index, 1);
     }
   },
   mounted() {
-    this.watched = { ...this.$store.state.user.tags };
+    this.watchedTags = { ...this.$store.state.user.tags };
+    this.$store
+      .dispatch("getTags")
+      .then(({ data }) => {
+        console.log(`tags arrived..`, data);
+        this.$store.commit('setTags', data);
+        this.availableTags = data;
+      })
+      .catch(err => {
+        if(err.response) {
+          err = err.response.data;
+        }
+        swal.fire('Error', err, 'error')
+      });
   }
 };
 </script>
 <style scoped>
 .watchedPanel {
   min-width: 300px;
-  max-height: 200px;
+  max-height: 300px;
   overflow-y: scroll;
 }
 .titleTag {

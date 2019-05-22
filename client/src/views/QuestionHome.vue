@@ -6,7 +6,7 @@
         </v-flex>
         <QuestionsList></QuestionsList>
    </v-layout>
-   <WatchedTags class="watchedPanel"></WatchedTags>
+   <WatchedTags v-if="$store.state.isLogin" class="watchedPanel"></WatchedTags>
 </v-layout>
 </template>
 
@@ -26,6 +26,7 @@ export default {
 <style scoped>
 .questions {
     width: auto;
+    max-width: 70%;
 }
 .watchedPanel {
     width: 30%;

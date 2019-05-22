@@ -59,11 +59,10 @@ export default {
     computed: {
         cardName() {
             let name = ''
-            console.log(this.question);
             if(this.question.author && this.question.author.firstname) {
                 name = this.question.author.firstname
             }
-            else if(this.question.author.lastname) {
+            else if(this.question.author && this.question.author.lastname) {
                 name = this.question.author.lastname
             }
             return name;
