@@ -8,7 +8,8 @@
     </v-layout>
     <v-layout row wrap>
       <v-flex xs12>
-        <QuestionCard v-for="(q, index) in myQuestionsList" :q="q" :key="index"></QuestionCard>
+        <QuestionCard v-for="(q, index) in myQuestionsList" 
+        :q="q" :key="index"></QuestionCard>
         <!-- {{myQuestionsList}} -->
       </v-flex>
     </v-layout>

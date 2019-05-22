@@ -19,7 +19,7 @@
           <br>
           <br>
           <ckeditor :editor="editor" v-model="fill"></ckeditor>
-            <v-btn style="display:flex; " justify-space-between @click="postAnswer">Answer</v-btn>
+            <v-btn style="display:flex; " justify-end align-end @click="postAnswer">Answer</v-btn>
         </v-flex>
       </v-layout>
     </v-container>
@@ -36,7 +36,6 @@ import Swal from "sweetalert2";
 export default {
   data() {
     return {
-      q: "",
       editor: ClassicEditor,
       fill: "",
       answers: []
@@ -46,11 +45,14 @@ export default {
     QuestionCard,
     AnswerCard
   },
+  created() {
+    // console.log('kebuatttttt dudududu');
+  },
   methods: {
     ...mapActions(["getDetailsOnThisQuestion", "getListAnswersOnThisQuestion"]),
     getDetailsOnQuestion() {
-      // this.getDetailsOnThisQuestion(this.$route.params.id);
-      this.$store.dispatch('getDetailsOnThisQuestion', this.$route.params.id)
+      this.getDetailsOnThisQuestion(this.$route.params.id);
+      // this.$store.dispatch('getDetailsOnThisQuestion', this.$route.params.id)
       // this.axios
       //   .get(`/questions/${this.$route.params.id}`)
       //   .then(({ data }) => {
@@ -62,10 +64,9 @@ export default {
       //   });
     },
     getAnswersOnThisQuestion() {
+      this.getListAnswersOnThisQuestion(this.$route.params.id);
 
-      // this.getListAnswersOnThisQuestion(this.$route.params.id);
-
-      this.$store.dispatch('getListAnswersOnThisQuestion', this.$route.params.id)
+      // this.$store.dispatch('getListAnswersOnThisQuestion', this.$route.params.id)
 
       //   console.log('kalo disini masu ga');
       // this.axios

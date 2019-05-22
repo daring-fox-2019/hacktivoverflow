@@ -9,11 +9,11 @@
       >
         <v-layout row>
           <v-flex xs1>
-            <v-btn @click="upVote(ans.userId._id)" flat icon color="grey">
+            <v-btn @click.prevent="upVote(ans.userId._id)" flat icon color="grey">
               <v-icon>expand_less</v-icon>
             </v-btn>
             <span>{{calculate()}}</span>
-            <v-btn @click="downVote(ans.userId._id)" flat icon color="grey">
+            <v-btn @click.prevent="downVote(ans.userId._id)" flat icon color="grey">
               <v-icon>expand_more</v-icon>
             </v-btn>
           </v-flex>
@@ -36,7 +36,7 @@
             >Answered by : {{ans.userId.email.split('@')[0]}} on {{new Date(ans.createdAt).toUTCString()}}</h4>
             <v-spacer></v-spacer>
             <v-btn
-              @click="editAnswer(ans._id)"
+              @click.prevent="editAnswer(ans._id)"
               v-if="this.$store.state.userId ==  ans.userId._id"
               flat
               class="mx-3"

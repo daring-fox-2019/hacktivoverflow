@@ -12,6 +12,10 @@
     <v-container text-xs-left fluid class="mt-4">
       <v-layout class="mt-5" row wrap>
         <v-flex xs2>
+          <section>
+            <img style="height:14vh;" src="https://i.ibb.co/qYQ9WTv/ginger.png"><br>
+            <span class="ml-3">Welcome {{name}}! </span>
+          </section>
           <v-btn
             class
             style=" background-color:white;width: 112px;"
@@ -60,7 +64,7 @@
           </v-layout>
         </v-flex>
 
-        <v-flex style="margin-top:-6vh;" xs9>
+        <v-flex style="margin-top:-3vh;" xs9>
           <router-view></router-view>
         </v-flex>
       </v-layout>
@@ -79,10 +83,16 @@ export default {
     ModalRegister
     // OpeningJumbotron
   },
+  data() {
+    return {
+      name : ""
+    }
+  },
   created() {
     if (localStorage.getItem("token")) {
       this.$store.commit("persistLoginStatus");
       this.$store.dispatch("getUser");
+      this.name = localStorage.getItem('email').split('@')[0]
       // this.getUser();
     }
   },

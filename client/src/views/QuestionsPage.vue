@@ -2,7 +2,8 @@
   <v-container  fluid>
     <v-container  style="margin-top:0px;">
       <v-layout row wrap>
-        <h1 class="display-3">quoder</h1>
+        <img style="height:35vh;" src="FOXCODE (1).png">
+        <!-- <h1 class="display-3">foxcode</h1> -->
       </v-layout>
       <v-layout row wrap justify-space-between>
         <v-flex xs2>

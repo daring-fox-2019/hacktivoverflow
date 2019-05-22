@@ -1,5 +1,6 @@
 <template>
   <v-flex>
+    {{q}}
     <v-card
       color="transparent"
       style=" outline:dashed 0.2px grey; outline-offset:-6px;"
@@ -7,11 +8,11 @@
     >
       <v-layout v-if="q" row>
         <v-flex xs1>
-          <v-btn @click="upVote(q.userId)" flat icon color="grey">
+          <v-btn @click.prevent="upVote(q.userId)" flat icon color="grey">
             <v-icon>expand_less</v-icon>
           </v-btn>
-          <h4 class="margin-left:10vh; !important" v-if="q">{{totalvote}}</h4>
-          <v-btn @click="downVote(q.userId)" flat icon color="grey">
+          <h4 class="margin-left:10vh; !important" v-if="q">{{calculate()}}</h4>
+          <v-btn @click.prevent="downVote(q.userId)" flat icon color="grey">
             <v-icon>expand_more</v-icon>
           </v-btn>
         </v-flex>
@@ -54,7 +55,7 @@
               outline
               small
               color="orange"
-              @click="deleteQuestion(q._id)"
+              @click.prevent="deleteQuestion(q._id)"
               v-if="this.$store.state.userId ==  q.userId._id"
             >Delete</v-btn>
           </v-flex>
@@ -92,18 +93,15 @@ export default {
       totalvote: 0
     };
   },
-  mounted() {
-    this.calculate();
+  created() {
+    this.calculate()
   },
   methods: {
     calculate() {
-      this.totalvote = +this.q.upVotes.length - +this.q.downVotes.length;
+      return +this.q.upVotes.length - +this.q.downVotes.length
     },
     deleteTag(id) {
       console.log(id, "hello?");
-    },
-    getTaggedQuestion() {
-
     },
     deleteQuestion(id) {
       Swal.fire({
@@ -151,7 +149,8 @@ export default {
           { headers: { token: localStorage.getItem("token") } }
         )
         .then(({ data }) => {
-          this.$store.dispatch("oneQuestionDetails", this.$route.params.id)
+          this.$store.dispatch("getDetailsOnThisQuestion", this.q._id)
+          // this.$store.commit("setOneQuestionDetailsUp", data)
           this.totalvote = data.upVotes.length - data.downVotes.length;
         })
         .catch(err => {
@@ -172,7 +171,11 @@ export default {
           { headers: { token: localStorage.getItem("token") } }
         )
         .then(({ data }) => {
-          this.$store.dispatch("oneQuestionDetails", this.$route.params.id)
+            this.$store.dispatch("getDetailsOnThisQuestion", this.q._id)
+
+          // this.$store.commit("setOneQuestionDetailsDown", data)
+
+          // this.$store.commit("setOneQuestionDetails", data)
 
           this.totalvote = data.upVotes.length - data.downVotes.length;
         })
@@ -187,7 +190,12 @@ export default {
   },
   computed: {
     ...mapState(["oneQuestionDetails", "answersOnThisQuestion"])
-  }
+  },
+  watch: {
+    oneQuestionDetails() {
+      console.log('q changed!')
+    }
+  },
 };
 </script>
 

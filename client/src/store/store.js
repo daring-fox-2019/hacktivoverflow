@@ -26,8 +26,6 @@ export const store = new Vuex.Store({
       localStorage.setItem('id', payload._id);
       localStorage.setItem('email', payload.email);
       localStorage.setItem('token', payload.token);
-
-
       router.push('/dashboard');
     },
     changeSignOutStatus(state) {
@@ -59,8 +57,18 @@ export const store = new Vuex.Store({
     },
     setUserWatchedTags(state, payload) {
       state.watchedTag = payload
-    }
+    },
+    setOneQuestionDetailsUp(state, payload ) {
+      console.log(payload, state, 'UP????????');
+      
+      state.oneQuestionDetails = payload
+    },
+    setOneQuestionDetailsDown(state, payload ) {
+      console.log(payload, state, 'DOWNN????????');
 
+      state.oneQuestionDetails = payload
+    }
+ 
   },
   actions: {
     // methods asycnronusç
