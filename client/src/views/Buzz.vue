@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-container>
       <section  v-if="isLoading">
-      <rise-loader style="margin-top:20vh;" :loading="loading" :color="color" :size="size"></rise-loader>
+      <rise-loader style="margin-top:20vh;" :color="color" :size="size"></rise-loader>
       <center><span style="margin-top:13vh;"> Fetching the lastest buzz for you.. </span>   </center>
       </section>
       <v-layout v-else row wrap>

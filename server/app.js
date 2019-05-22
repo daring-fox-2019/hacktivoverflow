@@ -17,16 +17,15 @@ const schedule = require('./helpers/cronjob')
 let url = process.env.MONGO_DB_URL
 
 
-io.on('connectiom', (socket)=> {
+io.on('connection', (socket)=> {
     console.log('new connection!')
 })
 
 const getJob = cron.schedule('1 * * * * *',  async () => {
       try {
-        // */30
           console.log('triggered~');
                 
-          let {data} = await axios.get(`https://jobs.github.com/positions.json?description=javascript&page=1`) 
+          let {data} = await axios.get(`https://jobs.github.com/positions.json?description=developer&page=1`) 
           const shuffled = data.sort(() => 0.5 - Math.random());
           let selected = shuffled.slice(0, 4);
           
@@ -62,7 +61,7 @@ mongoose.connect(`${url}`, {useNewUrlParser : true, useCreateIndex : true})
     console.log(err);
 })
 
-schedule()
+// schedule()
 
 app
     .use(express.json())

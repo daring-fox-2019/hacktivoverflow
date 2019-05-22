@@ -22,14 +22,12 @@ class AnswerController {
     }
 
     static findByQuestion(req, res) {
-        // console.log('apa??? dpt ga??', req.params.questionId);
 
         Answer.find({
                 questionId: req.params.questionId
             })
             .populate('userId')
             .then(found => {
-                // console.log('masuk', found, '////////////////asdasdasd');
 
                 if (found) res.status(200).json(found)
                 else res.status(404).json({
@@ -43,7 +41,6 @@ class AnswerController {
     }
 
     static async createAnswer(req, res) {
-        // console.log(req.authenticatedUser.id, 'siapa login');
         try {
             let created =  await Answer.create({
                 ...req.body,
@@ -56,21 +53,6 @@ class AnswerController {
         } catch (error) {
             res.status(500).json(error)
         }
-        // console.log('isi req body, ada qs id ga?', req.body);
-        // Answer.create({
-        //         ...req.body,
-        //         userId: req.authenticatedUser.id,
-        //         upVotes: [],
-        //         downVotes: [],
-        //     })
-        //     .then(created => {
-        //         // console.log('berhasil bikin ans');
-        //         res.status(201).json(created)
-        //     })
-        //     .catch(err => {
-        //         console.log(err, 'bagian create ans');
-        //         res.status(400).json(err)
-        //     })
     }
 
     static deleteAnswer(req, res) {
@@ -111,8 +93,13 @@ class AnswerController {
             let jawaban = await Answer.findById(req.params.answerId)
             let idxUp = jawaban.upVotes.find((x) => {return x == req.authenticatedUser.id})
             let idxDown =  jawaban.downVotes.find((x) => {return x == req.authenticatedUser.id})
+            let samePerson = req.authenticatedUser.id == jawaban.userId._id
 
-            if (!idxUp && !idxDown) {
+            if (samePerson) {
+                res.status(400).json({
+                    message: 'You cannot vote your own answer'
+                })
+            } else if (!idxUp && !idxDown) {
                 jawaban.upVotes.push(req.authenticatedUser.id)
                 await jawaban.save()
             } else if (!idxUp && idxDown) {
@@ -136,8 +123,13 @@ class AnswerController {
             let jawaban = await Answer.findById(req.params.answerId)
             let idxUp = jawaban.upVotes.find((x) => {return x == req.authenticatedUser.id})
             let idxDown =  jawaban.downVotes.find((x) => {return x == req.authenticatedUser.id})
+            let samePerson = req.authenticatedUser.id == jawaban.userId._id
 
-            if (!idxUp && !idxDown) {
+            if (samePerson) {
+                res.status(400).json({
+                    message: 'You cannot vote your own answer'
+                })
+            } else if (!idxUp && !idxDown) {
                 jawaban.downVotes.push(req.authenticatedUser.id)
                 await jawaban.save()
             } else if (idxUp && !idxDown) {

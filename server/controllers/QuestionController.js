@@ -113,27 +113,11 @@ class QuestionController {
             let result = await Question.find(obj).populate('userId').populate('tags')
             res.status(200).json(result)
 
-
-            // let data = await Question.find({}).populate('tags').populate('userId')
-            // res.status(200).json(data)
-
-
         } catch (error) {
             console.log(error, 'APAPAPAPAPA');
 
             res.status(500).json(error)
         }
-        // Question.find({}).populate('tags')
-        // .populate('userId')
-        // .then(found => {
-        //     // console.log(found, 'datanya apa ya?');        
-        //     if (found) res.status(200).json(found)
-        //     else res.status(404).json({message : 'No such question'})
-        // })
-        // .catch(err => {
-        //     console.log(err, 'err bagian cari qs');
-        //     res.status(400).json(err)
-        // })
     }
 
     static async createQuestion(req, res) {
@@ -263,24 +247,6 @@ class QuestionController {
             console.log(err, 'err bagian update qs');
             res.status(500).json(err)
         }
-
-
-
-        // Question.findByIdAndUpdate({
-        //         _id: req.params.questionId
-        //     }, {
-        //         ...req.body
-        //     })
-        //     .then(found => {
-        //         if (found) res.status(200).json(found)
-        //         else res.status(400).json({
-        //             message: 'No such question'
-        //         })
-        //     })
-        //     .catch(err => {
-        //         console.log(err, 'err bagian update qs');
-        //         res.status(400).json(err)
-        //     })
     }
 
 
@@ -288,7 +254,7 @@ class QuestionController {
     static async downVote(req, res) {
         try {
 
-            let pertanyaan = await Question.findById(req.params.questionId)
+            let pertanyaan = await Question.findById(req.params.questionId).populate('userId')
             let idxUp = pertanyaan.upVotes.find((x) => {
                 return x == req.authenticatedUser.id
             })
@@ -296,8 +262,13 @@ class QuestionController {
                 return x == req.authenticatedUser.id
             })
             console.log(idxUp, 'naeekkkkk ==== tuurunnnn', idxDown);
+            let samePerson = req.authenticatedUser.id == pertanyaan.userId._id
 
-            if (!idxUp && !idxDown) {
+            if (samePerson) {
+                res.status(400).json({
+                    message: 'You cannot vote your own question'
+                })
+            } else if (!idxUp && !idxDown) {
                 pertanyaan.downVotes.push(req.authenticatedUser.id)
                 await pertanyaan.save()
             } else if (idxUp && !idxDown) {
@@ -319,7 +290,7 @@ class QuestionController {
     static async upVote(req, res) {
         try {
 
-            let pertanyaan = await Question.findById(req.params.questionId)
+            let pertanyaan = await Question.findById(req.params.questionId).populate('userId')
             let idxUp = pertanyaan.upVotes.find((x) => {
                 return x == req.authenticatedUser.id
             })
@@ -327,8 +298,13 @@ class QuestionController {
                 return x == req.authenticatedUser.id
             })
             console.log(idxUp, 'naeekkkkk ==== tuurunnnn', idxDown);
+            let samePerson = req.authenticatedUser.id == pertanyaan.userId._id
 
-            if (!idxUp && !idxDown) {
+
+            if (samePerson) {
+                res.status(400).json({
+                    message: 'You cannot vote your own question'})
+            } else if (!idxUp && !idxDown) {
                 pertanyaan.upVotes.push(req.authenticatedUser.id)
                 await pertanyaan.save()
             } else if (!idxUp && idxDown) {

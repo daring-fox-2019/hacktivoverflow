@@ -76,7 +76,7 @@
                       <img :src="job.company_logo">
                     </v-list-tile-avatar>
                     <v-list-tile-content>
-                      <v-list-tile-title>{{truncate(job.title, 25)}}</v-list-tile-title>
+                      <v-list-tile-title>{{truncate(job.title, 19)}}</v-list-tile-title>
                       <v-list-tile-sub-title>{{job.location}}</v-list-tile-sub-title>
                     </v-list-tile-content>
                   </v-list-tile>

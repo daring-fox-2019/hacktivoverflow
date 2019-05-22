@@ -1,24 +1,23 @@
 const express = require('express')
 const cron = require('node-cron')
+const axios = require('axios')
 const nodemailer = require('./nodemailer')
 const ApiController = require('../controllers/ApiController')
 const app = express()
+const http = require('http').Server(app)
+const io = require('socket.io')(http)
 
-module.exports = function getJobs() {
-  cron.schedule('*/30 * * * *',  async () => {
-    try {
-      let search = req.body.jobInput
-      console.log(search, 'HAHAHAHAHHAA?');
+module.exports = cron.schedule('1 * * * * *',  async () => {
+  try {
+      console.log('triggered~');
+            
+      let {data} = await axios.get(`https://jobs.github.com/positions.json?description=javascript&page=1`) 
+      const shuffled = data.sort(() => 0.5 - Math.random());
+      let selected = shuffled.slice(0, 4);
       
-        let {data} = await axios.get(`https://jobs.github.com/positions.json?description=javascript&page=1`) 
-        const shuffled = data.sort(() => 0.5 - Math.random());
-        let selected = shuffled.slice(0, 4);
-        
-        io.emit('jobs', selected)
-    } catch (error) {
-      console.log(error);
-    }
-  })
+      io.emit('jobs', selected)
+  } catch (error) {
+    console.log(error);
 }
-
+})
 
