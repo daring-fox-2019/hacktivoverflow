@@ -10,18 +10,7 @@
           <v-card-text>
             <v-form>
               <v-text-field name="title" v-model="question.title" label="Title" type="text"></v-text-field>
-              <v-textarea
-                name="description"
-                label="Description"
-                hint="Description question"
-                v-model="question.description"
-              ></v-textarea>
-              <!-- <v-flex> -->
-<v-layout>
-
-              <wysiwyg v-model="myHTML" />
-</v-layout>
-              <!-- </v-flex> -->
+              <wysiwyg v-model="question.description" style="height:300px; text-align: left; overflow: scroll;"/>
               <v-flex>
                 <vue-tags-input
                   v-model="tag"

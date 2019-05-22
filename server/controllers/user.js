@@ -1,6 +1,9 @@
 const modelUser = require('../models/user')
 const { compare } = require('../helpers/bcrypt')
 const { sign } = require('../helpers/jwt')
+const { mailOptions, transporter } = require('../helpers/nodemailer')
+const kue = require('kue')
+const queue = kue.createQueue()
 
 class userController {
   static create(req, res) {
@@ -12,6 +15,9 @@ class userController {
     }
     modelUser.create(newUser)
       .then(data => {
+        mailOptions.to = req.body.email
+        queue.create('email').save()
+
         res.status(201).json(data)
       })
       .catch(err => {
@@ -69,7 +75,6 @@ class userController {
   }
 
   static update(req, res) {
-    
     modelUser.findByIdAndUpdate(req.params.id, { watchTag: req.body.tags }, { useFindAndModify: true, new: true })
       .then(data => {
         res.status(200).json(data)
@@ -80,5 +85,15 @@ class userController {
   }
 
 }
+
+queue.process('email', function (job, done) {
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      return console.log(error);
+    } else {
+      done()
+    }
+  })
+})
 
 module.exports = userController

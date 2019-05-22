@@ -1,5 +1,5 @@
 <template>
-    <v-layout ma-1 ml-2>
+    <v-layout ma-1 ml-2 wrap>
       <v-chip small v-for="(tag, index) in tags" :key="index" @click="search(tag)">{{ tag }}</v-chip>
     </v-layout>
 </template>

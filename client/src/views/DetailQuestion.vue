@@ -16,7 +16,7 @@
       </v-layout>
       <v-divider class="mb-3"/>
 
-      <v-layout fluid >
+      <v-layout fluid>
         <v-flex>
           <v-layout align-center justify-space-between fluid py-3>
             <v-flex md1>
@@ -85,12 +85,10 @@
                 <h3>Your Answers</h3>
               </v-flex>
               <v-form>
-                <v-textarea
-                  name="description"
-                  label="Description"
-                  hint="Description answer"
+                <wysiwyg
                   v-model="answer.description"
-                ></v-textarea>
+                  style="height:300px; text-align: left; overflow: scroll;"
+                />
               </v-form>
               <v-flex align-self-end xs3>
                 <v-btn color="blue" @click="addAnswer" style="color: white">Post Your Answer</v-btn>
@@ -100,7 +98,7 @@
         </v-flex>
 
         <v-flex xs3>
-           <WatchTag />
+          <WatchTag/>
         </v-flex>
       </v-layout>
     </v-container>
@@ -111,14 +109,14 @@
 import axios from "axios";
 import Tags from "@/components/Tags.vue";
 import Answer from "@/components/Answer.vue";
-import WatchTag from '@/components/WatchTag.vue';
+import WatchTag from "@/components/WatchTag.vue";
 
 export default {
   name: "home",
   components: {
     Tags,
     Answer,
-    WatchTag,
+    WatchTag
   },
   data() {
     return {
@@ -133,7 +131,7 @@ export default {
       user: "",
       answerLength: "",
       info: "",
-      isOwner: false,
+      isOwner: false
     };
   },
   created() {
@@ -157,8 +155,8 @@ export default {
           this.user = data.userId.name;
           this.answerLength = data.answers.length;
           this.setVote(data);
-  
-          if (localStorage.userId === data.userId._id) this.isOwner = true
+
+          if (localStorage.userId === data.userId._id) this.isOwner = true;
 
           if (this.answerLength === 1) this.info = "Answer";
           else this.info = "Answers";
@@ -173,8 +171,8 @@ export default {
           headers: { token: localStorage.token }
         })
         .then(() => {
-          this.answer.description = ''
-          this.loadQuestion()
+          this.answer.description = "";
+          this.loadQuestion();
         })
         .catch(err => {
           console.log(err);
@@ -280,6 +278,8 @@ export default {
 </script>
 
 <style scoped>
+@import "~vue-wysiwyg/dist/vueWysiwyg.css";
+
 #watch-tag {
   width: 90%;
   border-radius: 5px;
@@ -287,7 +287,7 @@ export default {
 
 .container {
   margin: 0;
-}
+}to="/"
 
 .fas {
   width: 30px;

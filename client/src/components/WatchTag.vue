@@ -10,7 +10,9 @@
         <span @click="batal" v-else style="cursor: pointer;">Cancel</span>
       </v-layout>
     </v-toolbar>
-    <v-flex v-if="!isEdit" style="min-height:150px; padding-top:10px;">
+    <v-flex v-if="!isEdit" style="min-height:150px; padding-top:10px; max-width:">
+      
+
       <Tags :tags="tags"/>
     </v-flex>
     <v-layout justify-center v-else mt-3>
