@@ -1,7 +1,9 @@
 <template>
     <footer class="footer">
         <div class="footer__content">
-            Twitter
+            <router-link to="https://twitter.com/mlutfiibra">
+                <i class="fab fa-twitter" style="font-size: 24px;"></i>
+            </router-link>
         </div>
         <div class="footer__content">
         &copy; 2019.
@@ -26,6 +28,7 @@ export default {
     border-top: solid 1px #ededed;
     margin-top: 5em;
     justify-content: space-around;
+    padding: .7em 0em;
 }
 .footer__content {
     text-align: center;
