@@ -4,6 +4,9 @@ const app = express();
 const router = require('./routes')
 const PORT = process.env.PORT || 3000;
 const cors = require('cors')
+const kue = require('kue')
+const queue = kue.createQueue();
+//mongoose
 const mongoose = require('mongoose');
 mongoose.connect(process.env.ATLAS_URL ||'mongodb://localhost/hacktivoverflow_' + process.env.NODE_ENV, {useNewUrlParser:true})
 
@@ -12,11 +15,12 @@ app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({extended: false}))
 
+
+
 app.use('/', router)
 
 app.listen(PORT, () => {
     console.log('app is listening on port ,', PORT)
 })
 
-// const kue = require('kue')
-// kue.app.listen(5000)
+kue.app.listen(5000)

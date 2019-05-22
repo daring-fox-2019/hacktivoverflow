@@ -83,7 +83,7 @@ Error Example
 POST /questions
 ```
 * Headers : {token}
-* Body    : {question, description}
+* Body    : {question, description, tags}
 * Success : Status:201, dataTypes:{}
 * Error : Status:500 , dataTypes:{}
 
@@ -93,6 +93,9 @@ Example Output
     "upvotes": [],
     "downvotes": [],
     "comments": [],
+    "tags": [
+        " halo"
+    ],
     "_id": "5ce27f3c943a82720c155277",
     "question": "Lorem ipsum?",
     "description": "test",

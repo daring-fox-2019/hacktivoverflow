@@ -5,6 +5,7 @@ const Answer = require('../models/answer')
 const { verify } = require('../helpers/jwt')
 module.exports = {
     authenticate(req, res, next) {
+        console.log('masuk authenticate')
         if(req.headers.token) {
             const decoded = verify(req.headers.token)
             req.decoded = decoded

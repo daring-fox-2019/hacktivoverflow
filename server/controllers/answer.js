@@ -28,6 +28,7 @@ class AnswerController {
         const _id = req.params.id
 
         Answer.findOne({_id})
+        .populate('user')
         .then(found => {
             res.status(200).json(found)
         })
@@ -45,6 +46,7 @@ class AnswerController {
         //add query later
 
         Answer.find(query)
+        .populate('user')
         .then(found => {
             res.status(200).json(found)
         })
@@ -59,6 +61,7 @@ class AnswerController {
     static findAnswerByQuestionId(req,res) {
         console.log(req.params)
         Answer.find({question: req.params.question_id})
+        .populate('user')
         .then(found => {
             res.status(200).json(found)
         })
@@ -107,7 +110,7 @@ class AnswerController {
 
     static upvote(req,res) {
         const answer_id = req.params.id
-        const upvote_obj = {$push: {upvotes: req.decoded._id}, $pull: {downvotes: req.decoded._od}}
+        const upvote_obj = {$push: {upvotes: req.decoded._id}, $pull: {downvotes: req.decoded._id}}
         Answer.findOneAndUpdate({_id:answer_id}, upvote_obj, {new:true})
         .then(upvoted => {
             if(upvoted) {

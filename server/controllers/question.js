@@ -1,9 +1,10 @@
 const Question = require('../models/question.js')
+require('./user.js');
 class QuestionController {
     static create(req,res) {
-        const { question, description } = req.body
+        const { question, description, tags } = req.body
         const user = req.decoded._id
-        const question_obj = { question, description, user }
+        const question_obj = { question, description, user, tags }
 
         Question.create(question_obj)
         .then(created => {
@@ -19,27 +20,63 @@ class QuestionController {
 
     static findOne(req,res) {
         Question.findOne({_id:req.params.id})
+        .populate({path: 'user'})
         .then(found => {
             res.status(200).json(found)
         })
         .catch(err => {
+            console.log(err)
             res.status(500).json({
                 message: err.message,
-                error: 'Error while findOne - article'
+                error: 'Error while findOne - question'
             })
         })
     }
 
     static findAll(req,res) {
         let query = {}
+        let sort = {}
+        let skip_data
+        console.log(req.query, 'query------')
+        let { question, tags, description } = req.query
+        
+        
 
+        if( question || tags || description ) {
+            query = {$or:[]}
+            // description = new RegExp(description)
+            // query = { $or: [
+            //     {question: { $regex: question, $options: 'i' }},
+            //     {'tags.text': { $regex: tags, $options: 'i' }},
+            //     {description: { $regex: description, $options: 'i' }}
+            // ]}
+        }
+
+        if(question) {
+            question = new RegExp(question)
+            query.$or.push({question: { $regex: question, $options: 'i' }})
+        }
+        if(tags) {
+            tags = new RegExp(tags)
+            query.$or.push({'tags.text': { $regex: tags, $options: 'i' }})
+        }
+        if(description) {
+            description = new RegExp(description)
+            query.$or.push({description: { $regex: description, $options: 'i' }})
+        }
+
+
+        console.log(query, '-----query findall')
         //insert query later
 
         Question.find(query)
+        .populate('user')
         .then(found => {
+            console.log(found)
             res.status(200).json(found)
         })
         .catch(err => {
+            console.log(err)
             res.status(500).json({
                 message:err.message,
                 error: 'Error while findAll - question'
@@ -48,10 +85,10 @@ class QuestionController {
     }
 
     static updateOne(req,res) {
-        const { question, description } = req.body
+        const { question, description, tags } = req.body
         const _id = req.params.id
 
-        const update_obj = { question, description}
+        const update_obj = { question, description, tags }
         Object.keys(update_obj).forEach((key) => (update_obj[key] == null) && delete update_obj[key]);
 
         Question.findOneAndUpdate({_id}, update_obj, {new:true})
@@ -82,7 +119,7 @@ class QuestionController {
 
     static upvote(req,res) {
         const question_id = req.params.id
-        const upvote_obj = {$push: {upvotes: req.decoded._id}, $pull: {downvotes: req.decoded._od}}
+        const upvote_obj = {$push: {upvotes: req.decoded._id}, $pull: {downvotes: req.decoded._id}}
         Question.findOneAndUpdate({_id:question_id}, upvote_obj, {new:true})
         .then(upvoted => {
             res.status(200).json(upvoted)

@@ -49,7 +49,10 @@ module.exports = {
         const upvotes = req.decoded._id
         Answer.findOne({_id, upvotes})
         .then(found => {
+            console.log(found, '------ middlewares')
             if(found) {
+                console.log('masuk found downvote -middlewares')
+
                 res.status(400).json({
                     message: 'Already in the upvote',
                 })
@@ -69,7 +72,10 @@ module.exports = {
         const downvotes = req.decoded._id
         Answer.findOne({_id, downvotes})
         .then(found => {
+            console.log(found, '------ middlewares')
+
             if(found) {
+                console.log('masuk found downvote -middlewares')
                 res.status(400).json({
                     message: 'Already in the downvote',
                 })

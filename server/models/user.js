@@ -31,6 +31,11 @@ const userSchema = new Schema({
         type: String,
         required: [true, 'name is required']
     },
+    tags : Array,
+    lastLogin: {
+        type: Date,
+        default: new Date(),
+    }
 });
 
 userSchema.pre('save', function(next) {
