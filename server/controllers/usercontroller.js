@@ -98,8 +98,8 @@ class Controller {
             else if(user.comparePassword(req.body.old)) {
                 User.updateOne({email: req.userData.email}, {$set: input})
                 .exec()
-                .then(user => {
-                    res.status(200).json(user)
+                .then(updatedUser => {
+                    res.status(200).json(updatedUser)
                 })
                 .catch(err => {
                     res.status(500).json({err})
@@ -121,8 +121,6 @@ class Controller {
     }
 
     static updateName(req, res) {
-        const input = {name: req.body.name}
-
         User.findOne({email: req.userData.email})
         .exec()
         .then(user => {
@@ -134,8 +132,8 @@ class Controller {
                 User.updateOne({email: req.userData.email}, {
                     $set: {name: req.body.name}
                 })
-                .then(question => {
-                    res.status(200).json(question)
+                .then(updatedUser => {
+                    res.status(200).json(updatedUser)
                 })
                 .catch(err => {
                     res.status(500).json({err})

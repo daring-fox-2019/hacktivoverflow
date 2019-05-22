@@ -1,21 +1,28 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const answerSchema = new mongoose.Schema({
+const answerSchema = new Schema({
   content: {
     type: String,
     required: true,
   },
   question_id: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "Question",
     required: true,
   },
   author: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "User",
     required: true,
   },
-  votes: {
-    type: Number,
-    default: 0,
+  upvotes: {
+    type: Array,
+    default: [],
+  },
+  downvotes: {
+    type: Array,
+    default: [],
   },
   created_at: Date,
   updated_at: Date,

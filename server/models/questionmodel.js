@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const questionSchema = new mongoose.Schema({
+const questionSchema = new Schema({
   title: {
     type: String,
     required: true,
@@ -10,12 +11,17 @@ const questionSchema = new mongoose.Schema({
     required: true,
   },
   author: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "User",
     required: true,
   },
-  votes: {
-    type: Number,
-    default: 0,
+  upvotes: {
+    type: Array,
+    default: [],
+  },
+  downvotes: {
+    type: Array,
+    default: [],
   },
   created_at: Date,
   updated_at: Date,
