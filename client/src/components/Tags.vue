@@ -9,7 +9,8 @@ export default {
   props: ["tags"],
   methods: {
     search(tag){
-      this.$store.dispatch('searchTag', tag)
+      // this.$store.dispatch('searchTag', tag)
+      this.$store.commit('searchTag', tag)
       this.$router.push('/')
     }
   },

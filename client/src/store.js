@@ -6,6 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    islogin: false,
     listQuestion: [],
     displayQuestion: [],
     myQuestion: [],
@@ -13,6 +14,9 @@ export default new Vuex.Store({
     searchTag: '',
   },
   mutations: {
+    setLogin(state, payload) {
+      state.islogin = payload;
+    },
     setQuestion(state, payload) {
       state.listQuestion = payload;
       state.displayQuestion = payload
@@ -24,10 +28,19 @@ export default new Vuex.Store({
       state.displayQuestion = payload;
       state.isSearch = true
     },
-    setSearchTag(state, payload){
+    setSearchTag(state, payload) {
       state.searchTag = payload
     },
-    setIsSearch(state, payload){
+    setIsSearch(state, payload) {
+      state.isSearch = payload
+    },
+    searchTag(state, payload) {
+      state.displayQuestion = state.listQuestion.filter(element => {
+        console.log(element);
+        if (element.tags.includes(payload)) {
+          return element
+        }
+      })
       state.isSearch = payload
     }
   },
@@ -49,25 +62,25 @@ export default new Vuex.Store({
         });
     },
     searchTag(context, payload) {
-      // this.displayQuestion = this.listQuestion.filter(element => {
-      //   if (element.tags === payload) {
-      //     return element
-      //   }
-      // })
-      let data = {
-        datas : {
-          tags : payload
-        }
-      }
-      axios.post('http://localhost:3000/questions/search', data, {
-        headers: {
-          token: localStorage.token
+      this.displayQuestion = this.listQuestion.filter(element => {
+        if (element.tags === payload) {
+          return element
         }
       })
-        .then(({ data }) => {
-          context.commit('setResultSearch', data);
-          context.commit('setSearchTag', payload);
-        });
+      // let data = {
+      //   datas : {
+      //     tags : payload
+      //   }
+      // }
+      // axios.post('http://localhost:3000/questions/search', data, {
+      //   headers: {
+      //     token: localStorage.token
+      //   }
+      // })
+      //   .then(({ data }) => {
+      //     context.commit('setResultSearch', data);
+      //     context.commit('setSearchTag', payload);
+      //   });
     },
   },
 });

@@ -54,7 +54,7 @@
             </v-flex>
             <v-flex>
               <v-layout column pl-4>
-                <v-flex align-self-start>{{question.description}}</v-flex>
+                <v-flex align-self-start><span class="grey--text" v-html="question.description"></span></v-flex>
                 <v-flex align-self-start>
                   <Tags :tags="question.tags"/>
                 </v-flex>
@@ -287,7 +287,7 @@ export default {
 
 .container {
   margin: 0;
-}to="/"
+}
 
 .fas {
   width: 30px;

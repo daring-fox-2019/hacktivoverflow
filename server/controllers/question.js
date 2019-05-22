@@ -19,7 +19,7 @@ class Question {
       })
   }
 
-  static search(req, res) {    
+  static search(req, res) {
     Model.find(req.body.datas)
       .populate('userId')
       .populate({
@@ -91,7 +91,7 @@ class Question {
   }
 
   static delete(req, res) {
-    Model.findByIdAndDelete({ _id: req.params.id })
+    Model.findByIdAndDelete({ _id: req.params.id }, { useFindAndModify: true })
       .then(() => {
         res.status(200).json("Delete Success")
       })

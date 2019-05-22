@@ -14,7 +14,7 @@
         style="max-width: 500px; margin-top: -20px;"
       ></v-text-field>
       <v-spacer/>
-        <router-link to="/myQuestion">My Question</router-link>
+      <router-link to="/myQuestion" v-if="this.$store.state.islogin">My Question</router-link>
 
       <div class="ml-2" v-if="!this.$store.state.islogin">
         <router-link to="/signin">Signin</router-link>
@@ -30,15 +30,6 @@
           </template>
 
           <v-list>
-            <v-list-tile to="/admin" v-if="this.$store.state.islogin && this.$store.state.isAdmin">
-              <v-list-tile-title>Admin</v-list-tile-title>
-            </v-list-tile>
-            <v-list-tile
-              to="/transaction"
-              v-if="this.$store.state.islogin && !this.$store.state.isAdmin"
-            >
-              <v-list-tile-title>Transaction</v-list-tile-title>
-            </v-list-tile>
             <v-list-tile @click="signout">
               <v-list-tile-title>Signout</v-list-tile-title>
             </v-list-tile>
@@ -55,18 +46,17 @@ export default {
   data() {
     return {
       name: localStorage.name,
-      searchTitle: '',
+      searchTitle: ""
     };
   },
   methods: {
     signout() {
-      this.$store.commit('setLogin', false);
-      this.$store.commit('setAdmin', false);
-      localStorage.removeItem('token');
-      localStorage.removeItem('name');
-      swal('Logout Success!', '', 'success');
-      this.$router.push('/');
-    },
-  },
+      this.$store.commit("setLogin", false);
+      localStorage.removeItem("token");
+      localStorage.removeItem("name");
+      swal("Logout Success!", "", "success");
+      this.$router.push("/");
+    }
+  }
 };
 </script>

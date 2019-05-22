@@ -9,7 +9,7 @@ module.exports = {
             tagModel.create({ name: element, count: 1 })
               .then(() => { })
           } else {
-            tagModel.findByIdAndUpdate(data._id, { count: data.count + 1 }, { useFindAndModify: true })
+            tagModel.findByIdAndUpdate(data._id, { count: data.count + 1 }, { useFindAndModify: true, new: true })
               .then(() => { })
           }
         })

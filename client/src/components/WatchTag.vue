@@ -11,8 +11,6 @@
       </v-layout>
     </v-toolbar>
     <v-flex v-if="!isEdit" style="min-height:150px; padding-top:10px; max-width:">
-      
-
       <Tags :tags="tags"/>
     </v-flex>
     <v-layout justify-center v-else mt-3>
@@ -39,15 +37,18 @@ export default {
     return {
       tags: [],
       tag: "",
-      isEdit: false
+      isEdit: false,
+      userId: localStorage.userId
     };
   },
   created() {
-    axios
-      .get(`http://localhost:3000/user/${localStorage.userId}`)
-      .then(({ data }) => {
-        this.tags = data.watchTag;
-      });
+    if (this.userId) {
+      axios
+        .get(`http://localhost:3000/user/${this.userId}`)
+        .then(({ data }) => {
+          this.tags = data.watchTag;
+        });
+    }
   },
   methods: {
     edit() {

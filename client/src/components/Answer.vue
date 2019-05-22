@@ -36,7 +36,9 @@
       </v-flex>
       <v-flex>
         <v-layout column pl-4>
-          <v-flex align-self-start>{{answer.description}}</v-flex>
+          <v-flex align-self-start>
+            <span class="grey--text" v-html="answer.description"></span>
+          </v-flex>
           <v-flex align-self-end>
             <span>Answered by : {{answer.userId.name}}</span>
           </v-flex>
@@ -74,7 +76,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   props: ["answer"],
@@ -123,12 +125,16 @@ export default {
     },
     actionEdit() {
       axios
-        .put(`http://localhost:3000/answers/${this.answer._id}`, {description : this.answer.description}, {
-          headers: { token: localStorage.token }
-        })
+        .put(
+          `http://localhost:3000/answers/${this.answer._id}`,
+          { description: this.answer.description },
+          {
+            headers: { token: localStorage.token }
+          }
+        )
         .then(() => {
-          this.isEdit = false
-          this.loadQuestion()
+          this.isEdit = false;
+          this.loadQuestion();
         })
         .catch(err => {
           console.log(err);

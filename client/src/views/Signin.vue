@@ -63,11 +63,8 @@ export default {
           this.signin.password = "";
           localStorage.setItem("token", data.token);
           localStorage.setItem("name", data.name);
-          localStorage.setItem("role", data.role);
+          localStorage.setItem("userId", data.userId);
           this.$store.commit("setLogin", true);
-          if (data.role) {
-            this.$store.commit("setAdmin", true);
-          }
           swal("Welcome back!", "Login Success", "success");
           this.$router.push("/");
         })

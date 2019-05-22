@@ -30,9 +30,9 @@ export default {
     Navbar,
   },
   created() {
-    // if (localStorage.token) {
-    //   this.$store.commit("setLogin", true);
-    // }
+    if (localStorage.token) {
+      this.$store.commit("setLogin", true);
+    }
     this.$store.dispatch('loadQuestion');
   },
 };
