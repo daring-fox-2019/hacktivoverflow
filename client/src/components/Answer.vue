@@ -126,7 +126,7 @@ export default {
     actionEdit() {
       axios
         .put(
-          `http://localhost:3000/answers/${this.answer._id}`,
+          `http://35.198.235.228/answers/${this.answer._id}`,
           { description: this.answer.description },
           {
             headers: { token: localStorage.token }

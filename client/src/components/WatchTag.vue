@@ -44,7 +44,7 @@ export default {
   created() {
     if (this.userId) {
       axios
-        .get(`http://localhost:3000/user/${this.userId}`)
+        .get(`http://35.198.235.228/user/${this.userId}`)
         .then(({ data }) => {
           this.tags = data.watchTag;
         });
@@ -67,7 +67,7 @@ export default {
         tags: tag
       };
       axios
-        .patch(`http://localhost:3000/user/${localStorage.userId}`, datas)
+        .patch(`http://35.198.235.228/user/${localStorage.userId}`, datas)
         .then(({ data }) => {
           this.tags = data.watchTag;
           this.isEdit = false;

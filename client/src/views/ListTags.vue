@@ -46,7 +46,7 @@ export default {
   },
   created() {
     axios
-      .get("http://localhost:3000/tag")
+      .get("http://35.198.235.228/tag")
       .then(({ data }) => {
         this.listTag = data;
         this.filterListTag = data;

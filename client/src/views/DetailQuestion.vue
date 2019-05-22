@@ -148,7 +148,7 @@ export default {
   methods: {
     loadQuestion() {
       axios
-        .get(`http://localhost:3000/questions/${this.$route.params.id}`)
+        .get(`http://35.198.235.228/questions/${this.$route.params.id}`)
         .then(({ data }) => {
           this.question = data;
           this.totalVote = data.upvotes.length - data.downvotes.length;
@@ -167,7 +167,7 @@ export default {
     },
     addAnswer() {
       axios
-        .post(`http://localhost:3000/answers`, this.answer, {
+        .post(`http://35.198.235.228/answers`, this.answer, {
           headers: { token: localStorage.token }
         })
         .then(() => {
@@ -181,7 +181,7 @@ export default {
     upvote() {
       axios
         .patch(
-          `http://localhost:3000/questions/${this.question._id}/upvote`,
+          `http://35.198.235.228/questions/${this.question._id}/upvote`,
           {},
           {
             headers: { token: localStorage.token }
@@ -202,7 +202,7 @@ export default {
     downvote() {
       axios
         .patch(
-          `http://localhost:3000/questions/${this.question._id}/downvote`,
+          `http://35.198.235.228/questions/${this.question._id}/downvote`,
           {},
           {
             headers: { token: localStorage.token }
@@ -232,7 +232,7 @@ export default {
     upvoteAnswer(id) {
       axios
         .patch(
-          `http://localhost:3000/answers/${id}/upvote`,
+          `http://35.198.235.228/answers/${id}/upvote`,
           {},
           {
             headers: { token: localStorage.token }
@@ -248,7 +248,7 @@ export default {
     downvoteAnswer(id) {
       axios
         .patch(
-          `http://localhost:3000/answers/${id}/downvote`,
+          `http://35.198.235.228/answers/${id}/downvote`,
           {},
           {
             headers: { token: localStorage.token }
@@ -263,7 +263,7 @@ export default {
     },
     remove() {
       axios
-        .delete(`http://localhost:3000/questions/${this.$route.params.id}`, {
+        .delete(`http://35.198.235.228/questions/${this.$route.params.id}`, {
           headers: { token: localStorage.token }
         })
         .then(() => {

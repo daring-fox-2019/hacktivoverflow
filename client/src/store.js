@@ -46,13 +46,13 @@ export default new Vuex.Store({
   },
   actions: {
     loadQuestion(context) {
-      axios.get('http://localhost:3000/questions')
+      axios.get('http://35.198.235.228/questions')
         .then(({ data }) => {
           context.commit('setQuestion', data);
         });
     },
     loadMyQuestion(context) {
-      axios.get('http://localhost:3000/questions/user', {
+      axios.get('http://35.198.235.228/questions/user', {
         headers: {
           token: localStorage.token
         }
@@ -72,7 +72,7 @@ export default new Vuex.Store({
       //     tags : payload
       //   }
       // }
-      // axios.post('http://localhost:3000/questions/search', data, {
+      // axios.post('http://35.198.235.228/questions/search', data, {
       //   headers: {
       //     token: localStorage.token
       //   }

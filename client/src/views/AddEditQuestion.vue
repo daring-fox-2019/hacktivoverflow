@@ -64,7 +64,7 @@ export default {
   methods: {
     fetchData() {
       axios
-        .get(`http://localhost:3000/questions/${this.$route.params.id}`)
+        .get(`http://35.198.235.228/questions/${this.$route.params.id}`)
         .then(({ data }) => {
           this.question.title = data.title;
           this.question.description = data.description;
@@ -82,7 +82,7 @@ export default {
       this.question.tags = tag;
 
       axios
-        .post("http://localhost:3000/questions", this.question, {
+        .post("http://35.198.235.228/questions", this.question, {
           headers: { token: localStorage.token }
         })
         .then(() => {
@@ -97,7 +97,7 @@ export default {
     editQuestion() {
       axios
         .put(
-          `http://localhost:3000/questions/${this.$route.params.id}`,
+          `http://35.198.235.228/questions/${this.$route.params.id}`,
           this.question,
           {
             headers: { token: localStorage.token }
