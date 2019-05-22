@@ -8,7 +8,7 @@
     <router-view/>
     <div>
       <div class="fluid-container footer">
-        <p class="text-center">Copyright &copy 2018, ABC Marketing. All Rights Reserved.</p>
+        <p class="text-center">Portofolio - Michael Ryan - 2019</p>
       </div>
     </div>
   </div>

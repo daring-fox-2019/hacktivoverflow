@@ -197,6 +197,13 @@ export default new Vuex.Store({
         .catch((err) => {
           console.log(err);
           console.log('gagal submit new question');
+          Swal.fire({
+               // position: 'top-end',
+               type: 'error',
+               title: 'Must be logged in to post question',
+               showConfirmButton: false,
+               timer: 1500
+          })
         });
     },
     // answer

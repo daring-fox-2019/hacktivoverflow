@@ -7,7 +7,7 @@
           <LeftNav/>
         </b-col>
         <!-- middle -->
-        <b-col class="px-0 d-flex flex-column border-left">
+        <b-col class="px-0 d-flex flex-column border-left col-7">
           <div class="d-flex py-3 justify-content-between border-bottom">
             <div class="px-3"
               style="font-size:30px;">{{question.question}}</div>

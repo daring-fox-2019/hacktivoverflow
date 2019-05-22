@@ -93,12 +93,12 @@ export default {
     signOut() {
       this.$swal({
         title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        text: "You cannot ask question while logged out",
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!',
+        confirmButtonText: 'Yes',
       }).then((result) => {
         if (result.value) {
           this.$store.commit('signOut');

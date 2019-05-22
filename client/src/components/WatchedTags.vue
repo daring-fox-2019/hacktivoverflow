@@ -5,11 +5,12 @@
     </b-row>
     <b-row>
       <b-col class="px-0">
-        <div class="border p-1 px-2">
+        <div class="border p-1 px-2" v-show="!onEdit"
+        style="min-height: 40px;">
           <Tag v-for="(item, index) in showTag"
             :key="index"
             :tag="item.text"
-            v-show="!onEdit"/>
+            />
         </div>
         <div class="d-flex justify-content-end">
           <b-button 
@@ -89,7 +90,7 @@ export default {
           // position: 'top-end',
           type: 'error',
           title: 'Oops error saving',
-          text: err.message,
+          text: 'You must be logged in',
           showConfirmButton: false,
           timer: 1500
         })

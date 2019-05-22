@@ -113,6 +113,7 @@ export default {
 
       console.log(question_obj);
       this.$store.dispatch('submitNewQuestion', question_obj);
+      this.$router.push('/questions')
     },
   },
 };

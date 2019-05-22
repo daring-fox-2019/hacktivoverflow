@@ -12,7 +12,7 @@
             <!-- this is divider -->
 
             <div>
-              <b-button variant="outline-primary" size="sm" class="mr-2" to="/ask">Ask a Question</b-button>
+              <b-button variant="outline-primary" size="sm" class="mr-2" to="/ask" v-show="isLogin">Ask a Question</b-button>
             </div>
           </div>
           <div class="px-2">
@@ -63,6 +63,9 @@ export default {
   computed: {
     questionsList() {
       return this.$store.state.questionsList;
+    },
+    isLogin() {
+      return this.$store.state.isLogin
     }
   }
 };
