@@ -12,7 +12,12 @@ route.use(Authentication)
 // Create
 route.post('/', QuestionController.create)
 
+
 // UPDATE
+route.patch('/upvote/:id', QuestionController.upvote)
+
+route.patch('/downvote/:id', QuestionController.downvote)
+
 route.patch('/:id', QuestionController.update)
 
 // DELETE

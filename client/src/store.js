@@ -26,6 +26,24 @@ export default new Vuex.Store({
       state.currentQuestion = question;
     },
 
+    upvoteQuestion(state, question) {
+      state.currentQuestion = question
+      for (let i = 0; i < state.allQuestions.length; i++) {
+        if (state.allQuestions[i]._id == question._id) {
+          state.allQuestions[i] = question
+        }
+      }
+    },
+
+    downvoteQuestion(state, question) {
+      state.currentQuestion = question
+      for (let i = 0; i < state.allQuestions.length; i++) {
+        if (state.allQuestions[i]._id == question._id) {
+          state.allQuestions[i] = question
+        }
+      }
+    },
+
     getAnswers(state, answers) {
       state.answers = answers;
     },
@@ -213,5 +231,34 @@ export default new Vuex.Store({
           console.log(err);
         });
     },
+
+    upvoteQuestion(context, id) {
+      console.log(`masuk action`);
+      
+      myServer.defaults.headers.common.token = localStorage.token;
+      myServer
+        .patch(`/question/upvote/${this.state.currentQuestion._id}`, this.state.user._id)
+        .then(({ data }) => {
+          context.commit('upvoteQuestion', data)
+        })
+        .catch(err => {
+          console.log(err);
+
+        })
+    }
+    ,
+    downvoteQuestion(context, id) {
+      console.log(`masuk action`);
+      myServer.defaults.headers.common.token = localStorage.token;
+      myServer
+        .patch(`/question/downvote/${this.state.currentQuestion._id}`, this.state.user._id)
+        .then(({ data }) => {
+          context.commit('downvoteQuestion', data)
+        })
+        .catch(err => {
+          console.log(err);
+
+        })
+    }
   },
 });

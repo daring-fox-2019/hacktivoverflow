@@ -74,6 +74,77 @@ class QuestionController {
                 res.status(500).json(err)
             })
     }
+
+    static upvote(req, res) {
+        Question
+            .findOne({ _id: req.params.id })
+            .populate('user')
+            .then(question => {
+                
+                
+                let count = 0
+                question.upvotes.find(el => {
+                    if (el == req.decoded._id) { count += 2 }
+                })
+                question.downvotes.find((el, i) => {
+                    if (el == req.decoded._id) { count++ }
+                })
+                if (count === 0) {
+                    console.log(`lgsg tambah`);
+                    console.log(count);
+                    
+                    question.upvotes.push(req.decoded._id)
+                    question.save()
+                    res.status(200).json(question)
+                } else if (count === 1) {
+                    console.log(`potong samping`);
+                    console.log(count);
+                    question.downvotes.pull(req.decoded._id)
+                    question.upvotes.push(req.decoded._id)
+                    question.save()
+                    res.status(200).json(question)
+                } else {
+                    console.log(`nothing`);
+                    console.log(count);
+                    console.log(question);
+                    
+                    res.status(200).json(question)
+                }
+            })
+            .catch(err => {
+                res.status(500).json(err)
+            })
+    }
+
+    static downvote(req, res) {
+        Question
+            .findOne({ _id: req.params.id })
+            .populate('user')
+            .then(question => {
+                let count = 0
+                question.downvotes.find(el => {
+                    if (el == req.decoded._id) { count += 2 }
+                })
+                question.upvotes.find((el, i) => {
+                    if (el == req.decoded._id) { count++ }
+                })
+                if (count === 0) {
+                    question.downvotes.push(req.decoded._id)
+                    question.save()
+                    res.status(200).json(question)
+                } else if (count === 1) {
+                    question.upvotes.pull(req.decoded._id)
+                    question.downvotes.push(req.decoded._id)
+                    question.save()
+                    res.status(200).json(question)
+                } else {
+                    res.status(200).json(question)
+                }
+            })
+            .catch(err => {
+                res.status(500).json(err)
+            })
+    }
 }
 
 module.exports = QuestionController

@@ -4,18 +4,25 @@
       <div class="row">
         <div class="col-1" style="text-align:center">
           <br>
-          <i style="font-size: 30px;" class="fas fa-sort-up"></i>
+          <a href="#" @click="upvoteQuestion">
+            <i style="font-size: 30px;" class="fas fa-sort-up"></i>
+          </a>
           <h4>{{ currentQuestion.upvotes.length - currentQuestion.downvotes.length }}</h4>
-          <i style="font-size: 30px;" class="fas fa-sort-down"></i>
+          <a href="#" @click="downvoteQuestion">
+            <i style="font-size: 30px;" class="fas fa-sort-down"></i>
+          </a>
         </div>
         <div class="col-11">
           <h1>{{ currentQuestion.title }}</h1>
           <br>
           <p v-html="currentQuestion.description"></p>
           <br>
-          <h5>Asked by: {{ currentQuestion.user.username}}</h5>
+          <h5>Asked by: {{ currentQuestion.user.username }}</h5>
           <br>
-          <div v-if="currentQuestion.user._id === user._id" class="row">
+          <div
+            v-if="currentQuestion.user._id === user._id || currentQuestion.user === user._id"
+            class="row"
+          >
             <div
               style="background-color: #97DCDF;
                     width: -moz-max-content;
@@ -59,32 +66,42 @@
       <p v-html="answer.description"></p>
       <h5>By: {{ answer.user.username}}</h5>
 
+      <a href="#" @click="upvoteAnswer">
+        <i style="font-size: 30px;" class="fas fa-sort-up"></i>
+      </a>
+      <h4>{{ answer.upvotes.length - answer.downvotes.length }}</h4>
+      <a href="#" @click="downvoteAnswer">
+        <i style="font-size: 30px;" class="fas fa-sort-down"></i>
+      </a>
+
       <button
         class="btn btn-warning"
         v-if="answer.user._id === user._id"
         @click="toEditAnswer(answer._id)"
       >Edit</button>
 
-      <button @click="deleteAnswer(answer._id)" class="btn btn-danger" v-if="answer.user._id === user._id">Delete</button>
-
-
+      <button
+        @click="deleteAnswer(answer._id)"
+        class="btn btn-danger"
+        v-if="answer.user._id === user._id"
+      >Delete</button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 
 export default {
   data() {
     return {
-      answer: '',
-      editedAnswer: '',
+      answer: "",
+      editedAnswer: ""
     };
   },
 
   computed: {
-    ...mapState(['isLogin', 'currentQuestion', 'user', 'answers']),
+    ...mapState(["isLogin", "currentQuestion", "user", "answers"])
   },
   created() {
     this.getQuestion();
@@ -92,28 +109,28 @@ export default {
   },
   methods: {
     getQuestion() {
-      this.$store.dispatch('getQuestion', this.$route.params.id);
+      this.$store.dispatch("getQuestion", this.$route.params.id);
     },
     getAnswers() {
-      this.$store.dispatch('getAnswers', this.$route.params.id);
+      this.$store.dispatch("getAnswers", this.$route.params.id);
     },
     toEditPage() {
       this.$router.push(`/askQuestion/${this.currentQuestion._id}`);
     },
     deleteQuestion() {
-      this.$store.dispatch('deleteQuestion', this.$route.params.id);
+      this.$store.dispatch("deleteQuestion", this.$route.params.id);
     },
     createAnswer() {
-      this.$store.dispatch('createAnswer', [
+      this.$store.dispatch("createAnswer", [
         this.currentQuestion._id,
-        this.answer,
+        this.answer
       ]);
     },
     editAnswer(answerId) {
-      this.$store.dispatch('editAnswer', [answerId, this.editedAnswer]);
+      this.$store.dispatch("editAnswer", [answerId, this.editedAnswer]);
     },
     deleteAnswer(answerId) {
-      this.$store.dispatch('deleteAnswer', answerId);
+      this.$store.dispatch("deleteAnswer", answerId);
     },
     getText(text) {
       this.editedAnswer = text;
@@ -121,43 +138,18 @@ export default {
     toEditAnswer(answerId) {
       this.$router.push(`/editAnswer/${answerId}`);
     },
-  },
+    upvoteQuestion() {
+      this.$store.dispatch("upvoteQuestion");
+    },
+    downvoteQuestion() {
+      this.$store.dispatch("downvoteQuestion");
+    },
+    upvoteAnswer() {},
+    downvoteAnswer() {}
+  }
 };
 </script>
 
 <style>
 @import "~vue-wysiwyg/dist/vueWysiwyg.css";
 </style>
-
-<!--      <div
-        class="modal fade"
-        id="exampleModal"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Edit Answer</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form>
-                <wysiwyg v-model="editedAnswer"/>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button
-                @click="editAnswer(answer._id)"
-                type="button"
-                class="btn btn-primary"
-                data-dismiss="modal"
-              >Confirm Edit</button>
-            </div>
-          </div>
-        </div>
-      </div> -->

@@ -5,9 +5,7 @@
       <header class="navbar" style="padding: 5px;">
         <ul>
           <li>
-            <!-- <a href="#"> -->
             <img src="../assets/tanyatanya.gif">
-            <!-- </a> -->
           </li>
           <a href="#" style="color: #df9a97" @click="goHome">
             <li style="font-weight: bold; font-size: 20px">Tanya! Jawab?</li>
