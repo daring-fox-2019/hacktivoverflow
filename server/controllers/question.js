@@ -23,6 +23,11 @@ class QuestionController {
         .populate({path: 'user'})
         .then(found => {
             res.status(200).json(found)
+            //increase view
+            Question.findOneAndUpdate({_id:found._id}, {$inc: {views: 1}})
+            .then(updated => {
+                console.log('success update view')
+            }) 
         })
         .catch(err => {
             console.log(err)

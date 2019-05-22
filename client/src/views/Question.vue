@@ -18,7 +18,7 @@
           <div class="px-2">
             <div class="border-bottom"></div>
           </div>
-          <div>
+          <div style="height: 500px;">
             <QuestionListCard
               v-for="question in questionsList"
               :key="question._id"

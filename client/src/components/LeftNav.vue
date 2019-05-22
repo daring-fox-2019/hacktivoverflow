@@ -1,5 +1,7 @@
 <template>
-  <b-list-group style="height:100% border-left">
+  <b-list-group 
+    class="pt-4"
+    style="height:100% border-left">
     <b-list-group-item
       v-for="(link, index) in links"
       :key="index"

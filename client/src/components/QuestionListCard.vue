@@ -21,10 +21,10 @@
                 <b-col class="p-1" cols="6">
                   <b-container fluid style="text-align:center;">
                     <b-row>
-                      <b-col style="font-size:16px;" class="px-0">xx</b-col>
+                      <b-col style="font-size:16px;" class="px-0">{{question.views}}</b-col>
                     </b-row>
                     <b-row>
-                      <b-col class="px-0" style="font-size:10px;">answers</b-col>
+                      <b-col class="px-0" style="font-size:10px;">views</b-col>
                     </b-row>
                   </b-container>
                 </b-col>

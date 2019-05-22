@@ -18,15 +18,14 @@ const questionSchema = new Schema({
             type: Schema.Types.ObjectId, ref: 'User'
         }
     ],
-    // comments: [
-    //     {
-    //         type: Schema.Types.ObjectId, ref:'Comment'
-    //     }
-    // ],
     user: {
         type: Schema.Types.ObjectId, ref: 'User'
     },
-    tags: {type: Array}
+    tags: {type: Array},
+    views: {
+        type: Number,
+        default: 0,
+    }
 },{
     timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt'}
 

@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid class="px-0">
+  <b-container fluid class="px-0" style="background-color:#17A2b8;">
     <div class="container">
       <b-navbar toggleable="lg" type="dark" variant="info" class="py-0">
         <b-navbar-brand to="/" class="py-0 d-flex align-items-center">

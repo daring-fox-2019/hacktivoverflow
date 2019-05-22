@@ -6,6 +6,11 @@
       <router-link to="/about">About</router-link>
     </div> -->
     <router-view/>
+    <div>
+      <div class="fluid-container footer">
+        <p class="text-center">Copyright &copy 2018, ABC Marketing. All Rights Reserved.</p>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -29,5 +34,11 @@ export default {
   color: #2c3e50;
   font-size: 15px;
 }
-
+.fluid-container.footer{
+  background: #17a2b8;
+}
+.fluid-container.footer > *:last-child {
+    margin-bottom: 0px;
+    color: #fff;
+}
 </style>

@@ -7,7 +7,7 @@
           <LeftNav/>
         </b-col>
         <!-- middle -->
-        <b-col class="px-3 my-4 d-flex flex-column border-left">
+        <b-col class="px-3 py-4 d-flex flex-column border-left">
           <div class="mb-4">
             Ask Your Own Question
           </div>

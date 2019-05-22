@@ -23,7 +23,7 @@
         </div>
 
         <!-- edit question and user -->
-        <div class="row justify-content-between" style="font-size:12px; color:grey;">
+        <div class="row justify-content-between pb-2" style="font-size:12px; color:grey;">
           <div class="pl-3 mt-3">
             <router-link
               v-show="user_id == question.user._id"
