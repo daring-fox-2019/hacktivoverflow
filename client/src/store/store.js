@@ -31,6 +31,10 @@ export const store = new Vuex.Store({
     changeSignOutStatus(state) {
       state.isLogin = false
       localStorage.clear()
+      Swal.fire({
+        type: "success",
+        title: "Signed out!"
+      });
       router.push('/');
 
     },

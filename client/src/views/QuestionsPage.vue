@@ -8,6 +8,7 @@
       <v-layout row wrap justify-space-between>
         <v-flex xs2>
           <v-switch
+          v-if="isLogin"
             v-model="watched"
             label="Watched"
             color="orange darken-3"
@@ -16,7 +17,9 @@
           ></v-switch>
         </v-flex>
         <v-flex xs4>
-          <v-text-field grey--text color="grey" label="Enter title or tag.." outline v-model="search"></v-text-field>
+          <v-text-field
+           v-if="isLogin"
+           grey--text color="grey" label="Enter title or tag.." outline v-model="search"></v-text-field>
         </v-flex>
         <!-- <v-spacer></v-spacer> -->
         <v-flex xs4 text-xs-right>
@@ -176,7 +179,7 @@ export default {
     // this.getJobs();
   },
   computed: {
-    ...mapState(["listQuestions"]),
+    ...mapState(["listQuestions", "isLogin"]),
     // filteredData() {
     //   return this.listQuestions.filter(quest =>
     //     quest.title.toLowerCase().includes(this.search.toLowerCase())

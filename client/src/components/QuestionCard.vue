@@ -1,6 +1,6 @@
 <template>
   <v-flex>
-    {{q}}
+    <!-- {{q}} -->
     <v-card
       color="transparent"
       style=" outline:dashed 0.2px grey; outline-offset:-6px;"

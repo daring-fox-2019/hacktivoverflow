@@ -13,7 +13,7 @@ function sendMail(to, text) {
   let mailOptions = {
     from: process.env.EMAIL,
     to,
-    subject: 'G8IT or ASK! A Community-based developer forum :)',
+    subject: 'FOXCODES;  :)',
     text
   }
 

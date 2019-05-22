@@ -11,7 +11,7 @@ const axios = require('axios')
 const port = process.env.PORT || 3100
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
-// const schedule = require('./helpers/cronjob')
+const schedule = require('./helpers/cronjob')
 
 // let url = process.env.MONGO_DB_ATLAS
 let url = process.env.MONGO_DB_URL
@@ -35,22 +35,22 @@ const getJob = cron.schedule('1 * * * * *',  async () => {
         console.log(error);
     }
 })
-// getJob.start()
+getJob.start()
 
 const getNews = cron.schedule('*/30 * * * * *',  async () => {
     try {
         console.log('triggered for news~');
               
-        // let {data} = await axios.get(`https://newsapi.org/v2/everything?q=technology&from=2019-05-21&to=2017-05-21&sortBy=popularity&apiKey=20915dfc0dfa4ec59b99db9d4bd4010f`) 
-        // const shuffled = data.articles.sort(() => 0.5 - Math.random());
-        // let selected = shuffled.slice(0, 4);
+        let {data} = await axios.get(`https://newsapi.org/v2/everything?q=technology&from=2019-05-21&to=2017-05-21&sortBy=popularity&apiKey=20915dfc0dfa4ec59b99db9d4bd4010f`) 
+        const shuffled = data.articles.sort(() => 0.5 - Math.random());
+        let selected = shuffled.slice(0, 4);
         
-        // io.emit('news', selected)
+        io.emit('news', selected)
     } catch (error) {
       console.log(error);
   }
 })
-// getNews.start()
+getNews.start()
 
 
 
@@ -62,7 +62,7 @@ mongoose.connect(`${url}`, {useNewUrlParser : true, useCreateIndex : true})
     console.log(err);
 })
 
-// schedule()
+schedule()
 
 app
     .use(express.json())
