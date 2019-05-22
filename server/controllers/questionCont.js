@@ -58,7 +58,12 @@ class QuestionController {
     Question.findOne({
       _id: req.params._id
     })
-    .populate('answers')
+    .populate('user')
+    .populate({
+      path: 'answers',
+      // Get friends of friends - populate the 'friends' array for every friend
+      populate: { path: 'user' }
+  })
     .then(row =>{
       res.status(200).json(row)
     })
@@ -76,16 +81,27 @@ class QuestionController {
       row.description = req.body.description || row.description
       let foundUpvotes = row.upvotes.filter(userId => userId.equals(req.decoded._id))
       let foundDownvotes = row.downvotes.filter(userId => userId.equals(req.decoded._id))
-      if(foundUpvotes || foundDownvotes) {
-        res.status(400).json({
-          message: "User already voted"
-        })
+      if(req.body.voteType == 'upvote') {
+        if(foundUpvotes.length > 0)
+          res.status(400).json({
+            message: "User already voted"
+          })
+        else {
+          if(foundDownvotes.length > 0)
+            row.downvotes = row.downvotes.filter(userId => !userId.equals(req.decoded._id))
+          row.upvotes.push(req.decoded._id)
+        }
       }
       else {
-        if(req.body.voteType == 'upvote')
-          row.upvotes.push(req.decoded._id)
-        else 
+        if(foundDownvotes.length > 0)
+          res.status(400).json({
+            message: "User already voted"
+          })
+        else {
+          if(foundUpvotes.length > 0)
+            row.upvotes = row.upvotes.filter(userId => !userId.equals(req.decoded._id))
           row.downvotes.push(req.decoded._id)
+        }
       }
       return row.save()
     })
