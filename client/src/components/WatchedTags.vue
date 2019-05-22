@@ -25,7 +25,7 @@
               color="blue lighten-4"
               @input="removeWatchTag(tag)"
             >
-              <a class="tag" v-bind:href="'questions/tagged/' + tag.name">{{tag.name}}</a>
+              <router-link class="tag" :to="'questions/tagged/' + tag.name">{{tag.name}}</router-link>
             </v-chip>
           </div>
         </v-layout>
@@ -75,6 +75,12 @@ export default {
       newTag: "",
       availableTags: []
     };
+  },
+  watch: {
+    '$store.state.user'(old, newval) {
+      console.log('watch user tags..', newval);
+      this.watchedTags = [...newval.tags]
+    }
   },
   methods: {
     remove(item) {
@@ -126,14 +132,13 @@ export default {
       .then(({ data }) => {
         this.$store.commit("setTags", data);
         this.availableTags = data;
-        this.watchedTags = [ ...this.$store.state.user.tags ];
       })
       .catch(err => {
         console.log(err);
         if (err.response) {
           err = err.response.data;
         }
-        swal.fire("Error", err, "error");
+        swal.fire("Error", err.toString(), "error");
       });
   }
 };

@@ -14,7 +14,6 @@ export default {
     },
     created() {
         this.$store.dispatch('getQuestions')
-        console.log(this.$store.state.questions);
     }
 }
 </script>

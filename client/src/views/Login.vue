@@ -86,14 +86,14 @@ export default {
     ]
   }),
   mounted() {
-    console.log(this.$route.params);
-    if(this.$route.query.code && this.$route.query.state.includes('yaya')) {
+    console.log(this.$route.query.code);
+    if(this.$route.query.code && this.$route.query.state && this.$route.query.state.includes('yaya')) {
       this.githubCode = this.$route.query.code;
-
       this.authGithub();
     }
-    else {
+    else if(this.$route.query.code){
       this.linkedInCode = this.$route.query.code;
+      this.authLinkedIn();
     }
   },
   methods: {
@@ -169,7 +169,7 @@ export default {
     },
     authLinkedIn() {
       this.$store.commit('setLoading', true);
-      http.get('/auth/linkedin/redirect/?code='+this.linkedinCode)
+      http.get('/auth/linkedin/redirect/?code='+this.linkedInCode)
           .then(({data}) => {
             localStorage.setItem('hackflow_token', data.access_token)
             this.$store.commit('setUser', data.user)

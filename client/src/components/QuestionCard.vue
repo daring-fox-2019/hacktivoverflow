@@ -34,7 +34,7 @@
                     <v-layout row>
                         <v-layout row class="tagDiv">
                             <v-flex>
-                                <v-chip small v-for="(tag,i) in question.tags" :key="i" color="blue lighten-4"><a class="tag" v-bind:href="'questions/tagged/' + tag.name">{{tag.name}}</a></v-chip>
+                                <v-chip small v-for="(tag,i) in question.tags" :key="i" color="blue lighten-4"><router-link class="tag" :to="`/questions/tagged/${tag.name}`">{{tag.name}}</router-link></v-chip>
                             </v-flex>
                         </v-layout>
                         <v-layout row class='authorDiv'>

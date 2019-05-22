@@ -13,6 +13,9 @@
             placeholder="Search questions..."
             single-line
             append-icon="search"
+            v-model="searchKey"
+            clearable
+            @change="search"
           ></v-text-field>
       </v-flex>
       <v-flex>
@@ -56,17 +59,18 @@ export default {
   components: {
     Sidebar,
   },
+  data() {
+    return {
+      searchKey: '',
+    }
+  },
   mounted() {
+    this.$store.dispatch('getUser');
+    
     if(localStorage.getItem('hackflow_token')) {
       this.$store.commit('setIsLogin', true)
     }
-    this.$store.dispatch('getUser');
     this.$store.dispatch('getTags')
-  },
-  data () {
-    return {
-      //
-    }
   },
   computed: {
     username: function() {
@@ -77,6 +81,12 @@ export default {
     }
   },
   methods: {
+    search() {
+      console.log('search..');
+      if(this.searchKey) {
+        this.$router.push('/questions/search/' + this.searchKey);
+      }
+    },
     logout() {
       localStorage.removeItem('hackflow_token')
       this.$store.commit('setIsLogin', false)
@@ -140,4 +150,7 @@ export default {
   margin-left: -24px;
 }
 
+div {
+  font-size: 12px;
+}
 </style>

@@ -40,6 +40,18 @@ export default new Router({
 
         },
         {
+          path: 'search/:key',
+          name: 'searchQuestion',
+          component: () => import('./views/SearchResult.vue'),
+
+        },
+        {
+          path: 'tagged/:tag',
+          name: 'questions-list-by-tag',
+          component: () => import('./views/QuestionsByTag.vue'),
+
+        },
+        {
           path: ':id',
           name: 'questionDetails',
           component: () => import('./views/QuestionDetailsView.vue'),

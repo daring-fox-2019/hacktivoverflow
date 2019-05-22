@@ -5,6 +5,7 @@ const authorizeQuestion = require('../middlewares/authorizeQuestion')
 
 route.get('/', QuestionController.findAll)
 route.get('/tagged/:tag', QuestionController.findAllWithTags)
+route.get('/search/:key', QuestionController.search)
 route.get('/:id', QuestionController.findOne)
 route.post('/',  authenticate, QuestionController.create)
 

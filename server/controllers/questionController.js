@@ -19,12 +19,15 @@ class QuestionController {
 
     static findAllWithTags(req, res) {
         let tag;
-        Tag.findOne({name: req.body.tag})
+        Tag.findOne({name: req.params.tag})
         .then(tag => {
-            Question.find({tags: tag._id})
+            console.log('findallwith tag ', tag);
+            Question.find({"tags": {$all: [tag._id]}})
             .populate({path: 'author', select: 'firstname lastname email'})
+            .populate('tags')
             .exec()
             .then(list => {
+                console.log('res ---- ',list);
                 res.status(200).json(list)
             })
 
@@ -33,6 +36,22 @@ class QuestionController {
             res.status(500).json(err)
         })
     }
+    static search(req, res) {
+        let key = req.params.key;
+        let findRegex = new RegExp(key.trim(), "i")
+
+        Question.find({ $or:[ {title: findRegex}, {content : findRegex} ]})
+            .populate('tags')
+            .populate('answers')
+            .then(list => {
+                    console.log(list);
+                    res.status(200).json(list);
+            })
+            .catch(err => {
+                res.status(500).json({error: err})
+            })
+    }
+
     static findOne(req, res) {
         let questionDetail
         Question.findOne({_id: req.params.id})

@@ -61,7 +61,7 @@ export default {
             return this.$props.entity.created_at ? moment(this.$props.entity.created_at).format('MMMM Do YYYY, h:mm:ss a') : ''
         },
         validAuthor() {
-            if(this.$store.state.user._id) {
+            if(this.$store.state.user && this.$store.state.user._id) {
                 if(this.$store.state.user._id.toString() === this.$props.entity.author._id.toString())
                 {
                     return true

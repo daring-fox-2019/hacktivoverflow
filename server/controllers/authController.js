@@ -124,16 +124,14 @@ class AuthController {
     static linkedinRedirect(req, res) {
         let signinCode = req.query.code,
             email, firstname, lastname, access_token, linkedin_access_token
-
         axios({
                 method: 'GET',
-                url: linkedinRequestAuth + `/?grant_type=authorization_code&code=${signinCode}&redirect_uri=http://localhost:8080/login/linkedin&client_id=${process.env.LINKEDIN_CLIENT_ID}&client_secret=${process.env.LINKEDIN_SECRET}`
+                url: linkedinRequestAuth + `/?grant_type=authorization_code&code=${signinCode}&redirect_uri=http://localhost:8080/login&client_id=${process.env.LINKEDIN_CLIENT_ID}&client_secret=${process.env.LINKEDIN_SECRET}`
             })
             .then(({
                 data
             }) => {
                 linkedin_access_token = data.access_token
-
                 //after getting access token, get: 1. email addresspersonal, 2. first and last name
                 axios({
                         method: 'GET',
@@ -145,6 +143,7 @@ class AuthController {
                     .then(({
                         data
                     }) => {
+                        console.log(data);
                         let elements = data.elements
                         elements.forEach(x => {
                             if (x.type === 'EMAIL') {

@@ -9,7 +9,11 @@
 <script>
 export default {
     name: 'Questions',
+    mounted() {
+        this.$store.dispatch('getUser');
+    }
 }
+
 </script>
 
 <style>
