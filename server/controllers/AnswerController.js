@@ -85,7 +85,6 @@ class AnswerController{
         let answerId = req.params.answerId;
         let userId = req.headers.id
 
-       
         Answer.findOne({_id:answerId})
         .populate('userId', 'username')
         .then((answer)=>{

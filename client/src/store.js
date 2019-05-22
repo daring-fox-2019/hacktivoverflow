@@ -24,16 +24,7 @@ export default new Vuex.Store({
   },
   mutations: {
     setLogin (state, payload) {
-      state.isLogin = payload.isLogin
-      
-      if(payload.isLogin){
-        state.loginUser = payload.loginUser;
-        myaxios.defaults.headers.common['Authorization'] = payload.loginUser.token
-      }else{
-        // localStorage.removeItem("token")
-        state.loginUser = null,
-        myaxios.defaults.headers.common['Authorization'] = ""
-      }
+      state.isLogin = payload
     },
     setUser (state, payload) {
       state.loginUser = payload

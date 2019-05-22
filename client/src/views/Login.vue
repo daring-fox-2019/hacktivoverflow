@@ -49,15 +49,24 @@ export default {
         login() {
             myaxios
             .post('/users/login', this.form)
-                .then(({ data }) => {
-                    localStorage.token = data.token
-                    this.$store.commit('setLogin', true)
-                    this.$store.commit('setUser', data)
-                    this.$router.push('/')
-                })
-                .catch(error => {
-                    console.log(error);
-                })
+            .then(({ data }) => {
+                localStorage.token = data.token
+                this.$store.state.isLogin = true
+                this.$router.push('/')
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
+    },
+    computed: {
+        isLogin() {
+            return this.$store.state.isLogin
+        }
+    },
+    watch: {
+        isLogin() {
+            return this.$store.state.isLogin
         }
     },
 }

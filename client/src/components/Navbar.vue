@@ -45,13 +45,15 @@ export default {
     watch: {
         isLogin() {
             return this.$store.getters.isLogin
+        },
+        loginUser() {
+            return this.$store.getters.loginUser
         }
     },
     methods: {
         logout() {
             localStorage.clear()
-            this.$store.isLogin=false
-            this.$store.loginUser={}
+            this.$store.commit('setLogin', false)
         }
     },
 }
