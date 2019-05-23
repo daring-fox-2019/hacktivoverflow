@@ -9,6 +9,7 @@
       </div>
       <div class="col-3">
         <WatchTags/>
+        <ChatRoom class="mt-3"/>
       </div>
     </div>
   </div>
@@ -19,6 +20,7 @@ import axios from '@/database/axios'
 import Question from "@/components/Question.vue";
 import WatchTags from "@/components/WatchTag.vue";
 import AskQuestion from "@/components/AskQuestion.vue";
+import ChatRoom from '@/components/ChatRoom.vue';
 import { mapState } from 'vuex';
 
 export default {
@@ -26,7 +28,8 @@ export default {
   components: {
     Question,
     WatchTags,
-    AskQuestion
+    AskQuestion,
+    ChatRoom
   },
   data() {
     return {
