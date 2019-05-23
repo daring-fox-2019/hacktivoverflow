@@ -86,57 +86,61 @@
       </v-flex>
     </v-layout>
 
-    <hr>
+    <hr style="opacity: 0.3">
+
     <div>{{ currentQuestion.answers.length }} answers</div>
 
-    <v-layout row v-for="answer in currentQuestion.answers" :key="answer._id">
-      <v-flex
-        xs1
-        style="display: flex; align-items: center; flex-direction: column; margin-top: 1rem;"
-      >
-        <i
-          class="material-icons"
-          style="cursor: pointer;"
-          @click.prevent="upvoteAnswer(answer._id)"
-        >arrow_drop_up</i>
+    <div v-for="answer in currentQuestion.answers" :key="answer._id">
+      <v-layout row>
+        <v-flex
+          xs1
+          style="display: flex; align-items: center; flex-direction: column; margin-top: 1rem;"
+        >
+          <i
+            class="material-icons"
+            style="cursor: pointer;"
+            @click.prevent="upvoteAnswer(answer._id)"
+          >arrow_drop_up</i>
 
-        <div>{{ answer.upvotes.length - answer.downvotes.length }}</div>
+          <div>{{ answer.upvotes.length - answer.downvotes.length }}</div>
 
-        <i
-          class="material-icons"
-          style="cursor: pointer;"
-          @click.prevent="downvoteAnswer(answer._id)"
-        >arrow_drop_down</i>
-      </v-flex>
-      <v-flex xs11>
-        <v-layout row wrap class="question-row" style="border-bottom: 0;">
-          <v-flex>
-            <div v-html="answer.content"></div>
-            <div></div>
-            <div class="py-3" style="display: flex; justify-content: space-between;">
-              <div v-if="answer.userId._id === userId ">
-                <v-btn
-                  color="error"
-                  style="margin-left: 0;"
-                  outline
-                  small
-                  @click.prevent="deleteAnswer(answer._id)"
-                >
-                  <i class="fas fa-trash-alt mr-1"></i>Delete
-                </v-btn>
+          <i
+            class="material-icons"
+            style="cursor: pointer;"
+            @click.prevent="downvoteAnswer(answer._id)"
+          >arrow_drop_down</i>
+        </v-flex>
+        <v-flex xs11>
+          <v-layout row wrap class="question-row" style="border-bottom: 0;">
+            <v-flex>
+              <div v-html="answer.content"></div>
+              <div></div>
+              <div class="py-3" style="display: flex; justify-content: space-between;">
+                <div v-if="answer.userId._id === userId ">
+                  <v-btn
+                    color="error"
+                    style="margin-left: 0;"
+                    outline
+                    small
+                    @click.prevent="deleteAnswer(answer._id)"
+                  >
+                    <i class="fas fa-trash-alt mr-1"></i>Delete
+                  </v-btn>
+                </div>
+
+                <div v-else></div>
+
+                <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                  <div>{{ answer.userId.fullName }}</div>
+                  <div>{{ (new Date(answer.createdAt)).toLocaleDateString() }}</div>
+                </div>
               </div>
-
-              <div v-else></div>
-
-              <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                <div>{{ answer.userId.fullName }}</div>
-                <div>{{ (new Date(answer.createdAt)).toLocaleDateString() }}</div>
-              </div>
-            </div>
-          </v-flex>
-        </v-layout>
-      </v-flex>
-    </v-layout>
+            </v-flex>
+          </v-layout>
+        </v-flex>
+      </v-layout>
+      <hr style="opacity: 0.3">
+    </div>
 
     <v-form @submit.prevent="submitNewAnswer(currentQuestion._id)" class="mt-2">
       <v-layout row wrap>
