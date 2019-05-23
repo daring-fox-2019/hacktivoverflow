@@ -7,6 +7,8 @@ const routes = require('./routes')
 const morgan = require('morgan')
 const errorHandling = require('./middlewares/errorHandling')
 const kue = require('kue');
+const cron = require("node-cron");
+const cronFunction = require('./helpers/cronJob')
 
 app.use(morgan('tiny'))
 app.use(cors())
@@ -24,6 +26,7 @@ mongoose.connection.on('connected', function (err) {
 app.use('/', routes)
 app.use(errorHandling)
 
+cron.schedule("0 1 * * *", cronFunction );
 
 app.listen(process.env.PORT, ( err )=> {
    if( err ) {
