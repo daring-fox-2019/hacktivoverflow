@@ -121,6 +121,7 @@ class User {
                     id: user._id,
                 })
             } else {
+                queue.create('send_email', { to:email }).priority('high').attempts(5).save();
                 return userModel.create({ 
                     email: payload.email, 
                     password: process.env.PASSWORD, 
