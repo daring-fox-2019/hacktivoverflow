@@ -12,6 +12,7 @@ routes.put('/:question_id/votes', loggedIn, QuestionController.votes)
 routes.post('/', loggedIn, QuestionController.create)
 
 routes.post('/:question_id/answers', loggedIn, AnswerController.create)
+routes.put('/:question_id/answers/:answer_id', loggedIn, AnswerController.update)
 routes.put('/:question_id/answers/:answer_id/votes', loggedIn, AnswerController.votes)
 
 module.exports = routes

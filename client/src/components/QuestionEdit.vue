@@ -39,6 +39,7 @@ export default {
       }
 
       this.$store.dispatch('question/update', payload)
+      this.$router.push(`/questions/${this.question._id}`)
     }
   }
 }

@@ -53,12 +53,12 @@ class Question {
         description: req.body.description,
         tags: req.body.tags
       }, { new: true })
+      .then((question) => question.populate('author').execPopulate())
       .then((question) => res.status(200).json({ question }))
       .catch(() => res.status(500).json({ message: 'Internal Server Error' }))
   }
 
   static delete (req, res) {
-    console.log('controller delete')
     QuestionModel
       .findByIdAndDelete(req.params.question_id)
       .then(() => res.status(204).json())

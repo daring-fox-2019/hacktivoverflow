@@ -32,7 +32,7 @@
         <div class="column">
           <div v-html="question.description"></div>
           <div class="level mt56">
-            <div class="level-level">
+            <div class="level-left">
               <a
                 class="tag is-danger is-medium mr8"
                 v-for="(tag, index) in question.tags"
@@ -42,7 +42,7 @@
             </div>
             <div
               v-if="isQuestionAuthor"
-              class="levl-right has-text-grey"
+              class="level-right has-text-grey"
             >
               <div class="buttons">
                 <router-link
@@ -105,9 +105,26 @@
               v-html="answer.description"
               class="mb128"
             ></div>
-            <p class="has-text-right has-text-grey-light">
-              answered by {{answer.author.email}}
-            </p>
+            <div
+              v-if="isQuestionAuthor"
+              class="level-right has-text-grey mb32"
+            >
+              <div class="buttons">
+                <a
+                  href="#"
+                  class="has-text-grey-light"
+                  @click.prevent="onClickEditAnswer(answer)"
+                >
+                  edit
+                </a>
+              </div>
+            </div>
+            <span
+              class="level-right has-text-grey-light"
+              v-else
+            >
+              asked by {{question.author.email}}
+            </span>
           </div>
         </div>
       </template>
@@ -119,8 +136,13 @@
             <ckeditor
               v-model="description"
               :editor="editor"
+              ref="editor"
+              :disabled="!isLoggedIn"
             />
-            <button class="button is-success is-medium mt32">
+            <button
+              class="button is-success is-medium mt32"
+              :disabled="!isLoggedIn"
+            >
               Post Your Answer
             </button>
           </form>
@@ -140,6 +162,7 @@ export default {
     return {
       editor: ClassicEditor,
       description: '',
+      selectAnswer: null
     }
   },
   computed: {
@@ -177,14 +200,25 @@ export default {
         questionId: this.question._id
       }
 
-      this.$store.dispatch('question/addAnswer', payload)
+      if (this.selectAnswer._id) {
+        payload.answerId = this.selectAnswer._id
+        this.$store.dispatch('question/updateAnswer', payload)
+        Swal.fire({
+          type: 'success',
+          title: 'Success',
+          text: 'Answer successfully edited'
+        })
+      } else {
+        this.$store.dispatch('question/addAnswer', payload)
+      }
+
       this.description = ''
     },
     onClickUpvotesQuestion: function () {
       if (this.isLoggedIn) {
         let payload = {
           votes: 'upvotes',
-          token : this.$store.state.auth.token,
+          token: this.$store.state.auth.token,
           questionId: this.question._id
         }
         this.$store.dispatch('question/addVotes', payload)
@@ -207,7 +241,7 @@ export default {
       if (this.isLoggedIn) {
         let payload = {
           votes: 'upvotes',
-          token : this.$store.state.auth.token,
+          token: this.$store.state.auth.token,
           questionId: this.question._id,
           answerId
         }
@@ -281,6 +315,11 @@ export default {
           })
         }
       }
+    },
+    onClickEditAnswer: function (answer) {
+      this.selectAnswer = answer
+      this.description = answer.description
+      document.getElementsByClassName('ck-editor__main')[0].scrollIntoView()
     }
   }
 }

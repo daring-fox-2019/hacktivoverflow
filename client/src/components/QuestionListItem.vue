@@ -52,7 +52,8 @@ export default {
       this.$router.push(`/questions/` + this.question._id)
     },
     onClickTag: function (tag) {
-      this.$store.dispatch('question/search', tag)
+      this.$store.commit('question/SET_QUERY', tag)
+      this.$store.dispatch('question/search')
     }
   }
 }

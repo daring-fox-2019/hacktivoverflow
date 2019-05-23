@@ -22,7 +22,18 @@ const votes = (payload) => {
   })
 }
 
+const update = (payload) => {
+  return api.put(`/questions/${payload.questionId}/answers/${payload.answerId}`, {
+    description: payload.description
+  }, {
+    headers: {
+      Authorization: payload.token
+    }
+  })
+}
+
 export default {
   create,
-  votes
+  votes,
+  update
 }

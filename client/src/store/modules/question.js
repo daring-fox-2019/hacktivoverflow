@@ -41,6 +41,7 @@ const actions = {
         token: rootState.auth.token
       })
       .then(() => {
+        commit(types.DELETE_QUESTION, { _id: state.select._id })
         commit(types.CLEAR_SELECT)
       })
   },
@@ -69,6 +70,12 @@ const actions = {
     question
       .searchQuestions(state.searchQuery)
       .then(({ data }) => commit(types.GET_QUESTIONS, data.questions))
+      .catch(err => console.log(err))
+  },
+  updateAnswer: ({ commit }, payload) => {
+    answer
+      .update(payload)
+      .then(({ data }) => commit(types.UPDATE_ANSWER, data.answer))
       .catch(err => console.log(err))
   }
 }
@@ -99,6 +106,9 @@ const mutations = {
   },
   [types.SET_QUERY]: (state, payload) => {
     state.searchQuery = payload
+  },
+  [types.DELETE_QUESTION]: (state, payload) => {
+    state.all = state.all.filter(q => q._id !== payload._id)
   }
 }
 

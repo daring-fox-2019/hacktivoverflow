@@ -41,6 +41,8 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
+
 import QuestionListItem from './QuestionListItem'
 
 export default {
@@ -57,7 +59,8 @@ export default {
   },
   methods: {
     onClickTag: function (tag) {
-      this.$store.dispatch('question/search', tag)
+      this.$store.commit('question/SET_QUERY', tag)
+      this.$store.dispatch('question/search')
     },
     onClickDeleteTag: function (tag) {
       let payload = {
