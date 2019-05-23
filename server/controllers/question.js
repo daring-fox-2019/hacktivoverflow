@@ -69,8 +69,6 @@ class Question {
             obj = {$and: [{ user_id }, obj]}
         }
 
-        console.log(obj)
-
         questionModel.find( obj )
         .populate({path:'user_id', select: ['name', 'email']})
         .populate({ path: 'answers',

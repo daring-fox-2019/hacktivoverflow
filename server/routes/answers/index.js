@@ -7,8 +7,8 @@ router.use( authenticate )
 router.post('/', Answer.createAnswer)
 router.patch('/upvote/:id', Answer.patchUpvote)
 router.patch('/downvote/:id', Answer.patchDownvote)
-router.patch('/:id', Answer.updateAnswer)
-router.delete('/:id', Answer.deleteAnswer)
+router.patch('/:id', authorization, Answer.updateAnswer)
+router.delete('/:id', authorization, Answer.deleteAnswer)
 router.get('/:id', Answer.getOneAnswer)
 
 module.exports = router

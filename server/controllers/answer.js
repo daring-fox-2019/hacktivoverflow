@@ -44,7 +44,7 @@ class Answer {
     static updateAnswer(req, res, next){
         const _id = req.params.id
         const {description } = req.body
-        const obj = { title, description }
+        const obj = { description }
 
         Object.keys(obj).map( el => {
             if(!obj[el]){
