@@ -52,25 +52,22 @@
 </template>
 
 <script>
+import axios from "@/api/axios";
 import { mapState } from "vuex";
 
 export default {
   props: ["title", "questions", "keyword"],
   data() {
-    return {};
+    return {
+      filteredQuestions: []
+    };
   },
-  methods: {
-    changeLink(id) {
-      this.$router.push(`/questions/${id}`);
-    },
-    changeKeyword(value) {
-      this.$store.commit("updateKeyword", value);
-    }
+  created() {
+    this.getFilteredQuestions();
   },
-  computed: {
-    filteredQuestions: function() {
-      return this.questions.filter(question => {
-        // return question.title.toLowerCase().includes(this.keyword.toLowerCase())
+  watch: {
+    keyword() {
+      this.questions = this.questions.filter(question => {
         return (
           question.title.toLowerCase().includes(this.keyword.toLowerCase()) ||
           question.userId.fullName
@@ -80,7 +77,29 @@ export default {
         );
       });
     }
-  }
+  },
+  methods: {
+    changeLink(id) {
+      this.$router.push(`/questions/${id}`);
+    },
+    changeKeyword(value) {
+      this.$store.commit("updateKeyword", value);
+    },
+    getFilteredQuestions(context) {
+      axios({
+        method: "GET",
+        url: `/questions`
+      })
+        .then(({ data }) => {
+          console.log(data);
+          this.filteredQuestions = data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  },
+  computed: {}
 };
 </script>
 
@@ -111,6 +130,6 @@ export default {
 }
 
 .question-link:hover {
-  filter: brightness(0.6) 
+  filter: brightness(0.6);
 }
 </style>

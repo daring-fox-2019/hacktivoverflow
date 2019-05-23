@@ -14,12 +14,14 @@ export default new Vuex.Store({
     fullName: "",
     currentPage: "FoxOverflow",
     keyword: "",
+    hasUpvoted: false,
+    hasDownvoted: false,
   },
   mutations: {
-    login (state) {
+    login(state) {
       state.isLoggedIn = true;
     },
-    logout (state) {
+    logout(state) {
       state.isLoggedIn = false;
     },
     setFullName(state) {
@@ -42,7 +44,13 @@ export default new Vuex.Store({
     },
     updateKeyword(state, payload) {
       state.keyword = payload;
-    }
+    },
+    setHasUpvoted(state, payload) {
+      state.hasUpvoted = payload;
+    },
+    setHasDownvoted(state, payload) {
+      state.hasDownvoted = payload;
+    },
   },
   actions: {
     getAllQuestions(context) {
@@ -79,6 +87,51 @@ export default new Vuex.Store({
       })
         .then(({ data }) => {
           console.log(data);
+
+          context.commit("setHasUpvoted", data.upvotes.includes(localStorage.userId));
+          context.commit("setHasDownvoted", data.downvotes.includes(localStorage.userId));
+          context.commit("setCurrentQuestion", data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    upvoteQuestion(context, id) {
+      console.log(id)
+      console.log(context.state.hasUpvoted)
+      // console.log(this.$state.hasUpvoted);
+
+      axios({
+        method: "PATCH",
+        url: `/questions/${id}`,
+        data: { upvote: true, hasVoted: context.state.hasUpvoted },
+        headers: { token: localStorage.token }
+      })
+        .then(({ data }) => {
+          console.log(data);
+          context.commit("setHasUpvoted", data.upvotes.includes(localStorage.userId));
+          context.commit("setHasDownvoted", data.downvotes.includes(localStorage.userId));
+          context.commit("setCurrentQuestion", data);
+
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    downvoteQuestion(context, id) {
+      console.log(id)
+      console.log(context.state.hasDownvoted)
+
+      axios({
+        method: "PATCH",
+        url: `/questions/${id}`,
+        data: { downvote: true, hasVoted: context.state.hasDownvoted },
+        headers: { token: localStorage.token }
+      })
+        .then(({ data }) => {
+          console.log(data);
+          context.commit("setHasUpvoted", data.upvotes.includes(localStorage.userId));
+          context.commit("setHasDownvoted", data.downvotes.includes(localStorage.userId));
           context.commit("setCurrentQuestion", data);
         })
         .catch((err) => {

@@ -13,7 +13,7 @@
       </router-link>
     </v-toolbar-title>
     <div style="width: 50%;">
-      <v-text-field solo label="Search..." append-icon="search" v-model="keyword"></v-text-field>
+      <v-text-field solo label="Search..." append-icon="search" v-model="inputSearch"></v-text-field>
     </div>
 
     <div>
@@ -62,7 +62,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      keyword: ""
+      inputSearch: ""
     };
   },
   created() {
@@ -74,7 +74,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(["isLoggedIn", "fullName"])
+    ...mapState(["isLoggedIn", "fullName", "keyword"])
   },
   methods: {
     logout() {
@@ -85,8 +85,11 @@ export default {
     }
   },
   watch: {
-    keyword(value) {
+    inputSearch(value) {
       this.$store.commit("updateKeyword", value);
+    },
+    keyword(value) {
+      this.inputSearch = value;
     }
   }
 };

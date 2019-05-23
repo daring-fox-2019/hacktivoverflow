@@ -15,9 +15,11 @@
         xs1
         style="display: flex; align-items: center; flex-direction: column; margin-top: 1rem;"
       >
-        <i class="material-icons" style="cursor: pointer;">arrow_drop_up</i>
+        <i class="material-icons" style="cursor: pointer; color: #2196F3" @click.prevent="upvoteQuestion(currentQuestion._id)" v-if="hasUpvoted">arrow_drop_up</i>
+        <i class="material-icons" style="cursor: pointer;" @click.prevent="upvoteQuestion(currentQuestion._id)" v-else>arrow_drop_up</i>
         <div>{{ currentQuestion.upvotes.length - currentQuestion.downvotes.length }}</div>
-        <i class="material-icons" style="cursor: pointer;">arrow_drop_down</i>
+        <i class="material-icons" style="cursor: pointer; color: #2196F3" @click.prevent="downvoteQuestion(currentQuestion._id)" v-if="hasDownvoted">arrow_drop_down</i>
+        <i class="material-icons" style="cursor: pointer;" @click.prevent="downvoteQuestion(currentQuestion._id)" v-else>arrow_drop_down</i>
       </v-flex>
       <v-flex xs11>
         <v-layout row wrap class="question-row" style="border-bottom: 0;">
@@ -93,15 +95,18 @@ export default {
   data() {
     return {
       answer: "",
-      userId: ""
+      userId: "",
     };
   },
   created() {
     this.userId = localStorage.userId;
     this.getCurrentQuestion(this.$route.params.id);
   },
+  computed: {
+    ...mapState(["currentQuestion", "hasUpvoted", "hasDownvoted"])
+  },
   methods: {
-    ...mapActions(["getCurrentQuestion"]),
+    ...mapActions(["getCurrentQuestion", "upvoteQuestion", "downvoteQuestion"]),
     updateForm(id) {
       console.log(id);
       this.$router.push(`/questions/${id}/edit`);
@@ -143,11 +148,12 @@ export default {
             title: err.response.data.message
           });
         });
+    },
+    submitNewAnswer() {
+      console.log("kesini");
+      console.log(this.answer);
     }
   },
-  computed: {
-    ...mapState(["currentQuestion"])
-  }
 };
 </script>
 

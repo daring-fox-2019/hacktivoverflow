@@ -8,7 +8,7 @@ router.get("/user", authentication, QuestionController.getUserQuestions);
 router.get("/:id", QuestionController.getQuestion);
 router.post("/", authentication, QuestionController.createQuestion);
 router.put("/:id", authentication, authorization, QuestionController.updateQuestion);
-router.patch("/:id", authentication, authorization, QuestionController.voteQuestion);
+router.patch("/:id", authentication, QuestionController.voteQuestion);
 router.delete("/:id", authentication, authorization, QuestionController.deleteQuestion);
 
 module.exports = router;

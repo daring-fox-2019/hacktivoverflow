@@ -3,9 +3,9 @@ const Question = require("../models/question");
 class QuestionController {
   static getQuestions(req, res, next) {
     console.log("getQuestions");
-    
+
     Question.find().sort({ createdAt: -1 })
-      .populate({ path: "userId", select: "fullName displayPicture"})
+      .populate({ path: "userId", select: "fullName displayPicture" })
 
       .then((questions) => {
         console.log("getQuestions success")
@@ -18,9 +18,9 @@ class QuestionController {
 
   static getUserQuestions(req, res, next) {
     console.log("getUserQuestions");
-    
+
     Question.find({ userId: req.authenticatedUser.id }).sort({ createdAt: -1 })
-      .populate({ path: "userId", select: "fullName displayPicture"})
+      .populate({ path: "userId", select: "fullName displayPicture" })
 
       .then((questions) => {
         console.log("getUserQuestions success")
@@ -35,7 +35,7 @@ class QuestionController {
     console.log("getQuestion");
 
     Question.findOne({ _id: req.params.id })
-      .populate({ path: "userId", select: "fullName displayPicture"})
+      .populate({ path: "userId", select: "fullName displayPicture" })
       .then((question) => {
         console.log("getQuestion success");
         res.status(200).json(question);
@@ -48,13 +48,12 @@ class QuestionController {
   static createQuestion(req, res, next) {
     console.log("createQuestion");
 
-    const { title, description, tags} = req.body;
-    const newQuestion = { 
-      title, 
+    const { title, description, tags } = req.body;
+    const newQuestion = {
+      title,
       description,
       tags,
       userId: req.authenticatedUser.id,
-
     };
     Question.create(newQuestion)
       .then((question) => {
@@ -70,7 +69,7 @@ class QuestionController {
     console.log("updateQuestion");
 
     const { title, description, tags } = req.body;
-    const updatedQuestion = { title, description, tags};
+    const updatedQuestion = { title, description, tags };
     const options = { new: true, useFindAndModify: false };
 
     Question.findByIdAndUpdate(req.params.id, updatedQuestion, options)
@@ -85,12 +84,25 @@ class QuestionController {
 
   static voteQuestion(req, res, next) {
     console.log("voteQuestion");
-
-    const { title, description} = req.body;
-    const updatedQuestion = { title, description};
+    console.log(req.body);
+    console.log(req.params);
+    console.log(req.authenticatedUser.id)
+    const { upvote, downvote, hasVoted } = req.body;
     const options = { new: true, useFindAndModify: false };
+    let update = {};
 
-    Question.findByIdAndUpdate(req.params.id, updatedQuestion, options)
+    if (upvote && !hasVoted) {
+      update = { $addToSet: { upvotes: req.authenticatedUser.id }, $pull: { downvotes: req.authenticatedUser.id } };
+    } else if (upvote && hasVoted) {
+      update = { $pull: { upvotes: req.authenticatedUser.id } };
+    } else if (downvote && !hasVoted) {
+      update = { $addToSet: { downvotes: req.authenticatedUser.id }, $pull: { upvotes: req.authenticatedUser.id } };
+    } else if (downvote && hasVoted) {
+      update = { $pull: { downvotes: req.authenticatedUser.id } };
+    }
+
+    Question.findByIdAndUpdate(req.params.id, update, options)
+      .populate({ path: "userId", select: "fullName displayPicture" })
       .then((question) => {
         console.log("voteQuestion success");
         res.status(200).json(question);
