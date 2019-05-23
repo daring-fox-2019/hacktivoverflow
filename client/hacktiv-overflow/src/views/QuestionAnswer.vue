@@ -161,6 +161,7 @@ export default {
       })
     },
     upvoteAnswer(id) {
+      if(this.isLogin){
       axios
         .patch(
           `/answers/upvote/${id}`,
@@ -173,8 +174,12 @@ export default {
         .catch(err => {
           this.$swal(":(", `${err.response.data.message}`, "error");
         });
+      } else {
+        this.$swal(":D", `Login First`, "info");
+      }
     },
     downvoteAnswer(id) {
+      if(this.isLogin){
       axios
         .patch(
           `/answers/downvote/${id}`,
@@ -187,8 +192,12 @@ export default {
         .catch(err => {
           console.log(err);
         });
+        } else {
+        this.$swal(":D", `Login First`, "info");
+      }
     },
     upvoteQuestion() {
+      if(this.isLogin ){
       axios
         .patch(
           `/questions/upvote/${this.$route.params.id}`,
@@ -201,8 +210,12 @@ export default {
         .catch(err => {
           console.log(err);
         });
+       } else {
+        this.$swal(":D", `Login First`, "info");
+      }
     },
     downvoteQuestion() {
+      if(this.isLogin){
       axios
         .patch(
           `/questions/downvote/${this.$route.params.id}`,
@@ -215,6 +228,9 @@ export default {
         .catch(err => {
           console.log(err);
         });
+      } else {
+        this.$swal(":D", `Login First`, "info");
+      }
     },
     getData(data) {
       this.answer.description = data;
