@@ -1,5 +1,5 @@
 <template>
-  <div class="container" style="margin-top:100px">
+  <div class="container animated fadeIn" style="margin-top:100px">
     <div class="row">
       <div class="col-9">
         <AskQuestion/>

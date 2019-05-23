@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h3>{{initValue}}</h3>
         <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
     </div>
 </template>
@@ -21,7 +20,7 @@
             };
         },
         watch: {
-            initValue(){
+            initValue(val){
                 this.editorData = this.initValue
             }
         },

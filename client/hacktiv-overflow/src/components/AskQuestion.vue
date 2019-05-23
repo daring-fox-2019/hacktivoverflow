@@ -1,5 +1,5 @@
 <template>
-    <div class="container pb-2" style="border-bottom:solid #eeeeee 1px">
+    <div class="container pb-2 animated fadeIn" style="border-bottom:solid #eeeeee 1px">
         <div class="row d-flex justify-content-between align-items-center" style="align-items:center !important">
             <div>
                 <h4>All Questions </h4>

@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2" style="background-color:#eeeeee">
+  <div class="p-2 animated fadeIn" style="background-color:#eeeeee">
     <div class="d-flex justify-content-center align-items-center">
       <p class="pt-2"> <i class="fas fa-eye"></i> watch tags</p>
     </div>

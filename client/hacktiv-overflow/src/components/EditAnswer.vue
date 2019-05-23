@@ -1,5 +1,5 @@
 <template>
-    <div class="mb-3">
+    <div class="mb-3 animated bounce">
         <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
         <div class="d-flex justify-content-end mt-2">
             <b-button size="sm" variant="secondary" class="mr-2" @click="editAnswer"> edit </b-button>

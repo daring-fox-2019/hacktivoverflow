@@ -1,5 +1,5 @@
 <template>
-  <div class="container border mt-2">
+  <div class="container border mt-2 animated fadeInDown">
     <div class="row">
       <div class="col-3 px-3 py-1">
         <div class="row ml-2">

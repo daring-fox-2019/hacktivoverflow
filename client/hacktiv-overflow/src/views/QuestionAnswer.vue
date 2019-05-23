@@ -1,12 +1,12 @@
 <template>
-  <div class="container d-flex justify-content-center" style="margin-top:140px">
+  <div class="container d-flex justify-content-center animated fadeIn" style="margin-top:140px">
     <div style="width:75%">
       <div>
         <h5>
           <span style="color:grey">
             <b>question /</b>
           </span>
-          {{question.title}}
+          {{ question.title }}
         </h5>
         <hr>
         <div class="row">
@@ -45,7 +45,7 @@
         </h5>
         <hr>
         <div>
-          <div class="row mt-3 border p-4" v-for="(answer,i) in question.answers" :key="i">
+          <div class="row mt-3 border p-4 animated fadeInDown" v-for="(answer,i) in question.answers" :key="i">
             <div class="col-1 d-flex flex-column justify-content-center align-items-center">
               <div>
                 <b-button variant="outline-secondary" @click="upvoteAnswer(answer._id)">
@@ -76,7 +76,7 @@
               </p>
 
               <div class="d-flex justify-content-end" v-if="!editMode && owner == answer.user_id._id" >
-                <router-link :to="`/question/${answer.question_id}/${answer._id}`" 
+                <router-link :to="`/question/${ answer.question_id }/${ answer._id }`" 
                   ><b-button
                     size="sm"
                     variant="secondary"
