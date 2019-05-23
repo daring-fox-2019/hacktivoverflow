@@ -6,9 +6,9 @@ const { authorizeOnAnswer } = require('../middlewares')
 // router.get('/', answer.Get)
 router.post('/', answer.Post)
 
-router.use(authorizeOnAnswer)
-router.patch('/:id', answer.Patch)
-router.delete('/:id', answer.Delete)
+// router.use()
+router.patch('/:id', authorizeOnAnswer,answer.Patch)
+router.delete('/:question/:id', authorizeOnAnswer, answer.Delete)
 
 
 module.exports = router

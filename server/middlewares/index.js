@@ -24,8 +24,8 @@ async function authorize(req, res, next) {
 //only call this after above authorization
 async function authorizeOnAnswer(req, res, next) {
     try {
-        let answer = await Answer.findOne({_id:req.params.id})
-        if (req.user && answer && req.user._id.equals(answer.by)) {            
+        let answer = await Answer.findOne({_id:req.params.id})        
+        if (req.user && answer && req.user._id.equals(answer.by._id)) {            
             req.answer = answer
             next()
         }
@@ -40,9 +40,9 @@ async function authorizeOnAnswer(req, res, next) {
 async function authorizeOnQuestion(req, res, next) {
     try {
         let question = await Question.findOne({_id:req.params.id})
-        if (req.user && question && req.user._id.equals(question.by)) {            
+        if (req.user && question && req.user._id.equals(question.by._id)) {            
             req.question = question
-            next()
+              next()
         }
         else {
             next(givesError(401, 'you are not the owner of this question'))
@@ -55,7 +55,7 @@ async function authorizeOnQuestion(req, res, next) {
 async function authorizeOnComment(req, res, next) {
     try {
         let comment = await Comment.findOne({_id:req.params.id})
-        if (req.user && comment && req.user._id.equals(comment.by)) {            
+        if (req.user && comment && req.user._id.equals(comment.by._id)) {            
             req.comment = comment
             next()
         }

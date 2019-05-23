@@ -5,7 +5,7 @@
         <div class="p-2" v-html="answer.content"></div>
         <div class="p-2 text-right">---answered by {{answerer}} {{askedDaysAgo}}</div>
         <div>
-          <b-button
+          <b-button 
             size="sm"
             variant="primary"
             v-if="answer.by._id===userId"
@@ -13,12 +13,7 @@
           >
             <font-awesome-icon icon="edit"></font-awesome-icon>
           </b-button>
-          <b-button
-            size="sm"
-            variant="danger"
-            v-if="answer.by._id===userId"
-            @click="deleteAnswer"
-          >
+          <b-button size="sm" variant="danger" v-if="answer.by._id===userId" @click="deleteAnswer">
             <font-awesome-icon icon="trash"></font-awesome-icon>
           </b-button>
         </div>
@@ -30,7 +25,9 @@
       <ckeditor :editor="editor" v-model="answer.content" :config="editorConfig"></ckeditor>
       <b-button v-if="!update" variant="outline-primary" @click.prevent="sendAnswer">answer</b-button>
       <b-button v-if="update" variant="outline-secondary" @click.prevent="updateAnswer">update</b-button>
+      <b-button v-if="update" variant="outline-secondary" @click.prevent="editMode=false,update=false">cancel</b-button>
     </div>
+    <div>{{answer}}</div>
     <hr>
   </div>
 </template>
@@ -55,7 +52,7 @@ export default {
   },
   data() {
     return {
-      update:false,
+      update: false,
       answer: {},
       editMode: false,
       form: {},
@@ -105,36 +102,67 @@ export default {
     }
   },
   methods: {
-    async deleteAnswer(){
+    swalInformer(error) {
+      if (error.response) {
+        if (error.response.data.message) {
+          console.log(error.response.data);
+          swal.fire(
+            `server says: ${error.response.status}`,
+            `${error.response.data.message}`,
+            "question"
+          );
+        } else {
+          console.log(error.response.data);
+          swal.fire(
+            `server says: ${error.response.status}`,
+            `check the log`,
+            "question"
+          );
+        }
+      } else if (error.request) {
+        swal.fire("Server Unreachable", "check your internet", "warning");
+        console.log(error.request);
+      } else {
+        swal.fire("application error", "check log", "error");
+        console.log(error);
+      }
+    },
+    async updateAnswer() {
       try {
-        let response = await server.delete(`/answer/${this.answer._id}`);
-        if (response.status == 204) {
-          
+        let response = await server.patch(`/answer/${this.answer._id}`, {
+          content: this.answer.content
+        });
+        if (response.status == 200) {          
+          this.answer.content = response.data.content
+          this.answer.updated_at = response.data.updated_at
         }
       } catch (error) {
-        if (error.response) {
-          if (error.response.data.message) {
-            console.log(error.response.data);
-            swal.fire(
-              `server says: ${error.response.status}`,
-              `${error.response.data.message}`,
-              "question"
-            );
-          } else {
-            console.log(error.response.data);
-            swal.fire(
-              `server says: ${error.response.status}`,
-              `check the log`,
-              "question"
-            );
+        this.swalInformer(error);
+      } finally {
+        this.update=false;
+        this.editMode = false;
+      }
+    },    
+    async deleteAnswer() {
+      try {
+        let confirm = await swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!"
+        });
+        if (confirm.value) {
+          let response = await server.delete(`/answer/${this.$store.state.topic._id}/${this.answer._id}`,);
+          if (response.status == 204) {
+            this.$store.dispatch("fetchTopic", this.$store.state.topic._id);
           }
-        } else if (error.request) {
-          swal.fire("Server Unreachable", "check your internet", "warning");
-          console.log(error.request);
-        } else {
-          swal.fire("application error", "check log", "error");
-          console.log(error);
+          swal.fire("Deleted!", "Your answer has been deleted.", "success");
         }
+      } catch (error) {
+        this.swalInformer(error);
       }
     },
     async fetchAnswerData() {
@@ -144,29 +172,7 @@ export default {
           this.answer = response.data;
         }
       } catch (error) {
-        if (error.response) {
-          if (error.response.data.message) {
-            console.log(error.response.data);
-            swal.fire(
-              `server says: ${error.response.status}`,
-              `${error.response.data.message}`,
-              "question"
-            );
-          } else {
-            console.log(error.response.data);
-            swal.fire(
-              `server says: ${error.response.status}`,
-              `check the log`,
-              "question"
-            );
-          }
-        } else if (error.request) {
-          swal.fire("Server Unreachable", "check your internet", "warning");
-          console.log(error.request);
-        } else {
-          swal.fire("application error", "check log", "error");
-          console.log(error);
-        }
+        this.swalInformer(error);
       }
     },
     async sendAnswer() {
@@ -186,35 +192,12 @@ export default {
           let response = await server.post(`/answer`, this.answer);
           if (response.status == 201) {
             swal.fire("thank you", "your answer has been posted", "success");
-            // this.$store.commit("addQuestion", response.data);
           }
         } catch (error) {
-          if (error.response) {
-            if (error.response.data.message) {
-              console.log(error.response.data);
-              swal.fire(
-                `server says: ${error.response.status}`,
-                `${error.response.data.message}`,
-                "question"
-              );
-            } else {
-              console.log(error.response.data);
-              swal.fire(
-                `server says: ${error.response.status}`,
-                `check the log`,
-                "question"
-              );
-            }
-          } else if (error.request) {
-            swal.fire("Server Unreachable", "check your internet", "warning");
-            console.log(error.request);
-          } else {
-            swal.fire("application error", "check log", "error");
-            console.log(error);
-          }
+          this.swalInformer(error);
         } finally {
+          this.answer = {};
           this.$store.dispatch("fetchTopic", this.$store.state.topic._id);
-          // this.$router.replace("home");
         }
       }
     }
