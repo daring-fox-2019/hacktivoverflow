@@ -112,7 +112,6 @@ export default new Vuex.Store({
           context.commit("setHasUpvoted", data.upvotes.includes(localStorage.userId));
           context.commit("setHasDownvoted", data.downvotes.includes(localStorage.userId));
           context.commit("setCurrentQuestion", data);
-
         })
         .catch((err) => {
           console.log(err);

@@ -1,9 +1,8 @@
 const Answer = require("../models/answer");
+const Question = require("../models/question");
 
 class AnswerController {
   static getAnswers(req, res, next) {
-    console.log("getAnswers");
-    
     Answer.find()
       .then((answers) => {
         console.log("getAnswers success")
@@ -15,8 +14,6 @@ class AnswerController {
   }
 
   static getAnswer(req, res, next) {
-    console.log("getAnswer");
-
     Answer.findOne({ _id: req.params.id })
       .then((answer) => {
         console.log("getAnswer success");
@@ -28,14 +25,22 @@ class AnswerController {
   }
 
   static createAnswer(req, res, next) {
-    console.log("createAnswer");
+    const { content, questionId } = req.body;
+    const newAnswer = { 
+      content,
+      questionId,
+      userId: req.authenticatedUser.id,
+    };
 
-    const { title, description } = req.body;
-    const newAnswer = { title, description };
+    let createdAnswer = null;
     Answer.create(newAnswer)
       .then((answer) => {
         console.log("createAnswer success");
-        res.status(201).json(answer);
+        createdAnswer = answer;
+        return Question.findByIdAndUpdate(questionId, { $push: { answers: answer._id } }, { new: true, useFindAndModify: false  })
+      })
+      .then((question) => {
+        res.status(201).json(createdAnswer);
       })
       .catch((err) => {
         next(err);
@@ -43,8 +48,6 @@ class AnswerController {
   }
 
   static updateAnswer(req, res, next) {
-    console.log("updateAnswer");
-
     const { title, description } = req.body;
     const updatedAnswer = { title, description };
     const options = { new: true, useFindAndModify: false };
@@ -60,13 +63,22 @@ class AnswerController {
   }
 
   static voteAnswer(req, res, next) {
-    console.log("voteAnswer");
+    // console.log(req.body);
+    // console.log(req.params);
+    // console.log(req.authenticatedUser.id)
 
-    const { title, description } = req.body;
-    const updatedAnswer = { title, description };
+    const { upvote, downvote } = req.body;
     const options = { new: true, useFindAndModify: false };
+    let update = {};
 
-    Answer.findByIdAndUpdate(req.params.id, updatedAnswer, options)
+    if (upvote) {
+      update = { $addToSet: { upvotes: req.authenticatedUser.id }, $pull: { downvotes: req.authenticatedUser.id } };
+    } else if (downvote) {
+      update = { $addToSet: { downvotes: req.authenticatedUser.id }, $pull: { upvotes: req.authenticatedUser.id } };
+    }
+
+    Answer.findByIdAndUpdate(req.params.id, update, options)
+      .populate({ path: "userId", select: "fullName" })
       .then((answer) => {
         console.log("voteAnswer success");
         res.status(200).json(answer);
@@ -77,8 +89,6 @@ class AnswerController {
   }
 
   static deleteAnswer(req, res, next) {
-    console.log("deleteAnswer");
-
     Answer.findOneAndDelete({ _id: req.params.id })
       .then((answer) => {
         console.log("deleteAnswer success");

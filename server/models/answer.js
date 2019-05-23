@@ -2,11 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const answerSchema = new Schema({
-  title: {
-    type: String,
-    required: [true, "Title is required"],
-  },
-  description: {
+  content: {
     type: String,
     required: [true, "Content is required"],
   },
@@ -17,9 +13,6 @@ const answerSchema = new Schema({
   downvotes: [{
     type: Schema.Types.ObjectId,
     ref: "User",
-  }],
-  tags: [{
-    type: String,
   }],
   userId: {
     type: Schema.Types.ObjectId,

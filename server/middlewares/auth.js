@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const Question = require("../models/question");
+const Answer = require("../models/answer");
 const jwt = require("../helpers/jwt-helper");
 
 module.exports = {
@@ -38,5 +39,20 @@ module.exports = {
       .catch((err) => {
         next(err);
       });
-  }
+  },
+
+  authorizationForAnswer: function(req, res, next) {
+    console.log("kesini")
+    Answer.findById(req.params.id)
+      .then((answer) => {
+        if (String(answer.userId) === req.authenticatedUser.id) {
+          next();
+        } else {
+          res.status(401).json({ message: "You have no access to do that" });
+        }
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
 }
