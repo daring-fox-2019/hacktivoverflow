@@ -1,5 +1,9 @@
 # SnackOverflow
 
+Link: [snackoverflow.emrido.site](http://snackoverflow.emrido.site/)
+
+Server: [snackoverflow-server.emrido.site](http://snackoverflow-server.emrido.site/)
+
 ## Basic Route
 
 ### Register New User
