@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <ListQuestions title="Search result" />
+    <ListQuestions v-model="$store.state.queries" title="Search result" />
   </v-container>
 </template>
 
