@@ -65,12 +65,12 @@ export default {
     };
   },
   created() {
-    this.getFilteredQuestions();
+    this.getUserFilteredQuestions();
   },
   computed: {},
   watch: {
     keyword() {
-      this.filteredQuestions = this.$store.state.allQuestions.filter(
+      this.filteredQuestions = this.$store.state.allUserQuestions.filter(
         question => {
           return (
             question.title
@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     filterQuestions() {
-      this.filteredQuestions = this.$store.state.allQuestions.filter(
+      this.filteredQuestions = this.$store.state.allUserQuestions.filter(
         question => {
           return (
             question.title
@@ -108,10 +108,11 @@ export default {
     changeKeyword(value) {
       this.$store.commit("updateKeyword", value);
     },
-    getFilteredQuestions(context) {
+    getUserFilteredQuestions(context) {
       axios({
         method: "GET",
-        url: `/questions`
+        url: `/questions/user`,
+        headers: { token: localStorage.token }
       })
         .then(({ data }) => {
           console.log(data);
@@ -121,7 +122,7 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    }
+    },
   },
   computed: {}
 };

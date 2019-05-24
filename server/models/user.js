@@ -31,6 +31,9 @@ const userSchema = new Schema({
     required: [true, "Password is required"],
     minlength: [6, "Min length: 6"],
   },
+  tags: [{
+    type: String,
+  }],
 });
 
 userSchema.pre("save", function(next) {

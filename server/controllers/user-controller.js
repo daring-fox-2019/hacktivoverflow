@@ -53,6 +53,32 @@ class UserController {
         next(err);
       });
   }
+
+  static addTag(req, res, next) {
+    console.log(req.body)
+    const { tag } = req.body;
+    const options = { new: true, useFindAndModify: false, runValidators: false };
+    User.findByIdAndUpdate(req.authenticatedUser.id, { $push: { tags: tag } }, options)
+      .then((user) => {
+        console.log(user);
+        res.status(200).json(user);
+      })
+      .catch((err) => {
+        next(err);
+      })
+  }
+
+  static getUser(req, res, next) {
+    User.findById(req.authenticatedUser.id)
+      .select("tags")
+      .then((user) => {
+        console.log("getUser success");
+        res.status(200).json(user);
+      })
+      .catch((err) => {
+        next(err);
+      });
+  }
 }
 
 module.exports = UserController;

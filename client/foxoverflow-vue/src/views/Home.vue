@@ -6,9 +6,8 @@
           <Sidebar/>
         </v-flex>
         <v-flex xs9 style="border-left: 1px solid rgba(191, 54, 12, 0.4); padding-left: 1rem;">
-          <Questions
+          <UserQuestions
             :title="'Your Questions'"
-            :questions="allUserQuestions"
             :keyword="keyword"
             v-if="currentPage === 'Home' && isLoggedIn"
           />
@@ -27,11 +26,10 @@
           </div>
           <Questions
             :title="'All Questions'"
-            :questions="allQuestions"
             :keyword="keyword"
             v-else-if="currentPage === 'FoxOverflow'"
           />
-          <!-- <Questions :title="currentPage" v-if="currentPage === 'Tags'"/> -->
+          <Tags :title="'Saved Tags'" v-if="currentPage === 'Tags'"/>
           <!-- <Questions :title="currentPage" v-if="currentPage === 'Users'"/> -->
         </v-flex>
       </v-layout>
@@ -46,6 +44,8 @@ import Login from "../components/Login";
 import Register from "../components/Register";
 import Sidebar from "../components/Sidebar";
 import Questions from "../components/Questions";
+import UserQuestions from "../components/UserQuestions";
+import Tags from "../components/Tags";
 
 export default {
   data() {
@@ -56,6 +56,8 @@ export default {
   components: {
     Sidebar,
     Questions,
+    UserQuestions,
+    Tags,
     Login,
     Register
   },

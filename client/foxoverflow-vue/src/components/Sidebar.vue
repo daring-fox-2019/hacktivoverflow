@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer width="auto" floating style="max-height: fit-content; margin-right: 1rem;">
+  <v-navigation-drawer width="auto" floating style="max-height: fit-content; margin-right: 1rem; border-radius: 5px;">
     <v-list class="py-0">
       <v-list-tile
         v-for="(item, index) in items"

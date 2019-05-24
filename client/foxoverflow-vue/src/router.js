@@ -21,7 +21,7 @@ export default new Router({
     {
       path: '/tags',
       name: 'tags',
-      component: Home
+      component: Home,
     },
     {
       path: '/users',
