@@ -55,7 +55,7 @@ export default {
     fetchQuestions() {
       axios({
         method: 'get',
-        url: 'http://localhost:3000/questions'
+        url: 'http://34.87.71.136/questions'
       })
         .then(({ data }) => {
           // console.log({ data })
@@ -72,7 +72,7 @@ export default {
     fetchAnswers() {
       axios({
         method: 'get',
-        url: 'http://localhost:3000/answers'
+        url: 'http://34.87.71.136/answers'
       })
         .then(({ data }) => {
           // console.log({ data })

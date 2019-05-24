@@ -73,7 +73,7 @@ export default {
     login() {
       axios({
         method: 'post',
-        url: 'http://localhost:3000/users/login',
+        url: 'http://34.87.71.136/users/login',
         data: this.loginForm
       })
         .then(({ data }) => {

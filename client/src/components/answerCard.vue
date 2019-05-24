@@ -109,7 +109,7 @@ export default {
       let { title, description } = this.currentAns
       axios({
         method: 'put',
-        url: `http://localhost:3000/answers/${id}`,
+        url: `http://34.87.71.136/answers/${id}`,
         headers: {
           token: localStorage.token
         },
@@ -142,7 +142,7 @@ export default {
           Swal.fire("Deleted!", "Your answer has been deleted.", "success");
           axios({
             method: "delete",
-            url: `http://localhost:3000/answers/${id}`,
+            url: `http://34.87.71.136/answers/${id}`,
             headers: {
               token: localStorage.token
             }
@@ -180,7 +180,7 @@ export default {
     upvoteAnswer(id) {
       axios({
         method: "put",
-        url: `http://localhost:3000/answers/${id}/upvote`,
+        url: `http://34.87.71.136/answers/${id}/upvote`,
         headers: {
           token: localStorage.token
         }
@@ -197,7 +197,7 @@ export default {
     downvoteAnswer(id) {
       axios({
         method: "put",
-        url: `http://localhost:3000/answers/${id}/downvote`,
+        url: `http://34.87.71.136/answers/${id}/downvote`,
         headers: {
           token: localStorage.token
         }

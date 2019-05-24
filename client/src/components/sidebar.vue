@@ -101,7 +101,7 @@ export default {
     fetchMyTag() {
       axios({
         method: "get",
-        url: `http://localhost:3000/users/${localStorage.id}`,
+        url: `http://34.87.71.136/users/${localStorage.id}`,
         headers: {
           token: localStorage.token
         }
@@ -157,7 +157,7 @@ export default {
       if (this.editMode) {
         axios({
           method: "put",
-          url: `http://localhost:3000/users/${localStorage.id}`,
+          url: `http://34.87.71.136/users/${localStorage.id}`,
           headers: {
             token: localStorage.token
           },

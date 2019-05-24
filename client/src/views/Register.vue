@@ -57,7 +57,7 @@ export default {
       let { name, email, password } = this.registerForm
       axios({
         method: 'post',
-        url: 'http://localhost:3000/users/register',
+        url: 'http://34.87.71.136/users/register',
         data: {
           name, email, password
         },

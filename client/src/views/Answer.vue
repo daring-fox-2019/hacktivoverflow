@@ -25,7 +25,7 @@ export default {
     fetchMy() {
       axios({
         method: 'get',
-        url: 'http://localhost:3000/answers/my',
+        url: 'http://34.87.71.136/answers/my',
         headers: {
           token: localStorage.token
         }

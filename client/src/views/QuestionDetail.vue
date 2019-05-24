@@ -74,7 +74,7 @@ export default {
     upvoteQuestion(id) {
       axios({
         method: "put",
-        url: `http://localhost:3000/questions/${id}/upvote`,
+        url: `http://34.87.71.136/questions/${id}/upvote`,
         headers: {
           token: localStorage.token
         }
@@ -92,7 +92,7 @@ export default {
     downvoteQuestion(id) {
       axios({
         method: "put",
-        url: `http://localhost:3000/questions/${id}/downvote`,
+        url: `http://34.87.71.136/questions/${id}/downvote`,
         headers: {
           token: localStorage.token
         }
@@ -110,7 +110,7 @@ export default {
     fetchQuestion() {
       axios({
         method: "get",
-        url: `http://localhost:3000/questions/${this.$route.params.id}`
+        url: `http://34.87.71.136/questions/${this.$route.params.id}`
       })
         .then(({ data }) => {
           this.currentQuestion = {};
@@ -127,7 +127,7 @@ export default {
     fetchAnswers() {
       axios({
         method: "get",
-        url: `http://localhost:3000/answers/question?questionId=${
+        url: `http://34.87.71.136/answers/question?questionId=${
           this.$route.params.id
         }`
       })
@@ -147,7 +147,7 @@ export default {
       let { title, description } = this.reply;
       axios({
         method: "post",
-        url: "http://localhost:3000/answers",
+        url: "http://34.87.71.136/answers",
         headers: {
           token: localStorage.token
         },

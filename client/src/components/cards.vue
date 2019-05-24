@@ -73,7 +73,7 @@ export default {
     });
     axios({
       method: "get",
-      url: `http://localhost:3000/answers/question?questionId=${this.item._id}`
+      url: `http://34.87.71.136/answers/question?questionId=${this.item._id}`
     })
       .then(({ data }) => {
         // console.log({ data })

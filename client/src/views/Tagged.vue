@@ -30,7 +30,7 @@ export default {
     fetchQuery(tag) {
       axios({
         method: 'get',
-        url: `http://localhost:3000/questions/tag?tag=${tag}`
+        url: `http://34.87.71.136/questions/tag?tag=${tag}`
       })
         .then(({ data }) => {
           // console.log({ data })
@@ -47,7 +47,7 @@ export default {
       // swal.fire(tag)
       axios({
         method: 'put',
-        url: `http://localhost:3000/users/${localStorage.id}`,
+        url: `http://34.87.71.136/users/${localStorage.id}`,
         headers: {
           token: localStorage.token
         },

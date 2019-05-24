@@ -125,7 +125,7 @@ export default {
       let { title, description, tags } = this.current
       axios({
         method: 'put',
-        url: `http://localhost:3000/questions/${id}`,
+        url: `http://34.87.71.136/questions/${id}`,
         headers: {
           token: localStorage.token
         },
@@ -156,7 +156,7 @@ export default {
           Swal.fire("Deleted!", "Your question has been deleted.", "success");
           axios({
             method: "delete",
-            url: `http://localhost:3000/questions/${id}`,
+            url: `http://34.87.71.136/questions/${id}`,
             headers: {
               token: localStorage.token
             }
