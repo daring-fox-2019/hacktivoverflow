@@ -13,9 +13,8 @@ const sendEmail = require('./helpers/sendEmail');
 const mongoose  = require('mongoose');
 const routes    = require('./routes');
 const PORT      = process.env.PORT || 3000;
-const NODE_ENV  = process.env.NODE_ENV || '-development';
 
-mongoose.connect('mongodb://localhost/hacktiv-overflow' + NODE_ENV, { useNewUrlParser: true });
+mongoose.connect(process.env.DB_URI, { useNewUrlParser: true });
 mongoose.set('useCreateIndex', true)
 mongoose.set('useFindAndModify', true)
 

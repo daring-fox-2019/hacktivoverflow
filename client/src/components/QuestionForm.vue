@@ -86,8 +86,10 @@ export default {
       
       if (this.edit) {
           this.$store.dispatch("updateQ", newQ);
+          swal('Question Updated', '', 'success')
       } else {
           this.$store.dispatch("submitQ", newQ);
+          swal('Question Posted', '', 'success')
       }
 
       this.$router.push('/')
