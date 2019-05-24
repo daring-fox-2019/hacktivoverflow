@@ -67,13 +67,18 @@ class AnswerController{
         })
     }
     static update(req,res, next){
+        let objUpdate = {}
+        for(let key in req.body) {
+            objUpdate[key] = req.body[key]
+        }
+
         let updateVal = {}
-        let id = req.params.answerId;
+        let id = req.params.id;
         req.body.description && (updateVal.description = req.body.description);
 
-        Answer.findByIdAndUpdate(id,updateVal,{new:true})
+        Answer.findByIdAndUpdate(id, {description: objUpdate.description}, {new:true})
+        .populate('userId')
         .then(result=>{
-            
             res.status(200).json(result);
         })
         .catch(err=>{

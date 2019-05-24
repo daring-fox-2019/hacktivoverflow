@@ -45,7 +45,17 @@
                         <div class="vote" @click="downvoteAnswer(answer._id)"><i class="fas fa-chevron-down"></i></div>
                     </div>
                     <div style="width: 100%;" class="mb-3">
-                        <div v-html="answer.description"></div>
+                        <div class="mb-5" style="display: flex; justify-content: space-between;">
+                            <div v-html="answer.description"></div>
+                            <button v-if="answer.userId._id===loginUserId" class="btn btn-link" @click="showEditTextArea">Edit</button>
+                        </div>
+                        <div v-if="showEdit">
+                            <h6>Edit Answer</h6>
+                            <form @submit.prevent="submitEditAnswer(answer._id)">
+                                <textarea v-model="editAnswer" name="" id="" cols="60" rows="10"></textarea>
+                                <button type="submit" class="btn btn-primary">Edit</button>
+                            </form>
+                        </div>
                         <div class="created-by__container">
                             <div class="created-by">
                                 <div><i class="far fa-user"></i> {{answer.userId.username}}</div>
@@ -83,7 +93,9 @@ export default {
         return {
             question:[],
             answers: [],
-            username: ''
+            username: '',
+            editAnswer: '',
+            showEdit: false
         }
     },
     methods: {
@@ -187,6 +199,28 @@ export default {
             }else{
                 this.$router.push('/login')
             }      
+        },
+        showEditTextArea() {
+            this.showEdit= !this.showEdit
+        },
+        submitEditAnswer(answerId) {
+            myaxios.defaults.headers.common['token'] = localStorage.token
+
+            myaxios
+            .patch(`answers/${answerId}`,{description:this.editAnswer} )
+            .then(({data})=>{
+                this.answers = this.answers.map(answer => {
+                    if(answer._id === data._id) {
+                        this.showEdit=false
+                        return data
+                    }else{
+                        return answer
+                    }
+                })
+            })
+            .catch(err=>{
+                console.log(err);
+            })  
         }
     },
     mounted() {

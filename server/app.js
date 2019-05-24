@@ -9,7 +9,8 @@ const kue = require('kue')
 
 app.use(cors())
 mongoose.set('useFindAndModify', false);
-mongoose.connect('mongodb+srv://admin:root@cluster0-r5gmo.gcp.mongodb.net/hijarvis?retryWrites=true', {useNewUrlParser: true})
+// mongoose.connect('mongodb+srv://admin:root@cluster0-r5gmo.gcp.mongodb.net/hijarvis?retryWrites=true', {useNewUrlParser: true})
+mongoose.connect('mongodb://localhost/hacktivoverflow', { useNewUrlParser: true })
 .then(function(success){
     console.log("succesfully connect to database")
 })

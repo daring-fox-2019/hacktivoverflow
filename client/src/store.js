@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import myaxios from '@/api/axios'
-import Swal from 'sweetalert2'
 
 Vue.use(Vuex)
 
@@ -69,34 +68,5 @@ export default new Vuex.Store({
         console.log(error);
       })
     },
-
-    addNewQuestion(context, payload) {
-      myaxios.defaults.headers.common['token'] = localStorage.token
-
-      myaxios
-      .post('questions/ask', payload)
-      .then(({data}) => {
-        context.commit('addNewQuestion', data)
-      })
-      .catch(err => {
-          console.log(err);
-      })
-    },
-
-    deleteQuestion(context, payload) {
-      myaxios
-      .delete(`/questions/${payload}`)
-      .then(({data}) => {
-          Swal.fire(
-              'Deleted!',
-              'Your question has been deleted.',
-              'success'
-          )
-          context.commit('deleteQuestion', data)
-      })
-      .catch(err => {
-          console.log(err);
-      })
-    }
   }
 })
