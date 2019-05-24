@@ -1,7 +1,14 @@
 const User = require('../models/user')
 const {compare} = require('../helpers/bcrypt')
 const { sign } = require('../helpers/jwt')
+const {verify} = require('../helpers/jwt')
 class UserController {
+    static getDecode(req, res){
+        const decode = verify(req.headers.token)
+        res.status(200).json(decode)
+
+    }
+
     static signUp(req, res){
         const {name, email, password} = req.body
         User.create({
@@ -16,14 +23,13 @@ class UserController {
             
         })
         .catch(function (err) {
-            res.status(400).json(err)
+            res.status(400).json(err.message)
             
         })
 
     }
 
     static login(req, res){
-        console.log('masukkk')
         let {email, password} = req.body
         User.findOne({
             email
@@ -44,10 +50,6 @@ class UserController {
                 const {id, email} = dataUser
                 const payload = {id, email}
                 const token = sign(payload)
-                console.log(dataUser)
-                console.log(payload);
-                console.log(token);
-                console.log('masuk else sebelum res status')
                 res.status(200).json({
                     msg : 'you have successly logged in',
                     token : token,

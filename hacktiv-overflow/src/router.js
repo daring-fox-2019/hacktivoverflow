@@ -27,10 +27,15 @@ export default new Router({
       component: () => import(/* webpackChunkName: "login-page" */ './views/LoginPage.vue')
     },
     {
-      path: '/detail',
+      path: '/detail/:id',
       name: 'detail-page',
       component: () => import(/* webpackChunkName: "detail-page" */ './views/Detail.vue')
+    },
+    {
+      path: '/register',
+      name: 'register-page',
+      component: () => import(/* webpackChunkName: "register-page" */ './views/RegisterPage.vue')
     }
-    
+
   ]
 })

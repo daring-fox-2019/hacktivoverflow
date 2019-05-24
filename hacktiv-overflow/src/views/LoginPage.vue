@@ -1,42 +1,42 @@
 <template>
-  <Login :signin="signin"/>
+  <Login v-on:sign="login"/>
 </template>
 
 <script>
-import Login from "@/components/Login.vue";
-import overflow from "@/api/overflow";
+import Login from '@/components/Login.vue'
+import overflow from '@/api/overflow'
+import { mapActions } from 'vuex'
 export default {
   components: {
     Login
   },
-  data() {
+  data () {
     return {
-      signin: {
-        email: "",
-        password: ""
-      }
-    };
+
+    }
   },
   methods: {
-    login() {
-      const { email, password } = this.signin;
+    login (result) {
+      const { email, password } = result
       overflow
-        .post("/login", {
+        .post('/login', {
           email,
           password
         })
         .then(({ data }) => {
-          localStorage.setItem("token", data.token)
+          console.log(data)
+          localStorage.setItem('token', data.token)
+          this.isLogin()
           this.$router.push('/')
         })
-        .catch(err=>{
-            console.log(err)
+        .catch(err => {
+          console.log(err)
         })
     },
-    isLogin() {
-      this.$store.commit('isLogin')
-    }
+    isLogin () {
+      this.$store.dispatch('isLogin')
+    },
+    ...mapActions(['isLogin'])
   }
-};
+}
 </script>
-

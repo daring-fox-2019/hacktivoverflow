@@ -2,15 +2,16 @@ const Question = require('../models/question')
 
 class QuestionController {
     static create(req, res){
-        const {title,description,idUser} = req.body
+        const {title,description} = req.body
+        console.log(req.body)
         Question.create({
             title,
             description,
-            upVote: 0,
-            downVote: 0,
+            upVote: [],
+            downVote: [],
             createdAt: new Date(),
             updatedAt: new Date(),
-            idUser
+            idUser: req.payload.id
     
         })
         .then(function (data) {
@@ -92,7 +93,7 @@ class QuestionController {
 
            }
        }
-        Product.findOneAndUpdate({_id: questionId}, obj
+        Question.findOneAndUpdate({_id: questionId}, obj
         )
         .then(function (data) {
             res.status(201).json({

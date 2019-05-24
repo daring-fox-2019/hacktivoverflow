@@ -4,8 +4,11 @@ function auth(req, res, next) {
     Question.findOne({
             _id : id
     })
-    .then(function (data) { 
-        if(req.payload.id === data.idUser){
+    .then(function (data) {
+        console.log(data) 
+        if(req.payload.id == data.idUser){
+            console.log('masuk author');
+            
             next()
         }else {
             res.status(401).json({

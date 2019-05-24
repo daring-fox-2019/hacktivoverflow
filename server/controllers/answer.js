@@ -2,12 +2,13 @@ const Answer = require('../models/answer')
 const Question = require('../models/question')
 class AnswerController {
     static create(req, res){
-        const {description,idUser,idQuestion} = req.body
+        const {description ,idQuestion} = req.body
+        console.log('sampai ------------')
         Answer.create({
             description,
-            upVote: 0,
-            downVote: 0,
-            idUser,
+            upVote: [],
+            downVote: [],
+            idUser : req.payload.id,
             idQuestion,
             createdAt: new Date(),
             updatedAt: new Date(),

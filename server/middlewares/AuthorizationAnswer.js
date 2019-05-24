@@ -5,10 +5,9 @@ function auth(req, res, next) {
             _id : id
     })
     .then(function (data) {
-        console.log(data.idUser) 
-        console.log(req.payload.id);
         if(req.payload.id == data.idUser){
-            console.log('sama')
+            console.log('masuk lolos');
+            
             next()
         }else {
             res.status(401).json({
