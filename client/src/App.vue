@@ -144,7 +144,7 @@
 <script>
 import { mapState, mapMutations, mapActions } from "vuex";
 import _ from "underscore";
-const baseURL = "http://localhost:3000";
+const baseURL = "http://52.221.237.158";
 import axios from "axios";
 
 export default {
@@ -155,7 +155,7 @@ export default {
       items: ["Home", "Users"],
       search: "",
       jobs: [],
-      socket : io('http://localhost:3000')
+      socket : io('http://52.221.237.158')
     };
   },
   created() {

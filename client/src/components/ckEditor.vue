@@ -50,7 +50,7 @@
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { mapActions } from "vuex";
 import axios from "axios";
-const baseURL = "http://localhost:3000";
+const baseURL = "http://52.221.237.158";
 export default {
   name: "ckEditor",
   components: {},

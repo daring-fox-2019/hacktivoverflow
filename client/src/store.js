@@ -9,8 +9,8 @@ import { log } from "util";
 
 Vue.use(Vuex);
 Vue.use(VueSweetalert2);
-// const baseURL = 'http://18.136.100.95'
-const baseURL = "http://localhost:3000";
+const baseURL = 'http://52.221.237.158'
+// const baseURL = "http://localhost:3000";
 
 export default new Vuex.Store({
   state: {

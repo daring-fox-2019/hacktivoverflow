@@ -121,7 +121,7 @@
 
 <script>
 import axios from "axios";
-const baseURL = "http://localhost:3000";
+const baseURL = "http://52.221.237.158";
 import _ from 'underscore'
 
 export default {
@@ -131,7 +131,7 @@ export default {
       show: false,
       showMore1: false,
       showMore2: false,
-      socket : io('http://localhost:3000')
+      socket : io('http://52.221.237.158')
     };
   },
   created() {

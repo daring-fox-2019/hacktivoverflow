@@ -37,7 +37,7 @@
 import { mapActions, mapState } from "vuex";
 import axios from "axios";
 import QuestionCard from "@/components/QuestionCard";
-const baseURL = "http://localhost:3000";
+const baseURL = "http://52.221.237.158";
 export default {
   props: ["search",],
   components: {
