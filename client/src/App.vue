@@ -58,5 +58,6 @@ export default {
 
 .my-container {
   max-width: 850px;
+  min-height: 100vh;
 }
 </style>

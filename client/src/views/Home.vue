@@ -57,6 +57,7 @@ export default {
 .my-container__small {
   display: flex;
   justify-content: space-between;
+  min-height: 100vh;
 }
 .heads {
   display: flex;

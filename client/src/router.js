@@ -44,6 +44,11 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/QuestionDetail.vue')
     },
     {
+      path: '/tags',
+      name: 'watch-tags',
+      component: () => import(/* webpackChunkName: "about" */ './views/Tag.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting

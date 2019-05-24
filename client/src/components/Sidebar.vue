@@ -1,9 +1,9 @@
 <template>
     <div class="sidebar-container">
-        <ul class="list-group list-group-flush" style="display: fixed;">
+        <ul class="list-group list-group-flush" style="position: fixed;">
             <li class="link list-group-item" @click="goToHome()">Home</li>
             <li class="link list-group-item" @click="goToMyQuestion()">My Questions</li>
-            <li class="link list-group-item">Tags</li>
+            <li class="link list-group-item" @click="goToTags()">Tags</li>
         </ul>
     </div>
 </template>
@@ -16,6 +16,9 @@ export default {
         },
         goToMyQuestion() {
             this.$router.push('/question/user')
+        },
+        goToTags() {
+            this.$router.push('/tags')
         }
     },
 }

@@ -69,7 +69,8 @@
                 </div>
             </div>
 
-            <AnswerForm 
+            <AnswerForm
+                @submit-answer="submitAnswer"
                 :question-id="question.userId._id"
                 :login-user-id="loginUserId"
             />
@@ -221,6 +222,9 @@ export default {
             .catch(err=>{
                 console.log(err);
             })  
+        },
+        submitAnswer(payload) {
+            this.answers.push(payload)
         }
     },
     mounted() {

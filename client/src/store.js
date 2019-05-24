@@ -68,5 +68,29 @@ export default new Vuex.Store({
         console.log(error);
       })
     },
+    addNewQuestion(context,payload) {
+      myaxios.defaults.headers.common['token'] = localStorage.token
+
+      myaxios
+      .post('/questions/ask', payload)
+      .then(({ data }) => {
+        context.commit('addNewQuestion', data)
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    },
+    deleteQuestion(context, id) {
+      myaxios.defaults.headers.common['token'] = localStorage.token
+
+      myaxios
+      .delete(`/questions/${id}`)
+      .then(({ data }) => {
+        context.commit('deleteQuestion', data)
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    }
   }
 })
