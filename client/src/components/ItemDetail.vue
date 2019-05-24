@@ -20,8 +20,7 @@
             </v-flex>
             <v-flex class="content">
                 <v-layout column>
-                    <v-flex class="itemContent">
-                        {{entity.content}}
+                    <v-flex class="itemContent" v-html="entity.content">
                     </v-flex>
                     <v-flex class="itemAuthor">
                         <v-layout row justify-space-between>
