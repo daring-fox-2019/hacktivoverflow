@@ -6,6 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     serverAddress: "http://localhost:3000/",
+    userEmail: "",
+    userId: "",
     loggedIn: false,
     zone: 0,
     showForm: 0,
@@ -14,7 +16,7 @@ export default new Vuex.Store({
     answers: [],
   },
   mutations: {
-
+    
   },
   actions: {
 

@@ -44,8 +44,11 @@ export default {
         })
         .then(({ data }) => {
             localStorage.setItem("token", data.token);
-            this.alert = "Success"
+            this.alert = "Success";
             this.$store.state.loggedIn = true;
+            this.$store.state.userEmail = data.email;
+            this.$store.state.userId = data.id;
+            this.$emit('fetch');
             setTimeout(() => {
                 this.alert = "";
                 this.$store.state.showForm = 0;

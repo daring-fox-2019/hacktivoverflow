@@ -51,6 +51,7 @@ class Controller {
                 }, process.env.JWT_SECRET, { expiresIn: '2d' });
                 res.status(200).json({
                     email: user.email,
+                    id: user._id,
                     token: token,
                 })
             }
@@ -67,6 +68,17 @@ class Controller {
                 message: "Server Error",
             })
         })
+    }
+
+    static checkLogin(req, res) {
+        if(req.userData) {
+            res.status(200).json({
+                email: req.userData.email,
+                id: req.userData.id,
+            })
+        } else {
+            res.status(401).json()
+        }
     }
 
     static delete(req, res) {
