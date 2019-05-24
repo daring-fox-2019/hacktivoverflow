@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="display: flex; justify-content: center;">
-      <v-btn @click="registerForm = !registerForm">Form</v-btn>
+      <v-btn @click="registerForm = !registerForm">{{toggle}}</v-btn>
     </div>
     <LogRegForm @submitted="register" v-show="registerForm" teks="Register">
       <v-text-field v-model="name" :rules="nameRules" prepend-icon="person" name="name" label="Name" type="text"></v-text-field>
@@ -28,11 +28,12 @@ export default {
       ],
     }
   },
-  // watch: {
-  //   'toggle'(){
-
-  //   }
-  // },
+  watch: {
+    registerForm(newBool, oldBool){
+      if(newBool) this.toggle = 'Login'
+      else this.toggle = 'Register'
+    }
+  },
   methods: {
     register(email,password){
       this.$store.dispatch('register',{ 

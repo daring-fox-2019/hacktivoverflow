@@ -51,10 +51,10 @@
       </v-btn>
       <v-btn
         flat
-        @click="logout"
+        @click="loginOrOut"
         color="primary"
       >
-        <span class="mr-2">Logout</span>
+        <span class="mr-2">{{logText}}</span>
       </v-btn>
     </v-toolbar>
 
@@ -72,7 +72,8 @@ export default {
   data () {
     return {
       drawer: false,
-      searchText: ''
+      searchText: '',
+      logText: 'Login'
     }
   },
   watch: {
@@ -83,6 +84,9 @@ export default {
     }
   },
   created(){
+    if(!localStorage.getItem('token'))
+      this.logText = 'Login'
+    else this.logText = 'Logout'
     this.$store.dispatch('getAllQuestions')
   },
   methods: {
@@ -93,9 +97,11 @@ export default {
       this.$store.dispatch('searchQuestions',this.searchText)
       // this.$router.push('/search')
     },
-    logout(){
-      localStorage.removeItem('token')
-      localStorage.removeItem('name')
+    loginOrOut(){
+      if(this.logText == 'Logout'){
+        localStorage.removeItem('token')
+        localStorage.removeItem('name')
+      }
       this.$router.push('/auth')
     },
 
