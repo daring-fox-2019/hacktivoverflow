@@ -11,8 +11,7 @@ class AnswerController {
         });
       })
       .then(data => {
-        console.log(data), "setelah update";
-
+        console.log(data, "setelah update");
         res.status(201).json({ data, message: "Your answer is posted!" });
       })
       .catch(err => {

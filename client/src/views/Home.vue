@@ -1,11 +1,11 @@
 <template>
   <v-container grid-list-md text-xs-center fluid>
     <v-layout row wrap align-start justify-start>
-      <v-switch v-model="switch1" :label="`Watched Tags: ${switch1.toString()}`"></v-switch>
-      <div class="display-1 font-weight-light">All Questions</div>
+      <v-switch v-model="switch1" id="switch" :label="`Watched : ${switch1.toString()}`"></v-switch>
+      <div class="header">All Questions</div>
       <v-spacer></v-spacer>
       <div>
-        <v-btn color="info" @click="getQuestion">Ask Question</v-btn>
+        <v-btn outline flat color="info" class="button" @click="getQuestion">Ask Question</v-btn>
       </div>
     </v-layout>
      <v-layout
@@ -96,6 +96,15 @@ export default {
 };
 </script>
 <style scoped>
+
+.button:hover {
+  color: orange !important;
+}
+
+.header {
+  font-family: 'Puritan', sans-serif;
+  font-size: 36px;
+}
 .card-layout {
   border-bottom: 1px solid #eeeeee;
 }

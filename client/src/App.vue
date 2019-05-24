@@ -2,7 +2,7 @@
   <v-app>
     <v-toolbar dark color="primary">
       <!--LOGO-->
-      <span>hackticvoverflow</span>
+      <span> <i class="fab fa-stack-overflow"></i> hackticvoverflow</span>
 
       <v-spacer></v-spacer>
       <v-flex xs12 sm6 md3>
@@ -22,7 +22,7 @@
           </router-link>
         </template>
         <span v-if="!isLogin">Login</span>
-        <span v-else-if="isLogin">Logout</span>
+        <span @click.prevent="logout" v-else-if="isLogin">Logout</span>
       </v-tooltip>
 
       <div></div>

@@ -13,6 +13,7 @@
       <v-flex xs10 class="title pl-4">
         <div class="headline text-truncate mb-2">
           <router-link
+            class="subheading"
             style="text-decoration:none;"
             :to="{ name: 'oneQuestion', params: { questionId: question._id }}"
           >{{question.title}}</router-link>

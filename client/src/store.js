@@ -181,6 +181,8 @@ export default new Vuex.Store({
           }
         })
         .then(({ data }) => {
+          console.log(data,'jawaban ??');
+          
           commit("pushAnswer", data.data);
           router.push({ path: `/questions/${data.data._id}` });
           Vue.swal("Nice!", data.message, "success");
@@ -189,98 +191,7 @@ export default new Vuex.Store({
           Vue.swal("Sorry...", err.response.data.message, "warning");
         });
     },
-    // getAnswer({ commit, dispatch }, option) {
-    //   axios
-    //     .get(`${baseURL}/answers/${option}`)
-    //     .then(({ data }) => {
-    //       commit("setAnswers", data);
-    //     })
-    //     .catch(err => {
-    //       console.log(err.message);
-    //     });
-    // },
-    // upvote({ commit, dispatch }, option) {
-    //   if (option.answerId) {
-    //     axios
-    //       .put(
-    //         `${baseURL}/${option.value}/${option.answerId}/upvote`,
-    //         {},
-    //         {
-    //           headers: { token: localStorage.getItem("token") }
-    //         }
-    //       )
-    //       .then(({ data }) => {
-    //         // console.log(data);
-    //         commit("setCountAnswer", data);
-    //       })
-    //       .catch(err => {
-    //         console.log(err.message);
-    //         swal("Oops", err.response.data.message, "warning");
-    //       });
-    //   } else {
-    //     axios
-    //       .put(
-    //         `${baseURL}/${option.value}/${option.questionId.questionId}/upvote`,
-    //         {},
-    //         {
-    //           headers: {
-    //             token: localStorage.getItem("token")
-    //           }
-    //         }
-    //       )
-    //       .then(({ data }) => {
-    //         console.log(data,' apa?');
-    //         commit("setCountQuestion", data);
-    //       })
-    //       .catch(err => {
-    //         console.log(err.response);
-    //         swal("Oops", err.response.data.message, "warning");
-    //       });
-    //   }
-    // },
-    // downvote({ commit, dispatch }, option) {
-    //   if (option.answerId) {
-    //     axios
-    //       .put(
-    //         `${baseURL}/${option.value}/${option.answerId}/downvote`,
-    //         {},
-    //         {
-    //           headers: {
-    //             token: localStorage.getItem("token")
-    //           }
-    //         }
-    //       )
-    //       .then(({ data }) => {
-    //         // console.log(data);
-    //         commit("setCountAnswer", data);
-    //       })
-    //       .catch(err => {
-    //         console.log(err.response);
-    //         swal("Oops", err.response.data.message, "warning");
-    //       });
-    //   } else {
-    //     axios
-    //       .put(
-    //         `${baseURL}/${option.value}/${
-    //           option.questionId.questionId
-    //         }/downvote`,
-    //         {},
-    //         {
-    //           headers: {
-    //             token: localStorage.getItem("token")
-    //           }
-    //         }
-    //       )
-    //       .then(({ data }) => {
-    //         console.log(data, " apa ?");
-    //         commit("setCountQuestion", data);
-    //       })
-    //       .catch(err => {
-    //         console.log(err.message);
-    //         swal("Oops", err.response.data.message, "warning");
-    //       });
-    //   }
-    // },
+
     updateAnswer({ commit, dispatch }, option) {
       // console.log(option, "=== option");
 

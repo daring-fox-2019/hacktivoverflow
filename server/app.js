@@ -54,8 +54,14 @@ news.start()
 getJob.start();
 
 const mongoose = require("mongoose");
-mongoose.connect(`${process.env.DB_URL}`, { useNewUrlParser: true });
-// mongoose.connect(`mongodb+srv://martinsuhendra:${process.env.ATLAS}@hacktiv8-martin-jldez.mongodb.net/test?retryWrites=true`, { useNewUrlParser: true })
+mongoose.connect(`${process.env.DB_URL}`, { useNewUrlParser: true })
+        .then(()=> {
+          console.log('database successfully connected online!');
+          
+        })
+        .catch((err)=> {
+          console.log(err)
+        });
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());

@@ -4,7 +4,6 @@ const Schema = mongoose.Schema
 const answerSchema = new Schema({
     title : {
         type : String,
-        required : [true, 'Title is required']
     },
     description : {
         type : String,
