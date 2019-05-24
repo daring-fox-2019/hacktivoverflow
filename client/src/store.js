@@ -253,9 +253,12 @@ export default new Vuex.Store({
         });
     },
     getUserQuestions(context,id) {
+      let sId
+      if(!id) sId = localStorage.getItem('userId')
+      else sId = id
       axios({
         method: "GET",
-        url: `/users/questions/${id}`,
+        url: `/users/questions/${sId}`,
       })
         .then(({ data }) => {
           context.commit('getUserQuestions', data)
