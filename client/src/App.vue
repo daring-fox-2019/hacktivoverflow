@@ -1,10 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer
-      v-model="drawer"
-      fixed
-      app
-    >
+    <v-navigation-drawer v-model="drawer" fixed app>
       <v-list dense>
         <v-list-tile to="/">
           <v-list-tile-action>
@@ -14,7 +10,7 @@
             <v-list-tile-title>Home</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile to="/profile">
+        <v-list-tile @click="whoAmI">
           <v-list-tile-action>
             <v-icon>contact_mail</v-icon>
           </v-list-tile-action>
@@ -42,19 +38,11 @@
         ></v-text-field>
       </v-form>
       <v-spacer></v-spacer>
-      <v-btn
-        flat
-        to="/newquestion"
-        color="success"
-      >
+      <v-btn flat to="/newquestion" color="success">
         <span class="mr-2">Ask Question</span>
       </v-btn>
-      <v-btn
-        flat
-        @click="loginOrOut"
-        color="primary"
-      >
-        <span class="mr-2">{{logText}}</span>
+      <v-btn flat @click="loginOrOut" color="primary">
+        <span class="mr-2">{{$store.state.logText}}</span>
       </v-btn>
     </v-toolbar>
 
@@ -66,45 +54,54 @@
 
 <script>
 export default {
-  name: 'App',
-  components: {
-  },
-  data () {
+  name: "App",
+  components: {},
+  data() {
     return {
       drawer: false,
-      searchText: '',
-      logText: 'Login'
-    }
+      searchText: "",
+      // logText: "Login"
+    };
   },
   watch: {
-    $route(){
-      this.drawer = false
+    $route() {
+      this.drawer = false;
       // if(!localStorage.getItem('token'))
       //   this.$router.push('/auth')
     }
   },
-  created(){
-    if(!localStorage.getItem('token'))
-      this.logText = 'Login'
-    else this.logText = 'Logout'
-    this.$store.dispatch('getAllQuestions')
+  mounted() {
+    // this.checkLogin()
+    this.$store.dispatch("getAllQuestions");
   },
   methods: {
+    // checkLogin(){
+    //   if (!localStorage.getItem("token")) this.logText = "Login";
+    // else this.logText = "Logout";
+    // },
+    whoAmI() {
+      if(!localStorage.getItem('token')){
+        this.$router.push('/auth')
+      }
+      else
+        this.$router.push('/profile/'+localStorage.getItem('userId'))
+    },
     // createQuestion(){
     //   this.$router.push()
     // },
-    searchQuestions(){
-      this.$store.dispatch('searchQuestions',this.searchText)
+
+    searchQuestions() {
+      this.$store.dispatch("searchQuestions", this.searchText);
       // this.$router.push('/search')
     },
-    loginOrOut(){
-      if(this.logText == 'Logout'){
-        localStorage.removeItem('token')
-        localStorage.removeItem('name')
+    loginOrOut() {
+      if (this.$store.state.logText == "Logout") {
+        this.$store.commit('logout')
+        // this.checkLogin()
       }
-      this.$router.push('/auth')
-    },
-
+      else
+        this.$router.push('/auth')
+    }
   }
-}
+};
 </script>

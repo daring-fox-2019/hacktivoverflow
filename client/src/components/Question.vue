@@ -48,10 +48,14 @@ export default {
   },
   methods: {
     vote(voteType){
-      this.$store.dispatch('voteQuestion',{
-        id: this.question._id,
-        voteType
+      if(localStorage.getItem('token')){
+        this.$store.dispatch('voteQuestion',{
+          id: this.question._id,
+          voteType
         })
+      }
+      else
+        this.$router.push('/auth')
     }
   }
 };

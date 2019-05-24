@@ -66,13 +66,19 @@ export default {
       return this.value.user._id === localStorage.getItem("userId");
     },
     vote(voteType) {
-      let payload = {
-        id: this.value._id,
-        voteType
-      };
-      if (this.tipe == "Answer") payload.questionid = this.value.question;
-      else payload.questionid = this.value._id;
-      this.$store.dispatch("vote" + this.tipe, payload);
+      if(localStorage.getItem('token')){
+        let payload = {
+          id: this.value._id,
+          voteType
+        };
+        if (this.tipe == "Answer")
+          payload.questionid = this.value.question;
+        else
+          payload.questionid = this.value._id;
+        this.$store.dispatch("vote" + this.tipe, payload);
+      }
+      else
+        this.$router.push('/auth')
     },
     update(title, description) {
       this.editing = false;

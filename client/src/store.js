@@ -14,7 +14,8 @@ export default new Vuex.Store({
     queries: [],
     question: {},
     answered: false,
-    sortBy: ''
+    sortBy: '',
+    logText: 'Login'
   },
   mutations: {
     sortQuestions(state, payload) {
@@ -69,6 +70,7 @@ export default new Vuex.Store({
       localStorage.setItem('name', payload.name);
       localStorage.setItem('token', payload.token);
       state.loggedIn = true;
+      state.logText = 'Logout'
       router.push('/');
     },
     logout(state) {
@@ -76,7 +78,7 @@ export default new Vuex.Store({
       localStorage.removeItem('name');
       localStorage.removeItem('token');
       state.loggedIn = false;
-      router.push('/auth');
+      state.logText = 'Login'
     },
     getAllQuestions(state, payload) {
       state.questions = [...payload]
