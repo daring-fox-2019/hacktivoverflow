@@ -10,7 +10,11 @@ class UserController {
     User.findOne({
       _id: req.params._id
     })
-    .populate('questions')
+    .populate({
+      path: 'questions',
+      // Get friends of friends - populate the 'friends' array for every friend
+      populate: { path: 'user' }
+  })
     .populate('answers')
     .then(row =>{
       res.status(200).json(row)
