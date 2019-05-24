@@ -34,7 +34,7 @@ export default new Vuex.Store({
       state.myTags = payload  
     },
     pushNewQ(state, payload) {
-      state.questions.push(payload)
+      state.questions.unshift(payload)
     }
   },
   actions: {

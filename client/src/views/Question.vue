@@ -38,7 +38,7 @@
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Item from "@/components/Item.vue";
 import backend from "@/api/backend";
-
+import { mapState } from 'vuex'
 export default {
   name: "QuestionPage",
   components: {
@@ -59,14 +59,11 @@ export default {
     };
   },
   computed: {
-    question() {
-      return this.$store.state.question;
-    },
+    ...mapState([
+      'question', 'isLogin'
+    ]),
     notOwner() {
-      return (
-        this.question.owner.email != localStorage.getItem("email") &&
-        this.isLogin
-      );
+      return this.question.owner.email != localStorage.getItem("email") && this.isLogin
     },
     isLogin() {
       return this.$store.state.isLogin;
@@ -139,7 +136,7 @@ export default {
     },
     removeAnswer(id) {
       backend
-        .delete(`/answers/${id}`, {
+        .delete(`/answers/${this.$route.params.id}/${id}`, {
           headers: {
             accesstoken: localStorage.getItem("accesstoken")
           }
@@ -160,8 +157,4 @@ export default {
 </script>
 
 <style>
-#tl {
-  margin-top: 1.5rem;
-  margin-left: 1rem;
-}
 </style>

@@ -12,6 +12,6 @@ router.patch('/upvote/:id', AnswerController.upvote);
 router.patch('/downvote/:id', AnswerController.downvote);
 
 router.patch('/:id', answerAuthorization, AnswerController.update);
-router.delete('/:id', answerAuthorization, AnswerController.deleteOne);
+router.delete('/:questionId/:id', answerAuthorization, AnswerController.deleteOne);
 
 module.exports = router;

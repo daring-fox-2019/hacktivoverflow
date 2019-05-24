@@ -175,16 +175,27 @@ class AnswerController {
             })
     }
 
-    static deleteOne(req, res) {
-        Answer
-            .deleteOne({
-                _id: req.params.id
-            })
-            .then(result => {
-                if (result.n && result.ok) {
+    static deleteOne(req, res, next) {
+        Promise
+            .all([
+                Answer
+                    .deleteOne({
+                        _id: req.params.id
+                    }),
+                Question
+                    .updateOne({
+                        _id: req.params.questionId
+                    }, {
+                        $pull: {
+                            answers: ObjectId(req.params.id)
+                        }
+                    })
+            ])
+            .then(([result1, result2]) => {
+                if (result1.n && result1.ok) {
                     res
                         .status(200)
-                        .json(result)
+                        .json(result1)
                 } else {
                     res
                         .status(404)

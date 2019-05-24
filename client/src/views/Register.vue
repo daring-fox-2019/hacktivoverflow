@@ -53,6 +53,7 @@
 
 <script>
 import backend from "@/api/backend";
+import swal from 'sweetalert';
 export default {
   name: "Register",
   data() {
@@ -73,6 +74,7 @@ export default {
         })
         .then(({ data }) => {
           this.$router.push("/login");
+          swal('Register Completed', '', 'success')
         })
         .catch(err => {
           if (err.response) {

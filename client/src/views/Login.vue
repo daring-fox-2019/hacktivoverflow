@@ -47,6 +47,7 @@
 
 <script>
 import backend from "@/api/backend";
+import swal from 'sweetalert';
 export default {
   name: "LoginForm",
   data() {
@@ -72,6 +73,7 @@ export default {
           this.$router.push("/");
           this.email = "";
           this.password = "";
+          swal('Login Success', '', 'success')
         })
         .catch(err => {
           if (err.response) {

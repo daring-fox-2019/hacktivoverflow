@@ -1,6 +1,6 @@
 <template>
-  <div class="ui basic segment">
-    <div class="ui right floated icon teal buttons" style="padding: 2rem;">
+  <div class="ui segment">
+    <div class="ui right floated icon teal buttons">
       <button class="ui button" @click="vote('upvote')">
         <i class="thumbs up icon"></i>
       </button>
@@ -9,18 +9,19 @@
         <i class="thumbs down icon"></i>
       </button>
     </div>
-    <h1 class="ui header" id="tl" v-if="type == 'questions'">{{ item.title }}</h1>
-    <div class="ui divider"></div>
+    <div class="ui huge header" id="tl" v-if="type == 'questions'">{{ item.title }}</div>
     <div v-html="item.content" style="margin-bottom: 1rem;"></div>
     <div class="ui tags" v-if="type == 'questions'">
       <div
-        class="ui small teal label tag"
+        class="ui tiny teal label tag"
         v-for="(tag, index) in item.tags"
         :key="index"
         @click="searchByTag(tag)"
       >{{ tag }}</div>
     </div>
-    <div class="ui left floated icon buttons" v-if="owner" style="margin-top: 1rem">
+    <div class="ui divider" style="margin-top: 2rem;"></div>
+    <h4 class=""><i>{{ item.owner.name }}</i></h4><p>Posted: {{ timeAgo(item.created_at) }}</p>
+    <div class="ui icon buttons" v-if="owner" style="margin-top: 1rem">
       <button class="ui basic button" @click="edit">
         <i class="edit icon"></i>
       </button>
@@ -28,11 +29,11 @@
         <i class="trash icon"></i>
       </button>
     </div>
-    <h4><i>{{ item.owner.name }}</i></h4>
   </div>
 </template>
 
 <script>
+import moment from 'moment'
 export default {
   name: "Item",
   props: {
@@ -45,7 +46,7 @@ export default {
     },
     owner() {
       return this.item.owner.email == localStorage.getItem("email");
-    }
+    },
   },
   methods: {
     vote(type) {
@@ -73,6 +74,9 @@ export default {
       } else if (this.type == "answers") {
         this.$emit('remove-a', this.item._id)
       }
+    },
+    timeAgo(date) {
+      return moment(date).fromNow()
     }
   }
 };
