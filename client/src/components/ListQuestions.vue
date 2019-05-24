@@ -3,7 +3,7 @@
     <h1>{{ title }}</h1>
     <v-layout row wrap>
       <v-list three-line>
-        <Question v-for="question in value" :question="question" :key="question._id"/>
+        <Question v-for="question in value" :question="question" :title="title" :key="question._id"/>
         <!-- <v-divider inset></v-divider> -->
         
       </v-list>

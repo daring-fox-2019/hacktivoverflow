@@ -198,7 +198,7 @@ export default new Vuex.Store({
     voteQuestion(context, payload) {
       axios({
         method: "PUT",
-        url: `/questions/update/${payload.id}`,
+        url: `/questions/update/${payload.questionid}`,
         data: {
           voteType: payload.voteType
         },
@@ -207,7 +207,7 @@ export default new Vuex.Store({
         }
       })
         .then(({ data }) => {
-          context.dispatch('getAllQuestions')
+          context.dispatch('getAllQuestions',payload.sortBy)
           context.dispatch('getUserQuestions',localStorage.getItem('userId'))
           context.dispatch('getQuestion', payload.questionid)
         })
@@ -248,6 +248,7 @@ export default new Vuex.Store({
       })
         .then(({ data }) => {
           context.commit('getAllQuestions', data)
+          console.log('-----------------'+sortBy)
           if(sortBy)
             context.commit('sortQuestions',sortBy)
         })
@@ -310,9 +311,9 @@ export default new Vuex.Store({
         });
     },
   },
-  getters: {
-    getQuestion(state) {
-      return state.question
-    }
-  }
+  // getters: {
+  //   getQuestion(state) {
+  //     return state.question
+  //   }
+  // }
 });

@@ -34,7 +34,7 @@
 <script>
 export default {
   name: 'question',
-  props: ['question'],
+  props: ['question','title'],
   data() {
     return {};
   },
@@ -50,8 +50,9 @@ export default {
     vote(voteType){
       if(localStorage.getItem('token')){
         this.$store.dispatch('voteQuestion',{
-          id: this.question._id,
-          voteType
+          questionid: this.question._id,
+          voteType,
+          sortBy: this.title
         })
       }
       else
