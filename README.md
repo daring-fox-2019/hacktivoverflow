@@ -20,6 +20,9 @@ Access client via `http://localhost:8080`
 |/questions/:questionId  |GET  |token|none|**Success**: Get a logged in user's question, **Error**: Internal server error (Validation)|Get logged in user's question|
 |/questions/:questionId/upvote  |PUT  |token|none|**Success**: Upvote a question, **Error**: Internal server error (Validation)|Upvote a question|
 |/questions/:questionId/downvote  |PUT  |token|none|**Success**: Downvote a question, **Error**: Internal server error (Validation)|Downvote a question|
+|/questions/:id  |PATCH  |token|none|**Success**: UPDATE a question, **Error**: Internal server error (Validation)|update a question|
+|/questions/preferred-discussions  |GET  |token|none|**Success**: get a users watched tags, **Error**: Internal server error (Validation)|show a users watched tags|
+
 
 ## Answer Routes
 |Routes|HTTP|Header(s)|Body|Response|Description|
@@ -32,3 +35,15 @@ Access client via `http://localhost:8080`
 |/answers/:answerId/downvote  |PUT  |token|none|**Success**: Downvote an answer, **Error**: Internal server error (Validation)|Downvote an answer|
 |/answers/answerId  |PUT  |token|none|**Success**: Update logged in user's answer, **Error**: Internal server error (Validation)|Update logged in user's answer|
 |/answers/:AnswerId  |DELETE  |token|none|**Success**: Delete logged in user's answer, **Error**: Internal server error (Validation)|Delete logged in user's answer|
+
+## Tag Routes
+|Routes|HTTP|Header(s)|Body|Response|Description|
+|:--:|:--:|:--:|:--:|:--:|:--:|
+|/tags  |GET  |token|none|**Success**: get tags list available, **Error**: Internal server error (Validation)|Show tags list|
+|/tags/  |POST  |token|none|**Success**: Create tag, **Error**: Internal server error (Validation)|Show created tag|
+
+## API Routes
+|Routes|HTTP|Header(s)|Body|Response|Description|
+|:--:|:--:|:--:|:--:|:--:|:--:|
+|/API/news  |GET  |token|none|**Success**: get news list from 3rd API, **Error**: Internal server error (Validation)|Show news list|
+|/API/:jobs  |GET  |token|none|**Success**: Get jobs list from 3rd API, **Error**: Internal server error (Validation)|Show jobs list|
