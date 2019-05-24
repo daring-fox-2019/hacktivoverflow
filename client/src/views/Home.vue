@@ -21,7 +21,10 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('getAllQuestions',this.selected)
+    if(!localStorage.getItem('token'))
+      this.$router.push('/auth')
+    else
+      this.$store.dispatch('getAllQuestions',this.selected)
   },
   methods: {
     sortQuestions(){
