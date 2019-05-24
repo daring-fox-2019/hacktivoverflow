@@ -56,6 +56,7 @@
 
 <script>
 import { mapState } from "vuex";
+import swal from 'sweetalert'
 
 export default {
   name: "sidebar",
@@ -117,7 +118,7 @@ export default {
         });
     },
     deleteTag(tag) {
-      // swal.fore(tag);
+      // swal(tag);
       this.watchedTags = this.watchedTags.filter(item => item != tag);
     },
     addTag() {

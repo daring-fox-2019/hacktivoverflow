@@ -93,6 +93,7 @@
 
 <script>
 import modalEdit from "../components/modalEdit.vue";
+import swal from 'sweetalert'
 import inputTag from 'vue-input-tag'
 
 export default {
@@ -143,17 +144,14 @@ export default {
         })
     },
     deleteQuestion(id) {
-      Swal.fire({
+      swal({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
+        icon: "warning",
+        buttons: true,
       }).then(result => {
-        if (result.value) {
-          Swal.fire("Deleted!", "Your question has been deleted.", "success");
+        if (result) {
+          swal("Deleted!", "Your question has been deleted.", "success");
           axios({
             method: "delete",
             url: `http://34.87.71.136/questions/${id}`,

@@ -22,6 +22,7 @@
 <script>
 import popover from "./popover.vue";
 import { mapState } from "vuex";
+import swal from 'sweetalert'
 
 export default {
   name: "toolbar",
@@ -42,7 +43,7 @@ export default {
     },
     logout() {
       this.name = ''
-      swal.fire("Logged Out!", `Goodbye, ${localStorage.name}!`, "success");
+      swal("Logged Out!", `Goodbye, ${localStorage.name}!`, "success");
       localStorage.removeItem("token");
       localStorage.removeItem("id");
       localStorage.removeItem("name");

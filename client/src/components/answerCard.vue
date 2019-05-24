@@ -89,6 +89,8 @@
 </template>
 
 <script>
+import swal from 'sweetalert'
+
 export default {
   name: "answerCard",
   props: ["item"],
@@ -118,7 +120,7 @@ export default {
         }
       })
         .then(({ data }) => {
-          swal.fire('Success!', 'Answer Edited', 'success')
+          swal('Success!', 'Answer Edited', 'success')
           this.dialog = false
           this.$emit('update-answer-hard')
         })
@@ -129,17 +131,14 @@ export default {
         })
     },
     deleteAnswer(id) {
-      Swal.fire({
+      swal({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
+        icon: "warning",
+        buttons: true
       }).then(result => {
-        if (result.value) {
-          Swal.fire("Deleted!", "Your answer has been deleted.", "success");
+        if (result) {
+          swal("Deleted!", "Your answer has been deleted.", "success");
           axios({
             method: "delete",
             url: `http://34.87.71.136/answers/${id}`,
@@ -148,7 +147,7 @@ export default {
             }
           })
             .then(({ data }) => {
-              swal.fire('Success!', 'Answer deleted', 'success')
+              swal('Success!', 'Answer deleted', 'success')
               this.$emit('update-answer-hard')
             })
             .catch(err => {
@@ -160,7 +159,7 @@ export default {
       });
     },
     test(tag) {
-      swal.fire(tag);
+      swal(tag);
     },
     voteCheck(data) {
       data.createdAt = new Date(data.createdAt).toDateString();

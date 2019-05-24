@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import swal from 'sweetalert'
+
 export default {
   name: 'login-form',
   data: () => ({
@@ -64,7 +66,7 @@ export default {
       })
         .then(({ data }) => {
           console.log(data)
-          swal.fire({
+          swal({
             type: 'success',
             title: 'Registered',
             text: `Welcome to the club, ${name}!`
@@ -73,7 +75,7 @@ export default {
         })
         .catch(({ response }) => {
           let { status, statusText, data } = response
-          swal.fire(`Error ${status}: ${statusText}`, data.message, 'error')
+          swal(`Error ${status}: ${statusText}`, data.message, 'error')
           console.log({ response })
         })
     }

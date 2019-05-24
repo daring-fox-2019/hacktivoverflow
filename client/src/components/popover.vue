@@ -19,6 +19,7 @@
             <v-flex xs12>
               <v-text-field
                 label="Password"
+                type="password"
                 v-model="loginForm.password"
                 :rules="requiredRule"
                 required
@@ -40,6 +41,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import swal from 'sweetalert'
 
 export default {
   name: "popover",
@@ -82,7 +84,7 @@ export default {
           localStorage.setItem('name', name)
           localStorage.setItem('email', email)
           localStorage.setItem('id', id)
-          swal.fire('Logged in!', `Welcome, ${data.name}`)
+          swal('Logged in!', `Welcome, ${data.name}`)
           this.isLoading = false
           this.$store.dispatch('login', data)
           this.$router.push('/')

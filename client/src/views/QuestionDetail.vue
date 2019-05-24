@@ -33,6 +33,7 @@
 import question from "../components/question.vue";
 import cards from "../components/cards.vue";
 import answerCard from "../components/answerCard.vue";
+import swal from 'sweetalert'
 
 export default {
   name: "detail",
@@ -142,7 +143,7 @@ export default {
         });
     },
     createReply() {
-      swal.fire(this.currentQuestion._id);
+      swal(this.currentQuestion._id);
       this.isLoading = true;
       let { title, description } = this.reply;
       axios({
@@ -159,7 +160,7 @@ export default {
       })
         .then(({ data }) => {
           this.isLoading = false;
-          swal.fire("Success!", "Reply posted", "success");
+          swal("Success!", "Reply posted", "success");
           this.fetchQuestion();
           this.fetchAnswers();
           this.reply = {

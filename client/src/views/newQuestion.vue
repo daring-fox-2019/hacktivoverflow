@@ -46,6 +46,7 @@
 <script>
 import inputTag from 'vue-input-tag'
 import formTemplate from '../components/form.vue'
+import swal from 'sweetalert'
 
 
 export default {
@@ -74,7 +75,7 @@ export default {
         data: this.newQuestion
       })
         .then(({ data }) => {
-          swal.fire('Success!', 'Question created.', 'success')
+          swal('Success!', 'Question created.', 'success')
           this.$router.push('/')
           // this.$emit('update-questions')
         })

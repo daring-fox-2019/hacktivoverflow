@@ -24,6 +24,7 @@
 <script>
 import toolbar from "./components/toolbar.vue";
 import sidebar from "./components/sidebar.vue"
+import swal from 'sweetalert'
 
 export default {
   name: "App",
@@ -42,10 +43,10 @@ export default {
       let { response } = err
       if(response) {
         let { status, statusText, data } = response
-        swal.fire(`Error ${status}: ${statusText}`, data.message, 'error')
+        swal(`Error ${status}: ${statusText}`, data.message, 'error')
       } else {
         let eror = err.message || err
-        swal.fire(eror)
+        swal(eror)
       }
     },
     fetchBoth() {
@@ -104,5 +105,8 @@ export default {
 .plain {
   color: white;
   text-decoration: none;
+}
+.swal-modal {
+  font-family: Helvetica;
 }
 </style>

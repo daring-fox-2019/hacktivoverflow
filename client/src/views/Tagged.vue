@@ -15,6 +15,7 @@
 
 <script>
 import cards from '../components/cards.vue'
+import swal from 'sweetalert'
 
 export default {
   components: {
@@ -44,7 +45,7 @@ export default {
         })
     },
     saveTag(tag) {
-      // swal.fire(tag)
+      // swal(tag)
       axios({
         method: 'put',
         url: `http://34.87.71.136/users/${localStorage.id}`,
@@ -56,7 +57,7 @@ export default {
         }
       })
         .then(({ data }) => {
-          swal.fire('Success!', `Added ${tag} to saved tags.`, 'success')
+          swal('Success!', `Added ${tag} to saved tags.`, 'success')
           this.$router.push('/')
         })
         .catch(err => {

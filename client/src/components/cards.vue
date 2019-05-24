@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import swal from 'sweetalert'
+
 export default {
   name: "card",
   props: ["item"],
@@ -52,7 +54,7 @@ export default {
   },
   methods: {
     test(tag) {
-      // swal.fire(tag);
+      // swal(tag);
       
     },
     voteCheck() {}
