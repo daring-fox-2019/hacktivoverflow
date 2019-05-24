@@ -4,7 +4,8 @@ const app = express();
 const cors = require('cors');
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/overflow', {useNewUrlParser: true});
+mongoose.connect(process.env.DB_URL, {useNewUrlParser: true});
+// mongoose.connect('mongodb://localhost/overflow', {useNewUrlParser: true});
 
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
