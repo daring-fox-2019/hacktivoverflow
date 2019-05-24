@@ -27,11 +27,6 @@ const questionSchema = new Schema({
     userId : { type: Schema.Types.ObjectId, ref: 'User', required: true }
 }, {timestamps: true});
 
-questionSchema.pre('save', function() {
-    this.created_at = new Date
-    next()
-})
-
 const Question = mongoose.model('Question', questionSchema);
 
 module.exports = Question

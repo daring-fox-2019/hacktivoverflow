@@ -11,15 +11,11 @@
 <script>
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
-import QuestionDetail from '@/views/QuestionDetail'
-import Sidebar from '@/components/Sidebar.vue'
 
 export default {
   components: {
     Navbar,
     Footer,
-    QuestionDetail,
-    Sidebar
   },
   created() {
       this.$store.dispatch('getQuestion')
