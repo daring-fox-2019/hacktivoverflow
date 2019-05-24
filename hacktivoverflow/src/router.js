@@ -8,7 +8,7 @@ import profile from './views/profile.vue'
 import editQuestion from './views/editQuestion.vue'
 import formAnswer from './views/formAnswer.vue'
 import questionAndAnswer from './views/questionAndAnswer'
-
+import editAnswer from './views/editAnswer.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -54,6 +54,11 @@ export default new Router({
       path : '/questionDetail/:questionid',
       name: 'questionDetail',
       component: questionAndAnswer
+    },
+    {
+      path : '/editAnswer/:questionid/:answerid',
+      name: 'edit answer',
+      component: editAnswer
     }
   ]
 })

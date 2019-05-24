@@ -4,12 +4,12 @@
     <v-container>
       <v-card class="pa-4" color="teal lighten-3">
       <v-card-title class="display-1 justify-center orange--text mb-4">
-        <v-card>
-            <!-- <h4>{{isQuestion.title}}</h4>
-            <h6>{{isQuestion.description}}</h6> -->
+        <v-card class="pa-3">
+            <h4>{{question.title}}</h4>
+            <h6>{{question.description}}</h6>
         </v-card>
       </v-card-title>
-      <answerCard class="mb-5" v-for="answer in answers" :key="answer._id" v-bind:answer="answer" />
+      <answerCard class="mb-5" v-for="answer in answers" :key="answer._id" v-bind:answer="answer" v-bind:question="question"/>
       </v-card>
     </v-container>
   </div>
@@ -22,7 +22,8 @@
     data(){
       return{
         answers : [],
-        // questionId : this.$route.params.questionid
+        questionId : this.$route.params.questionid,
+        question : ''
       }
     },
     components : {
@@ -46,7 +47,21 @@
          }
      },
      created(){
-        
+        axios({
+          method: 'get',
+          url : `http://localhost:3000/questions/${this.questionId}`,
+          headers : {
+            token : localStorage.token
+          }
+        })
+        .then(({data})=>{
+          console.log('darii axios qANDa',data);
+          this.question = data
+        })
+        .catch(err =>{
+          console.log(err);
+        })
+        this.$store.dispatch('getQuestionAnswer',this.questionId)
     }
   }
 </script>

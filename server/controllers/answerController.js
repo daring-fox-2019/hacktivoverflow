@@ -19,6 +19,24 @@ class AnswerController{
         })
     }
 
+    static getOne(req,res){
+        console.log('masuk get one========');
+        
+        Answer
+        .findById(req.params.answerid)
+        .then(answer =>{
+            console.log('ini answer========',answer);
+            
+            res.status(200).json(answer)
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                msg : `internal server error`
+            })
+        })
+    }
+
     static getUserAnswer(req,res){
         Answer
         .find({userId : req.params.userid})
@@ -105,9 +123,14 @@ class AnswerController{
     }
 
     static update(req,res){
+        console.log('masuk answer update====');
+        console.log('req bodyyyy',req.body,req.params.answerid);
+        
         Answer
         .findByIdAndUpdate(req.params.answerid,req.body,{new : true})
         .then(answer =>{
+            console.log('ini answerrrrrr',answer);
+            
             res.status(201).json(answer)
         })
         .catch(err =>{
@@ -118,6 +141,81 @@ class AnswerController{
             })
         })
     }
+
+    static upvote(req,res){
+        Answer.findOne({_id : req.params.answerid})
+        .then(answer =>{
+            console.log('hasil find one and update',answer);
+            
+            let checkInUpvote = answer.upVotes.indexOf(req.loggedUser.id)
+            let checkInDownvote = answer.downVotes.indexOf(req.loggedUser.id)
+            if(checkInDownvote !== -1){
+                console.log(`status downvoted`);
+                answer.downVotes.splice(checkInDownvote,1)
+                console.log(`status == neutral`);
+                console.log(answer);
+                return answer.save()
+            }else{
+                if(checkInUpvote === -1){
+                    console.log(`status == not yet voted`);
+                    answer.upVotes.push(req.loggedUser.id)
+                    console.log(`you're upvoting`);
+                    return answer.save()
+                }
+                console.log(`status upvoted`);
+                return question
+            }
+        })
+        .then(answer =>{
+            res.status(200).json(answer)
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(500).json({
+                msg : `internal server error`,
+                err
+            })
+        })
+    }
+
+    static downvote(req,res){
+        Answer.findOne({_id : req.params.answerid})
+        .then(answer =>{
+            console.log('hasil find one and update',answer);
+            let checkInUpvote = answer.upVotes.indexOf(req.loggedUser.id)
+            let checkInDownvote = answer.downVotes.indexOf(req.loggedUser.id)
+            if(checkInUpvote !== -1){
+                console.log(`status upvoted`);
+                console.log('ini answer upvote before slice',checkInUpvote,answer.upVotes);
+                answer.upVotes.splice(checkInUpvote,1)
+                console.log('ini answer upvote after slice',checkInUpvote,answer.upVotes);  
+                console.log(`status == neutral`);
+                return answer.save()
+                
+            }else{
+                if(checkInDownvote === -1){
+                    console.log(`status == not yet voted`);
+                    answer.downVotes.push(req.loggedUser.id)
+                    console.log(`you're downvoting`);
+                    return answer.save()
+                }
+                console.log(`status upvoted`);
+                return answer
+            }
+        })
+        .then(answer =>{
+            res.status(200).json(answer)
+        })
+        .catch(err=>{
+            console.log(err);
+            
+            res.status(500).json({
+                msg : `internal server error`,
+                err
+            })
+        })
+    }
+
     
 }
 

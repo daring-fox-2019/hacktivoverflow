@@ -51,8 +51,8 @@
          }
      },
      created(){
-         this.$store.dispatch('getmyQuestion'),
-         this.$store.dispatch('getmyAnswer')
+         this.$store.dispatch('getmyQuestion')
+        //  this.$store.dispatch('getmyAnswer')
     }
   }
 </script>

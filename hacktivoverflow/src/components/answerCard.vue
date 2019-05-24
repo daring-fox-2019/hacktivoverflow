@@ -18,10 +18,10 @@
                 </div>
             </v-flex>
             <v-flex xs12 sm10>
-            <h3>{{answer.title}}</h3>
-            <p>
+
+            <h1>
                 {{answer.description}}
-            </p>
+            </h1>
             </v-flex>
             <!-- <h1>card content</h1>  -->
             <v-card-actions>
@@ -36,7 +36,7 @@
 import axios from 'axios'
 
 export default {
-    props: ['answer'],
+    props: ['answer','question'],
     data(){
         return{
             profile : false
@@ -47,26 +47,40 @@ export default {
             console.log('ke clickkkkkkkk');
         },
         editAnswer(id,userId){
+            console.log('edit trigered',id,userId);
+            
             if(userId === localStorage.userId){
-                console.log('ini id nya question',id);
-                this.$router.push(`/editAnswer/${id}`)
+                console.log('ini id nya answer',id);
+                this.$store.dispatch('getOneAnswer',id)
+                this.$router.push(`/editAnswer/${this.question._id}/${id}`)
             }else{
                 console.log(`tidak berhak mengedit`);
                 this.$swal('you are not authorized to edit this content', '', 'error')
             }
         },
         upvote(id){
+            let data = {
+                answerId : id,
+                questionId : this.question._id
+            }
+            console.log('waduh trigerred');
             console.log('ini id',id);
-            this.$store.dispatch('upvoteAnswer',id)
+            this.$store.dispatch('upvoteAnswer',data)
         },
         downvote(id){
-            console.log('ini id',id);
-            
-            this.$store.dispatch('downvoteAnswer',id)
+            let data = {
+                answerId : id,
+                questionId : this.question._id
+            }
+            console.log('kok trigerred');
+            console.log('ini id',id);      
+            this.$store.dispatch('downvoteAnswer',data)
         }
     },
     created(){
         //  this.$store.dispatch('getQuestionAnswer')        
+        // console.log('ini answerrrrrrr',this.answer);
+        
     }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
 
-<v-card class="clickable" @click="reroute(question._id)">
+<v-card class="clickable" >
     <v-container fill-height>
         <v-layout row wrap align-center>
             <v-flex xs12 sm1>
@@ -25,9 +25,11 @@
             </v-flex>
             <!-- <h1>card content</h1>  -->
             <v-card-actions>
-                    <v-btn @click.prevent="answerQuestion(question._id)" flat color="orange">Answer</v-btn>
+                <v-btn @click.prevent="answerQuestion(question._id)" flat color="orange">Answer</v-btn>
                 <span>{{question.answerList.length}}</span>
                 <v-btn flat color="orange" @click.prevent="editQuestion(question._id,question.userId)">Edit</v-btn>
+                <v-btn flat color="orange" @click.prevent="reroute(question._id)">Detail</v-btn>
+
             </v-card-actions>
         </v-layout>
     </v-container>

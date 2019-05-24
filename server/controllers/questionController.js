@@ -17,6 +17,23 @@ class QuestionController{
         })
     }
 
+    static getOne(req,res){
+        console.log('masuk ke get one');
+        
+        Question
+        .findById(req.params.questionid)
+        .populate('answerList')
+        .then(question =>{
+            res.status(200).json(question)
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+                msg : `internal server error`
+            })
+        })
+    }
+
     static create(req,res){
         req.body.userId = req.loggedUser.id
         const newQuestion = new Question(req.body)
@@ -38,6 +55,8 @@ class QuestionController{
     }
 
     static getUserQuestion(req,res){
+        console.log('masuk ke sini malahan');
+        
         let userId = req.params.userid
         Question
         .find({userId : userId})

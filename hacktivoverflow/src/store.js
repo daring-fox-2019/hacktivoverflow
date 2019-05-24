@@ -12,7 +12,8 @@ export default new Vuex.Store({
         myanswerList : [],
         allQuestions : [],
         allAnswers : [],
-        question : null
+        question : null,
+        answer: null
     },
     mutations : {
         setIsLogin(state, data){
@@ -42,6 +43,11 @@ export default new Vuex.Store({
         },
         setQuestion(state,data){
             state.question = data
+        },
+        setAnswer(state,data){
+            console.log('mau set answer',data);
+            
+            state.answer = data
         }
     },
     actions: {
@@ -70,7 +76,7 @@ export default new Vuex.Store({
             
             axios({
                 method: 'get',
-                url : `http://localhost:3000/questions/${localStorage.userId}`,
+                url : `http://localhost:3000/questions/profile/${localStorage.userId}`,
                 headers : {
                     token : localStorage.token
                 }
@@ -176,7 +182,7 @@ export default new Vuex.Store({
             })
         },
         createAnswer(context,data){
-            console.log('ini data create answer',data);
+            console.log('ini data create answer',data,data.answer);
             
             axios({
                 method : 'post',
@@ -189,6 +195,8 @@ export default new Vuex.Store({
                 }
             })
             .then(({data})=>{
+                console.log(data);
+                
                 this.dispatch('getQuestion')
                 this.dispatch('getAnswer')
             })
@@ -200,7 +208,7 @@ export default new Vuex.Store({
             console.log('masuk question answer',data);
             axios({
                 method: 'get',
-                url : `http://localhost:3000/answers/${data}`,
+                url : `http://localhost:3000/answers/${data}/answer`,
                 headers : {
                     token : localStorage.token
                 }
@@ -215,35 +223,71 @@ export default new Vuex.Store({
             ])
         },
         upvoteAnswer(context,data){
+            let dataParam = data
             console.log('ini data client',data);
-            
             axios({
                 method : 'patch',
-                url : `http://localhost:3000/answers/${data}/upvote`,
+                url : `http://localhost:3000/answers/${dataParam.answerId}/upvote`,
                 headers : {
                     token : localStorage.token
                 }
             })
             .then(({data})=>{
-                this.dispatch('getQuestionAnswer')
+                this.dispatch('getQuestionAnswer',dataParam.questionId)
             })
             .catch(err =>{
                 console.log(err);
             })
         },
-        downvoteQuestion(context,data){
+        downvoteAnswer(context,data){
             console.log('ini data client',data);
-            
+            let dataParam = data
             axios({
                 method : 'patch',
-                url : `http://localhost:3000/answers/${data}/downvote`,
+                url : `http://localhost:3000/answers/${dataParam.answerId}/downvote`,
                 headers : {
                     token : localStorage.token
                 }
             })
             .then(({data})=>{
-                this.dispatch('getQuestionAnswer')
+                this.dispatch('getQuestionAnswer',dataParam.questionId)
+            })
+            .catch(err =>{
+                console.log(err);
+            })
+        },
+        getOneAnswer(context,data){
+            axios({
+                method : 'get',
+                url : `http://localhost:3000/answers/${data}`,
+                headers : {
+                    token : localStorage.token
+                }
+            })
+            .then(({data})=>{
+                console.log('data di get one answer',data);
                 
+                context.commit('setAnswer',data)
+            })
+            .catch(err =>{
+                console.log(err);
+            })
+        },
+        editAnswer(context,data){
+            console.log('masuk edit answer',data);
+            
+            axios({
+                method : 'patch',
+                url : `http://localhost:3000/answers/${data.id}`,
+                data : {
+                    description : data.answer
+                },
+                headers : {
+                    token : localStorage.token
+                }
+            })
+            .then(({data})=>{
+                console.log('berhasil di update',data);
             })
             .catch(err =>{
                 console.log(err);
