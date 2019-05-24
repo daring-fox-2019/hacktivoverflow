@@ -86,6 +86,7 @@ export default new Vuex.Store({
     },
     searchQuestions(state, payload) {
       state.queries = [...payload]
+      router.push('/search')
     },
     getQuestion(state, payload) {
       if (payload.user === localStorage.getItem('userId'))
@@ -269,9 +270,10 @@ export default new Vuex.Store({
     },
     searchQuestions(context, searchText) {
       let query = `?title=${searchText}`
+      console.log(query)
       axios({
         method: 'GET',
-        url: `/answers/search${query}`,
+        url: `/questions/read/search${query}`,
       })
         .then(({ data }) => {
           context.commit('searchQuestions', data);

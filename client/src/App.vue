@@ -30,7 +30,7 @@
         <span>HACKTIV</span>
         <span class="font-weight-light">OVERFLOW</span>
       </v-toolbar-title>
-      <v-form @submit.prevent="searchQuestion">
+      <v-form @submit.prevent="searchQuestions">
         <v-text-field
           v-model="searchText"
           flat
@@ -88,9 +88,9 @@ export default {
     // createQuestion(){
     //   this.$router.push()
     // },
-    searchQuestion(){
-      // this.$store.dispatch('searchQuestion',this.searchText)
-      this.$router.push('/search')
+    searchQuestions(){
+      this.$store.dispatch('searchQuestions',this.searchText)
+      // this.$router.push('/search')
     },
     logout(){
       localStorage.removeItem('token')
