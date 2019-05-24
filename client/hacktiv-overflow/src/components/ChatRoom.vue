@@ -6,13 +6,13 @@
         <i class="far fa-comment-dots"></i>
       </p>
     </div>
-    <div style="overflow:scroll; background-color:white; min-height: 200px; max-height:220px;background-color:#eeeeee" class="p-1">
+    <div id="chats" style="overflow:scroll; background-color:white; min-height: 200px; max-height:220px;background-color:#eeeeee" class="p-1">
       <div v-for="(chat, i) in chats" :key="i">
         <p style="font-size:12px">
           <span style="color:#00b894">
             <i>{{ chat.name }}</i>
           </span>
-          >> {{ chat.chat }}
+          >> {{ chat.chat }} 
         </p>
       </div>
     </div>
@@ -52,6 +52,11 @@ export default {
       doc.forEach(el => {
         let data = { id: el.id, ...el.data() };
         this.chats.push(data);
+
+        let sortByDateAsc = function (a, b)  { return new Date(a.time) > new Date(b.time) ? 1 : new Date(a.time) < new Date(b.time) ? -1 : 0;}
+
+        this.chats.sort(sortByDateAsc);
+        
       });
     });
   },
@@ -61,11 +66,11 @@ export default {
         db.collection("hacktivChat")
           .add({
             name: localStorage.getItem("name"),
-            chat: this.text
+            chat: this.text,
+            time: String(new Date())
           })
           .then(data => {
             this.text = "";
-            console.log(data);
           });
       } else {
           this.text=''

@@ -66,7 +66,9 @@ export default {
   props: ["question"],
   computed: {
     cekOwner(){
-      return localStorage.getItem('id') == this.question.user_id._id
+      if( this.question.user_id){
+        return localStorage.getItem('id') == this.question.user_id._id
+      }
     }
   },
   methods: {
