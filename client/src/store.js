@@ -13,9 +13,45 @@ export default new Vuex.Store({
     user: {},
     queries: [],
     question: {},
-    answered: false
+    answered: false,
+    sortBy: ''
   },
   mutations: {
+    sortQuestions(state, payload) {
+      switch (payload) {
+        case 'Newest':
+          state.questions.sort((a, b) => {
+            if (a.createdAt > b.createdAt) return -1
+            if (a.createdAt < b.createdAt) return 1
+            return 0
+          })
+          break;
+        case 'Updated Recently':
+          state.questions.sort((a, b) => {
+            if (a.updatedAt > b.updatedAt) return -1
+            if (a.updatedAt < b.updatedAt) return 1
+            return 0
+          })
+          break;
+        case 'Most Voted':
+          state.questions.sort((a, b) => {
+            if ((a.upvotes.length - a.downvotes.length) > (b.upvotes.length - b.downvotes.length)) return -1
+            if ((a.upvotes.length - a.downvotes.length) < (b.upvotes.length - b.downvotes.length)) return 1
+            return 0
+          })
+          break;
+        case 'Most Answers':
+          state.questions.sort((a, b) => {
+            if (a.answers.length > b.answers.length) return -1
+            if (a.answers.length < b.answers.length) return 1
+            return 0
+          })
+          break;
+        default:
+          sort = ''
+          break;
+      }
+    },
     register(state, payload) {
       Swal.fire(
         'Registered!',
@@ -45,19 +81,19 @@ export default new Vuex.Store({
     getAllQuestions(state, payload) {
       state.questions = [...payload]
     },
-    getUserQuestions(state, payload){
-      state.user = {...payload}
+    getUserQuestions(state, payload) {
+      state.user = { ...payload }
     },
     searchQuestions(state, payload) {
       state.queries = [...payload]
     },
-    getQuestion(state,payload){
-      if(payload.user === localStorage.getItem('userId'))
+    getQuestion(state, payload) {
+      if (payload.user === localStorage.getItem('userId'))
         state.answered = true
       else state.answered = false
-      state.question = {...payload}
+      state.question = { ...payload }
     },
-    createQuestion(state,_id){
+    createQuestion(state, _id) {
       router.push(`/question/${_id}`)
       // Swal.fire(
       //   'Created!',
@@ -77,7 +113,7 @@ export default new Vuex.Store({
         }
       })
         .then(({ data }) => {
-          context.commit('createQuestion',data._id)
+          context.commit('createQuestion', data._id)
         })
         .catch((err) => {
           console.log(err);
@@ -92,7 +128,7 @@ export default new Vuex.Store({
         }
       })
         .then(({ data }) => {
-          context.commit('getQuestion',data)
+          context.commit('getQuestion', data)
         })
         .catch((err) => {
           console.log(err);
@@ -110,14 +146,56 @@ export default new Vuex.Store({
         .then(({ data }) => {
           context.dispatch('getQuestion', payload.questionid)
         })
+        .catch(({response}) => {
+          Swal.fire(
+            'Answer error!',
+            response.data.message,
+            'error',
+          );
+        });
+    },
+    updateQuestion(context, payload) {
+      axios({
+        method: "PUT",
+        url: `/questions/update/${payload.id}`,
+        data: {
+          title: payload.title,
+          description: payload.description,
+        },
+        headers: {
+          token: localStorage.getItem('token'),
+        }
+      })
+        .then(({ data }) => {
+          context.dispatch('getQuestion', payload.questionid)
+        })
         .catch((err) => {
           console.log(err);
         });
     },
-    voteQuestion(context,payload){
+    updateAnswer(context, payload) {
       axios({
         method: "PUT",
-        url: `/questions/update/${payload.questionid}`,
+        url: `/answers/update/${payload.id}`,
+        data: {
+          title: payload.title,
+          description: payload.description,
+        },
+        headers: {
+          token: localStorage.getItem('token'),
+        }
+      })
+        .then(({ data }) => {
+          context.dispatch('getQuestion', payload.questionid)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    voteQuestion(context, payload) {
+      axios({
+        method: "PUT",
+        url: `/questions/update/${payload.id}`,
         data: {
           voteType: payload.voteType
         },
@@ -126,16 +204,22 @@ export default new Vuex.Store({
         }
       })
         .then(({ data }) => {
-          context.dispatch('getUserQuestions')
+          context.dispatch('getAllQuestions')
+          context.dispatch('getUserQuestions',localStorage.getItem('userId'))
+          context.dispatch('getQuestion', payload.questionid)
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(({ response }) => {
+          Swal.fire(
+            'Vote Failed!',
+            response.data.message,
+            'error',
+          );
         });
     },
-    voteAnswer(context,payload){
+    voteAnswer(context, payload) {
       axios({
         method: "PUT",
-        url: `/answers/update/${payload.answerid}`,
+        url: `/answers/update/${payload.id}`,
         data: {
           voteType: payload.voteType
         },
@@ -144,31 +228,34 @@ export default new Vuex.Store({
         }
       })
         .then(({ data }) => {
-          context.dispatch('getQuestion',payload.questionid)
+          context.dispatch('getQuestion', payload.questionid)
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(({ response }) => {
+          Swal.fire(
+            'Vote Failed!',
+            response.data.message,
+            'error',
+          );
         });
     },
-    getAllQuestions(context) {
+    getAllQuestions(context,sortBy) {
       axios({
         method: "GET",
         url: '/questions/read',
       })
         .then(({ data }) => {
           context.commit('getAllQuestions', data)
+          if(sortBy)
+            context.commit('sortQuestions',sortBy)
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    getUserQuestions(context) {
+    getUserQuestions(context,id) {
       axios({
         method: "GET",
-        url: '/users/questions',
-        headers: {
-          token: localStorage.getItem('token'),
-        }
+        url: `/users/questions/${id}`,
       })
         .then(({ data }) => {
           context.commit('getUserQuestions', data)
@@ -218,7 +305,7 @@ export default new Vuex.Store({
     },
   },
   getters: {
-    getQuestion(state){
+    getQuestion(state) {
       return state.question
     }
   }

@@ -8,7 +8,7 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 class UserController {
   static readOne(req,res){
     User.findOne({
-      _id: req.decoded._id
+      _id: req.params._id
     })
     .populate('questions')
     .populate('answers')

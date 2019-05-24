@@ -26,8 +26,7 @@ class AnswerController {
     .catch(err => {
       console.log(err)
       res.status(500).json({
-        message: "Failed to create new Answer",
-        err
+        message: err
       })
     })
   }
@@ -38,8 +37,7 @@ class AnswerController {
     })
     .catch(err => {
       res.status(500).json({
-        message: "Failed to read Answers",
-        err
+        message: err
       })
     })
   }
@@ -51,8 +49,7 @@ class AnswerController {
     })
     .catch(err => {
       res.status(500).json({
-        message: "Failed to search Answers",
-        err
+        message: err
       })
     })
   }
@@ -65,8 +62,7 @@ class AnswerController {
     })
     .catch(err => {
       res.status(500).json({
-        message: "Failed to read Answers",
-        err
+        message: err
       })
     })
   }
@@ -106,8 +102,7 @@ class AnswerController {
     })
     .catch(err => {
       res.status(500).json({
-        message: "Failed to update Answer",
-        err
+        message: err
       })
     })
   }
@@ -123,8 +118,7 @@ class AnswerController {
     })
     .catch(err => {
       res.status(500).json({
-        message: "Failed to delete Answer",
-        err
+        message: err
       })
     })
   }

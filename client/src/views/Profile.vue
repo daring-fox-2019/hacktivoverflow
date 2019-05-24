@@ -1,6 +1,7 @@
 <template>
   <v-container>
-    <ListQuestions title="Your Questions" />
+    <h1>{{ $store.state.user.name }}</h1>
+    <ListQuestions v-model="$store.state.user.questions" title="Questions" />
   </v-container>
 </template>
 
@@ -16,7 +17,7 @@ export default {
     if (!localStorage.getItem('token')) {
       this.$router.push("/auth");
     }
-    this.$store.dispatch('getUserQuestions')
+    this.$store.dispatch('getUserQuestions',this.$route.params.id)
   }
 };
 </script>

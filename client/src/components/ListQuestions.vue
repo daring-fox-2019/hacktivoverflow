@@ -3,7 +3,7 @@
     <h1>{{ title }}</h1>
     <v-layout row wrap>
       <v-list three-line>
-        <Question v-for="(question,index) in $store.state.user.questions" v-model="$store.state.user.question[index]" :key="question._id"/>
+        <Question v-for="question in value" :question="question" :key="question._id"/>
         <!-- <v-divider inset></v-divider> -->
         
       </v-list>
@@ -17,6 +17,9 @@ export default {
   components: {
     Question
   },
-  props: ["title"]
+  props: ["title",'value'],
+  created(){
+    this.value
+  }
 };
 </script>

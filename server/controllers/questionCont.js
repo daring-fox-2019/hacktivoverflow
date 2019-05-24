@@ -21,21 +21,20 @@ class QuestionController {
     .catch(err => {
       console.log(err)
       res.status(500).json({
-        message: "Failed to create new Question",
-        err
+        message: err
       })
     })
   }
   static read(req,res){
     Question.find({})
+    .populate('user')
     .populate('answers')
     .then(rows =>{
       res.status(200).json(rows)
     })
     .catch(err => {
       res.status(500).json({
-        message: "Failed to read Questions",
-        err
+        message: err
       })
     })
   }
@@ -43,14 +42,14 @@ class QuestionController {
     // let obj = { _id: req.decoded._id }
     if(req.query.title) obj.title = { '$regex' : req.query.title, '$options' : 'i' }
     Question.find(obj)
+    .populate('user')
     .populate('answers')
     .then(rows=>{
       res.status(200).json(rows)
     })
     .catch(err => {
       res.status(500).json({
-        message: "Failed to search Questions",
-        err
+        message: err
       })
     })
   }
@@ -69,8 +68,7 @@ class QuestionController {
     })
     .catch(err => {
       res.status(500).json({
-        message: "Failed to read one Question",
-        err
+        message: err
       })
     })
   }
@@ -110,8 +108,7 @@ class QuestionController {
     })
     .catch(err => {
       res.status(500).json({
-        message: "Failed to update Question",
-        err
+        message: err
       })
     })
   }
@@ -127,8 +124,7 @@ class QuestionController {
     })
     .catch(err => {
       res.status(500).json({
-        message: "Failed to delete Question",
-        err
+        message: err
       })
     })
   }
