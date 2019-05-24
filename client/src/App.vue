@@ -78,7 +78,8 @@ export default {
   watch: {
     $route(){
       this.drawer = false
-      
+      if(!localStorage.getItem('token'))
+        this.$router.push('/auth')
     }
   },
   created(){
