@@ -6,8 +6,6 @@ const route = require('./routes')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const error = require('./middlewares/error')
-const kue = require('kue')
-const nodemailer = require('nodemailer')
 
 // const transporter = nodemailer.createTransport({
 //   service: 'gmail',
@@ -17,7 +15,6 @@ const nodemailer = require('nodemailer')
 //   }
 // })
 
-// console.log(process.env.MONGODB_LINK)
 mongoose.connect(process.env.MONGODB_LINK, { useNewUrlParser: true, useFindAndModify: false }, err => {
   if (err) {
     console.log('Error connecting to database.')
@@ -35,7 +32,3 @@ app.use(error)
 app.listen(port, () => {
   console.log(`listening on port: ${port}!`)
 })
-
-// kue.app.listen(4000, () => {
-//   console.log(`listening on port: 4000!`)
-// })

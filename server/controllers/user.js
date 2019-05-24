@@ -2,8 +2,6 @@ const { User } = require('../models')
 const { hash } = require('../helpers/bcryptjs')
 const { compare } = require('../helpers/bcryptjs')
 const { sign } = require('../helpers/jwt')
-const kue = require('kue')
-const que = kue.createQueue()
 // const { mailOpt, transporter } = require('../helpers/nodemailer')
 
 class ControllerUser {
