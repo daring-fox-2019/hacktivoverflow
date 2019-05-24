@@ -15,7 +15,7 @@
         <v-card-text v-html="value.description" class="subheading">{{ value.description }}</v-card-text>
         <v-card-sub-title>
           {{ purpose }} by :
-          <router-link class="mr-5" v-model="value.user.name" to="/profile">{{ value.user.name }}</router-link>
+          <router-link class="mr-5" v-model="value.user.name" :to="'/profile/'+value.user._id">{{ value.user.name }}</router-link>
         </v-card-sub-title>
         <span class="grey--text mr-5">created : {{ createdAt }}</span>
         <span class="grey--text">updated : {{ updatedAt }}</span>

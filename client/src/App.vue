@@ -70,15 +70,17 @@ export default {
       //   this.$router.push('/auth')
     }
   },
-  mounted() {
-    // this.checkLogin()
+  created() {
+    this.checkLogin()
     this.$store.dispatch("getAllQuestions");
   },
   methods: {
-    // checkLogin(){
-    //   if (!localStorage.getItem("token")) this.logText = "Login";
-    // else this.logText = "Logout";
-    // },
+    checkLogin(){
+      if (!localStorage.getItem("token"))
+        this.$store.state.logText = "Login";
+      else
+        this.$store.state.logText = "Logout";
+    },
     whoAmI() {
       if(!localStorage.getItem('token')){
         this.$router.push('/auth')

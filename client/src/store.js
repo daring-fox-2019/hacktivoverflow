@@ -84,6 +84,7 @@ export default new Vuex.Store({
       state.questions = [...payload]
     },
     getUserQuestions(state, payload) {
+      console.log(payload)
       state.user = { ...payload }
     },
     searchQuestions(state, payload) {

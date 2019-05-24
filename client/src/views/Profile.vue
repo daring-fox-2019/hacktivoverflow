@@ -13,6 +13,11 @@ export default {
   components: {
     ListQuestions
   },
+  watch: {
+    $route(){
+      this.$store.dispatch('getUserQuestions',this.$route.params.id)
+    }
+  },
   created() {
     if (!localStorage.getItem('token')) {
       this.$router.push("/auth");

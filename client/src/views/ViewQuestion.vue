@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-xs>
     <h1 class="primary--text mt-4">Question</h1>    
-    <Post v-model="$store.state.question" tipe="Question"/>
+    <Post v-model="$store.state.question" tipe="Question" :key="$store.state.question._id"/>
     <h1 class="success--text mt-4">Answer</h1>
     <Post v-model="$store.state.question.answers[index]" v-for="(answer,index) in $store.state.question.answers" tipe="Answer" :key="answer._id"/>
     <v-card class="mt-5">
