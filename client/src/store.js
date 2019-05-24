@@ -270,7 +270,6 @@ export default new Vuex.Store({
     },
     searchQuestions(context, searchText) {
       let query = `?title=${searchText}`
-      console.log(query)
       axios({
         method: 'GET',
         url: `/questions/read/search${query}`,

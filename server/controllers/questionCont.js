@@ -41,7 +41,6 @@ class QuestionController {
   static search(req,res){
     let obj = {}
     if(req.query.title) obj.title = { '$regex' : req.query.title, '$options' : 'i' }
-    console.log(obj)
     Question.find(obj)
     .populate('user')
     .populate('answers')

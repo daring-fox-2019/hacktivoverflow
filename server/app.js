@@ -4,7 +4,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const url = `mongodb+srv://admin:admin@cluster0-wlb89.gcp.mongodb.net/test?retryWrites=true`
-const port = /* process.env.PORT ||  */3000
+const port = process.env.PORT || 3000
 const routes = require('./routes')
 
 mongoose.set('useNewUrlParser', true);
