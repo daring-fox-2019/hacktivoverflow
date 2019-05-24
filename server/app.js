@@ -9,7 +9,7 @@ const kue = require('kue')
 
 app.use(cors())
 mongoose.set('useFindAndModify', false);
-mongoose.connect(proess.env.DB_PROD, {useNewUrlParser: true})
+mongoose.connect(process.env.DB_PROD, {useNewUrlParser: true})
 .then(function(success){
     console.log("succesfully connect to database")
 })
