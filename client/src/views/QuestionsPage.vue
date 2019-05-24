@@ -26,7 +26,7 @@
           <v-layout row wrap>
             <h4
               class="my-3 caption"
-            >We generate dev jobs every 30 secs for you. More detailed informations can be found on affiliate links. <br> Click on list to visit the company's page.</h4>
+            >We generate dev jobs every 1 minute for you. More detailed informations can be found on affiliate links. <br> Click on list to visit the company's page.</h4>
           </v-layout>
           <!-- <v-btn depressed color="primary">Blm Tay</v-btn> -->
         </v-flex>

@@ -157,7 +157,7 @@ export default {
 #app {
   background-color: white;
   /* font-family: 'IBM Plex Sans', sans-serif; */
-  font-family: 'Pontano Sans', sans-serif;
+  font-family: 'Pontano Sans'9, sans-serif;
   /* font-family: 'Rubik', sans-serif; */
 /* font-family: 'Stardos Stencil', cursive; */
 }
