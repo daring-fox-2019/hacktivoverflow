@@ -4,7 +4,7 @@
       <v-layout row wrap>
         <section xs4>
           <v-layout row wrap justify-center>
-            <span class="ml-2 p-2 caption">{{countvote}}</span>
+            <span class="ml-2 p-2 caption">{{q.downVotes.length + q.upVotes.length}}</span>
           </v-layout>
           <v-layout row wrap justify-center>
             <span class="ml-2 p-2 caption">Votes</span>
@@ -73,7 +73,6 @@ export default {
     return {
       totalvote: null,
       rand : 1,
-      countvote : 0,
     };
   },
   created() {
@@ -94,7 +93,7 @@ export default {
       this.$router.push( {name: 'question-detail', params: { id}})
     },
     getRandomInteger() {
-      this.rand = Math.floor(Math.random() * (625 - 1) + 1);
+      this.rand = Math.floor(Math.random() * (314 - 1) + 1);
     },
     deleteQuestion(id) {
       Swal.fire({

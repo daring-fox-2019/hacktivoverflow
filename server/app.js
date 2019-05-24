@@ -13,8 +13,8 @@ const http = require('http').Server(app)
 const io = require('socket.io')(http)
 const schedule = require('./helpers/cronjob')
 
-// let url = process.env.MONGO_DB_ATLAS
-let url = process.env.MONGO_DB_URL
+let url = process.env.MONGO_DB_ATLAS
+// let url = process.env.MONGO_DB_URL
 
 
 io.on('connection', (socket)=> {
