@@ -1,6 +1,6 @@
 <template>
 
-<v-card>
+<v-card v-show="show">
     <v-container fill-height>
         <v-layout row wrap align-center>
             <v-flex xs12 sm1>
@@ -26,6 +26,7 @@
             <!-- <h1>card content</h1>  -->
             <v-card-actions>
                 <v-btn flat color="orange" @click.prevent="editAnswer(answer._id,answer.userId)">Edit</v-btn>
+                <v-btn flat color="orange" @click.prevent="deleteAnswer(answer._id,answer.userId)">Delete</v-btn>
             </v-card-actions>
         </v-layout>
     </v-container>
@@ -39,7 +40,7 @@ export default {
     props: ['answer','question'],
     data(){
         return{
-            profile : false
+            show : true
         }
     },
     methods : {
@@ -75,6 +76,18 @@ export default {
             console.log('kok trigerred');
             console.log('ini id',id);      
             this.$store.dispatch('downvoteAnswer',data)
+        },
+        deleteAnswer(id,userId){
+            if(userId === localStorage.userId){
+                let data = {
+                    questionId : this.question._id,
+                    answerId : id
+                }
+                this.show = false
+                this.$store.dispatch('deleteAnswer',data)
+            }else{
+                this.$swal(`youre not authorized!`,'','error')
+            }
         }
     },
     created(){

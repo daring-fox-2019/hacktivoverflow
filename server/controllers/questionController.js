@@ -160,8 +160,14 @@ class QuestionController{
     }
 
     static delete(req,res){
-        Question
-        .findOneAndDelete({_id : req.params.questionid})
+        console.log('masuk ke delete controller question');
+        
+        let questionId = req.params.questionid
+        User
+        .findByIdAndUpdate({_id : req.loggedUser.id},{$pull : {questionList : questionId}},{new : true})
+        .then(({data})=>{
+            return Question.findOneAndDelete({_id : questionId})    
+        })
         .then(question =>{
             res.status(201).json(question)
         })

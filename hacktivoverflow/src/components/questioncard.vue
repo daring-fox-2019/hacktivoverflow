@@ -1,6 +1,6 @@
 <template>
 
-<v-card class="clickable" >
+<v-card v-show="show" >
     <v-container fill-height>
         <v-layout row wrap align-center>
             <v-flex xs12 sm1>
@@ -28,6 +28,7 @@
                 <v-btn @click.prevent="answerQuestion(question._id)" flat color="orange">Answer</v-btn>
                 <span>{{question.answerList.length}}</span>
                 <v-btn flat color="orange" @click.prevent="editQuestion(question._id,question.userId)">Edit</v-btn>
+                <v-btn flat color="orange" @click.prevent="deleteQuestion(question._id,question.userId)">Delete</v-btn>                
                 <v-btn flat color="orange" @click.prevent="reroute(question._id)">Detail</v-btn>
 
             </v-card-actions>
@@ -43,7 +44,7 @@ export default {
     props: ['question','index'],
     data(){
         return{
-            profile : false
+            show : true,
         }
     },
     methods : {
@@ -61,6 +62,14 @@ export default {
                 this.$swal('you are not authorized to edit this content', '', 'error')
             }
         },
+        deleteQuestion(id,userId){
+            if(userId === localStorage.userId){
+                this.show = false
+                this.$store.dispatch('deleteQuestion',id)
+            }else{
+                this.$swal(`youre not authorized!`,'','error')
+            }
+        },
         upvote(id){
             console.log('ini id',id);
             
@@ -72,7 +81,11 @@ export default {
             this.$store.dispatch('downvoteQuestion',id)
         },
         answerQuestion(id){
-            this.$router.push(`/addAnswer/${id}`)
+            if(localStorage.token){
+                this.$router.push(`/addAnswer/${id}`)
+            }else{
+                this.$swal('you must login first','','error')
+            }
         }
     },
     created(){

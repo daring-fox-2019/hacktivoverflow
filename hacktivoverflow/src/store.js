@@ -292,6 +292,42 @@ export default new Vuex.Store({
             .catch(err =>{
                 console.log(err);
             })
+        },
+        deleteQuestion(context,data){
+            console.log('masuk ke store delete question',data);
+            axios({
+                method : "delete",
+                url : `http://localhost:3000/questions/${data}`,
+                headers : {
+                    token : localStorage.token
+                }
+            })
+            .then(({data})=>{
+                console.log(data);
+                // this.$swal(`successfully delete question`,'','success')
+            })
+            .catch(err =>{
+                console.log(err);
+                
+            })
+        },
+        deleteAnswer(context,data){
+            console.log('masuk ke store delete answer',data);
+            axios({
+                method : "delete",
+                url : `http://localhost:3000/answers/${data.questionId}/${data.answerId}`,
+                headers : {
+                    token : localStorage.token
+                }
+            })
+            .then(({data})=>{
+                console.log(data);
+                // this.$swal(`successfully delete question`,'','success')
+            })
+            .catch(err =>{
+                console.log(err);
+                
+            })
         }
     }
 })

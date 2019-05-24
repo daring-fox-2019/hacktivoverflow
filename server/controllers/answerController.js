@@ -98,6 +98,8 @@ class AnswerController{
         }
 
     static delete(req,res){
+        console.log('masuk ke conts delete answer');
+        
         let questionId = req.params.questionid
         let answerId = req.params.answerid
         let deleted;
@@ -108,7 +110,7 @@ class AnswerController{
             return User.findOneAndUpdate({_id : req.loggedUser.id},{$pull : {answerList : answerId}},{new : true})
         })
         .then(user => {
-            return Question.findByIdAndUpdate({_id: questionId},{$pull : {answerList : answerId}},{new : true})
+            return Question.findOneAndUpdate({_id: questionId},{$pull : {answerList : answerId}},{new : true})
         })
         .then(question =>{
             res.status(200).json(deleted)
