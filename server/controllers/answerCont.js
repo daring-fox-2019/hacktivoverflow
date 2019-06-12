@@ -10,7 +10,7 @@ class AnswerController {
       title: req.body.title,
       description: req.body.description,
     })
-    .then(row=>{
+    .then(row =>{
       return Question.findByIdAndUpdate(row.question,{
         $push: { answers: row._id },
       })
