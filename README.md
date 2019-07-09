@@ -3,7 +3,7 @@
 ## URLs
 
 Client URL : `http://localhost:8080`<br>
-Server URL : `http://localhost:3000
+Server URL : `http://localhost:3000 <br>
 Deploy : http://foxcodes.paulinadavita.com (might be down or not working properly due to API expired access`
 
 ## Usage
